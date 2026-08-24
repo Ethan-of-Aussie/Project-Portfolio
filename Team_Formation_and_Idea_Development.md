@@ -1,3 +1,5 @@
+## TEAM MEMBERS
+
 # Sierra
 - Use to study game specialization in IT. Familiar with general content of Holberton. Experience in back and front end. Takes special interest in Backend. Likes understanding through deconstructing! 
 
