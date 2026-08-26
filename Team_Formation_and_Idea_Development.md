@@ -24,14 +24,21 @@ ideas: Schedule out the weeks.
   
  IDEA INTERGRATION
 - *WOULD BE GREAT ADDITION TO IMPLEMENT INTO ANOTHER PROJECT IDEA! LIKE SCHEDULING DOG WALKS OR SCHEDULING EATING TIMES AND ALSO PUZZLE REMINDERS!
+  
 # Sijin
 
- ideas:
-- **
+- Bachelors in Networking(Cybersec major), likes art/design and wants to get better at them with increasing interest in app/software development.
+
+ ideas: Early Educator Childcare Management Platform
+ 
+- **Something like a personal assistant for educators to use to help manage the children in their room, using the stored information to create a reliable report about them, which helps the educators to plan an effective curriculum, with a goal of tailoring it to individual development goals.
+
  IDEA ISSUES
-- **
+- **Biggest issue is competitiveness with many early childhood centre management applications in the market, so need to create something that is similar but has its unique features. Another is privacy, as information about children will need to be stored.
+
  IDEA INTERGRATION
-- *
+- *With the diet planning application, it becomes possible to plan a diet targeting the nutrition goals of the children and to avoid allergens, the scheduling application can be incorporated within this application to plan activities for the week, puzzle or crosswords can be incorporated as well to create small games for the children to engage in. The dog walking application and this idea have similar concepts, so rather than focusing on one thing, maybe a general care application can be created which can then be tailored to a specific idea to create a different platform.
+
 # Venghour
 - Wants to get better at pixel art! Has been getting experience in agentic (ai agents). Frontend is fun, would like to work more with backend. Loves working on games and enduring in creative projects.
 
