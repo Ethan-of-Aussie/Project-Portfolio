@@ -120,11 +120,11 @@ Resolve blockers impeding the team and the project.
 
 | Ideas                   | feasibility           | potential impact      | technical alignment   | scalability           | Total: |
 | ----------------------- | --------------------- | --------------------- | --------------------- | --------------------- | ------ |
-| TIME SCHEDULING <br>APP | 5/5, 5/5, 5/5, /5, /5 | 1/5, 2/5, 2/5, /5, /5 | 4/5, 5/5, 4/5 /5, /5  | 3/5, 5/5, 3/5, /5, /5 | 44     |
-| UBER DOG WALKING APP    | 4/5, 4/5, 4/5, /5, /5 | 4/5, 3/5, 4/5, /5, /5 | 4/5, 5/5, 5/5, /5, /5 | 4/5, 4/5, 4/5, /5, /5 | 49     |
-| PUZZLE GENERATION APP   | 4/5, 4/5, 4/5, /5, /5 | 3/5, 4/5, 2/5, /5, /5 | 3/5, 3/5, 3/5, /5, /5 | 2/5, 4/5, 3/5, /5, /5 | 39     |
-| DIET PLANNING APP       | 4/5, 5/5, 5/5, /5, /5 | 5/5, 4/5, 4/5, /5, /5 | 5/5, 4/5, 4/5, /5, /5 | 3/5, 5/5, 4/5, /5, /5 | 56     |
-| EARLY EDUCATOR CHILDCARE MANAGMENT PLATFORM  | /5, /5, /5, /5, /5 | /5, /5, /5, /5, /5 | /5, /5, /5, /5, /5 | /5, /5, /5, /5, /5 | 0       |
+| TIME SCHEDULING APP     | 5/5, 5/5, 5/5, 5/5, /5 | 1/5, 2/5, 2/5, 1/5, /5 | 4/5, 5/5, 4/5 5/5, /5  | 3/5, 5/5, 3/5, 5/5, /5 | 60     |
+| UBER DOG WALKING APP    | 4/5, 4/5, 4/5, 4/5, /5 | 4/5, 3/5, 4/5, 3/5, /5 | 4/5, 5/5, 5/5, 4/5, /5 | 4/5, 4/5, 4/5, 4/5, /5 | 64     |
+| PUZZLE GENERATION APP   | 4/5, 4/5, 4/5, 5/5, /5 | 3/5, 4/5, 2/5, 2/5, /5 | 3/5, 3/5, 3/5, 5/5, /5 | 2/5, 4/5, 3/5, 5/5, /5 | 56     |
+| DIET PLANNING APP       | 4/5, 5/5, 5/5, 4/5, /5 | 5/5, 4/5, 4/5, 4/5, /5 | 5/5, 4/5, 4/5, 4/5, /5 | 3/5, 5/5, 4/5, 4/5, /5 | 72     |
+| EARLY EDUCATOR CHILDCARE MANAGMENT PLATFORM  | 3/5, /5, /5, 3/5, /5 | 5/5, /5, /5, 4/5, /5 | 3/5, /5, /5, 4/5, /5 | 3/5, /5, /5, 4/5, /5 | 29       |
 ___
 - Ideas: dog walking app.
 Strength: Assistance for owners of dogs to seek Uber dog walkers when strapped for time or unable to walk their own dog.
