@@ -1,7 +1,7 @@
 ## TEAM MEMBERS
 
 # Sierra
-- Use to study game specialization in IT. Familiar with general content of Holberton. Experience in back and front end. Takes special interest in Backend. Likes understanding through deconstructing! 
+- Use to study game specialization in IT. Experience in back and front end. Takes special interest in Backend. Likes understanding through deconstructing! 
 
  Ideas: dog walking app.
 - **Gives clients access to Uber dog walkers to walk their dogs when the owner is unable to.
@@ -40,7 +40,7 @@ ideas: Schedule out the weeks.
 - *With the diet planning application, it becomes possible to plan a diet targeting the nutrition goals of the children and to avoid allergens, the scheduling application can be incorporated within this application to plan activities for the week, puzzle or crosswords can be incorporated as well to create small games for the children to engage in. The dog walking application and this idea have similar concepts, so rather than focusing on one thing, maybe a general care application can be created which can then be tailored to a specific idea to create a different platform.
 
 # Venghour
-- Wants to get better at pixel art! Has been getting experience in agentic (ai agents). Frontend is fun, would like to work more with backend. Loves working on games and enduring in creative projects.
+- Has been getting experience in agentic (ai agents). Frontend is fun, would like to work more with backend. Loves working on games and enduring in creative projects.
 
  Ideas: app generates puzzle pieces or crosswords. 
 - **People enter images to generate puzzles. The app may store these Client created puzzles and share with others on the platform.
@@ -51,7 +51,7 @@ ideas: Schedule out the weeks.
  IDEA INTERGRATION
 - *COULD IMPLEMENT QUIZZES IN DIET APP OR CROSSWORDS IN DOG WALKING APP.
 # Ethan
-- Works on comprehending others code. does a lot of testing on applications to spot edge cases and errors. Visualizes Use-cases for ideas and issues these ideas may have deeply.
+- Does testing on applications to spot edge cases and errors. Visualizes Use-cases for ideas and issues these ideas may have deeply. Does video editing on the side in personnel projects.
 
 ideas: Diet planning app.
 - **can set up database using a open source database for food items by fetch API calls.
