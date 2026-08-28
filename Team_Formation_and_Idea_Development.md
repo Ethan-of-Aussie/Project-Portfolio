@@ -117,7 +117,6 @@ People who plan to follow a diet or merely want to meet nutrition goals.
 The ability to select items of food/beverage and put them into a personnel creation of a diet plan.
 The user will see how their selection accumulates the sum of each items various nutrients, directly correlating with the average maximum on height and weight of the user.
 
-# all ideas considered, including their strengths, weaknesses, and reasons for rejection.
 
 # Rubric
 
