@@ -124,7 +124,7 @@ Resolve blockers impeding the team and the project.
 | UBER DOG WALKING APP    | 4/5, 4/5, 4/5, 4/5, /5 | 4/5, 3/5, 4/5, 3/5, /5 | 4/5, 5/5, 5/5, 4/5, /5 | 4/5, 4/5, 4/5, 4/5, /5 | 64     |
 | PUZZLE GENERATION APP   | 4/5, 4/5, 4/5, 5/5, /5 | 3/5, 4/5, 2/5, 2/5, /5 | 3/5, 3/5, 3/5, 5/5, /5 | 2/5, 4/5, 3/5, 5/5, /5 | 56     |
 | DIET PLANNING APP       | 4/5, 5/5, 5/5, 4/5, /5 | 5/5, 4/5, 4/5, 4/5, /5 | 5/5, 4/5, 4/5, 4/5, /5 | 3/5, 5/5, 4/5, 4/5, /5 | 72     |
-| EARLY EDUCATOR CHILDCARE MANAGMENT PLATFORM  | 3/5, /5, /5, 3/5, /5 | 5/5, /5, /5, 4/5, /5 | 3/5, /5, /5, 4/5, /5 | 3/5, /5, /5, 4/5, /5 | 29       |
+| EARLY EDUCATOR CHILDCARE MANAGMENT PLATFORM  | 3/5, 3/5, /5, 3/5, /5 | 5/5, 5/5, /5, 4/5, /5 | 3/5, 4/5, /5, 4/5, /5 | 3/5, 3/5, /5, 4/5, /5 | 44       |
 ___
 - Ideas: dog walking app.
 Strength: Assistance for owners of dogs to seek Uber dog walkers when strapped for time or unable to walk their own dog.
