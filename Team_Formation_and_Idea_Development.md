@@ -106,13 +106,16 @@ Reviews critical code and implements changes after discussion with Devs.
 Resolve blockers impeding the team and the project.
 - Communicates to The whole team about updates, expectations and direction
 
-# Final MinimumViableProjects:
+# Final MinimumViableProject: Diet Planning app
 - the problem it solves:
+Various diet plans having certain foods to eat but an abstraction of general nutrition. The app is to place values in front of the user, allowing them to better plan around their diet with their food/beverage selection.
 
 - Target audience or users:
+People who plan to follow a diet or merely want to meet nutrition goals.
 
 - Key features and expected outcomes:
-
+The ability to select items of food/beverage and put them into a personnel creation of a diet plan.
+The user will see how their selection accumulates the sum of each items various nutrients, directly correlating the average maximum on height and weight of the user.
 
 # all ideas considered, including their strengths, weaknesses, and reasons for rejection.
 
