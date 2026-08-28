@@ -106,18 +106,6 @@ Reviews critical code and implements changes after discussion with Devs.
 Resolve blockers impeding the team and the project.
 - Communicates to The whole team about updates, expectations and direction
 
-# Final MinimumViableProject: Diet Planning app
-- the problem it solves:
-Various diet plans having certain foods to eat but an abstraction of general nutrition. The app is to place values in front of the user, allowing them to better plan around their diet with their food/beverage selection.
-
-- Target audience or users:
-People who plan to follow a diet or merely want to meet nutrition goals.
-
-- Key features and expected outcomes:
-The ability to select items of food/beverage and put them into a personnel creation of a diet plan.
-The user will see how their selection accumulates the sum of each items various nutrients, directly correlating with the average maximum on height and weight of the user.
-
-
 # Rubric
 
 | Ideas                   | feasibility           | potential impact      | technical alignment   | scalability           | Total: |
@@ -160,7 +148,19 @@ Strength: Provides an easy direct assistance in calculating nutrition of various
 
 Weakness: Dieting calculations can become unfair due to real-life consequences of various diets typically lacking in nutrition. The database would be API calls to fetch data from open source databases whom implemented nutrition data of foods/beverage, which can cause performance issues
 
+# Final MinimumViableProject: Diet Planning app
+- the problem it solves:
+Various diet plans having certain foods to eat but an abstraction of general nutrition. The app is to place values in front of the user, allowing them to better plan around their diet with their food/beverage selection.
+
+- Target audience or users:
+People who plan to follow a diet or merely want to meet nutrition goals.
+
+- Key features and expected outcomes:
+The ability to select items of food/beverage and put them into a personnel creation of a diet plan.
+The user will see how their selection accumulates the sum of each items various nutrients, directly correlating with the average maximum on height and weight of the user.
+
 # Summary of selected MVP. Rationale and potential impact.
 - NOT SELECTED
+
 # Brief overview of team formation and process followed
 - Team formation was assisted by asking members about their strengths, history, interest and weaknesses. Based on replies, the idea of their role in the team became more clearer and was determined by their interest foremost, than their strengths and than their weakness. Where than we saw where growth can happen along with their strength that supported their affinity. 
