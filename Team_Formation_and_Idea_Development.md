@@ -160,7 +160,11 @@ The ability to select items of food/beverage and put them into a personnel creat
 The user will see how their selection accumulates the sum of each items various nutrients, directly correlating with the average maximum on height and weight of the user.
 
 # Summary of selected MVP. Rationale and potential impact.
-- NOT SELECTED
+The Diet Planning App was selected as the Minimum Viable Product because it addresses a common problem faced by people trying to manage their diet and nutritional intake.
+
+The application allows users to build their own diet plan by selecting foods and beverages from a database. As items are added, the app calculates and displays the total nutritional values, such as calories, protein, carbohydrates, fats, vitamins, and minerals. These values are compared against recommended nutritional targets that are influenced by the user's height and weight.
+
+The rationale behind this MVP is that users are more likely to follow a diet when they can clearly understand the nutritional impact of their choices. Rather than following a rigid meal plan, users gain flexibility while still working toward their dietary goals.
 
 # Brief overview of team formation and process followed
 - Team formation was assisted by asking members about their strengths, history, interest and weaknesses. Based on replies, the idea of their role in the team became more clearer and was determined by their interest foremost, than their strengths and than their weakness. Where than we saw where growth can happen along with their strength that supported their affinity. 
