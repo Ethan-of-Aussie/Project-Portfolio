@@ -7,4 +7,4 @@ api = Namespace('users', description='User operations')
 @api.route("/")
 class User(Resource):
     def get(self):
-        return "Cat is ok", 200
+        return "Cat is not a user", 200
