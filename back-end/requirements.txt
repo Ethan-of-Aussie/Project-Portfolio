@@ -1,8 +1,11 @@
-flask
-flask-restx
-flask-bcrypt
-flask-jwt-extended
-Flask-Cors
+fastapi
+uvicorn 
+passlib 
+python-multipart 
+bcrypt
+python-jose
 duckdb
 python-dotenv
 pandas
+pydantic
+sqlalchemy
