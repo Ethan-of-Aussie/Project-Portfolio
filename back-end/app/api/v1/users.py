@@ -1,49 +1,27 @@
-import os
-
 from app.services import facade
+from app.core.database import get_db
+from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException
+from app.schemas.user import UserCreate, UserLogin, UserRead
 
-from fastapi import APIRouter
-from app.models.user import UserModel
-import duckdb
-import pandas as pd
-from dotenv import load_dotenv
 
 
 router = APIRouter()
 
 
-load_dotenv()
-conn = duckdb.connect()
-
-account_id = os.getenv("ACCOUNT_ID")
-access_key = os.getenv("ACCESS_KEY_ID")
-secret_key = os.getenv("SECRET_ACCESS_KEY")
-
-conn.execute("INSTALL httpfs")
-conn.execute("LOAD httpfs")
-
-conn.execute("""
-    CREATE SECRET r2_secret (
-        TYPE S3,
-        KEY_ID ?,
-        SECRET ?,
-        REGION 'auto',
-        ENDPOINT ?
-    )
-""", [
-    access_key,
-    secret_key,
-    f"{account_id}.r2.cloudflarestorage.com"
-])
-
-
-
-@router.get("/")
-def get():
+# Create user
+@router.post("/", response_model=UserRead)
+def create_user(payload: UserCreate, db: Session = Depends(get_db)):
     pass
 
-@router.post("/", response_model=UserModel)
-def post():
+# Login user
+@router.post("/login")
+def login_user(payload: UserLogin, db: Session = Depends(get_db)):
+    pass
+
+# Get user by id
+@router.get("/{user_id}", response_model=UserRead)
+def get_user(user_id: str, db: Session = Depends(get_db)):
     pass
 # api = Namespace('users', description='User operations')
 

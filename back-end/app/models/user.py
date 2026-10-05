@@ -3,7 +3,6 @@
 
 from pydantic import BaseModel, EmailStr, Field
 import uuid
-from uuid import UUID
 from sqlalchemy import String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -30,17 +29,3 @@ class UserOrm(Base):
     allergies: Mapped[str] = mapped_column(String, default="[]")
     FavFood: Mapped[str] = mapped_column(String, default="[]")
     customPlans: Mapped[str] = mapped_column(String, default="[]")
-
-class UserModel(BaseModel):
-    id: UUID | None = None
-    username: str
-    password: str
-    email: EmailStr
-    Height: int = 0
-    Weight: int = 0
-    allergies: list[str] = Field(default_factory=list)
-    FavFood: list[str] = Field(default_factory=list)
-    customPlans: list[str] = Field(default_factory=list)  
-
-    class Config:
-        orm_mode = True
