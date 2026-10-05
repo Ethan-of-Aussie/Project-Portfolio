@@ -6,9 +6,13 @@ from core.auth import hash_password
 def f_create_user(payload, db: Session):
 
     # Validating existing account
-    existing = db.query(UserOrm).filter(UserOrm.username == payload.username).first()
-    if existing:
+    existing_un = db.query(UserOrm).filter(UserOrm.username == payload.username).first()
+    if existing_un:
         raise ValueError("Username already exists")
+    
+    existing_e = db.query(UserOrm).filter(UserOrm.email == payload.email).first()
+    if existing_e:
+        raise ValueError("Email already exists")
     
     # ORM instance
     user = UserOrm(
