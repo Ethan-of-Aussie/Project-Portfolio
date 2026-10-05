@@ -5,8 +5,6 @@
 from fastapi import FastAPI
 from app.api.v1.users import router as users_router
 from fastapi.middleware.cors import CORSMiddleware
-from passlib.context import CryptContext
-from jose import jwt
 # from flask_cors import CORS
 
 
@@ -22,15 +20,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-def hash_password(password: str):
-    return pwd_context.hash(password)
-
-SECRET = "your-secret"
-
-def create_token(data: dict):
-    return jwt.encode(data, SECRET, algorithm="HS256")
 # bcrypt = Bcrypt()
 # jwt = JWTManager()
 

@@ -12,16 +12,20 @@ router = APIRouter()
 # Create user
 @router.post("/", response_model=UserRead)
 def create_user(payload: UserCreate, db: Session = Depends(get_db)):
+
+    db.commit()
     pass
 
 # Login user
 @router.post("/login")
 def login_user(payload: UserLogin, db: Session = Depends(get_db)):
+    db.commit()
     pass
 
 # Get user by id
 @router.get("/{user_id}", response_model=UserRead)
 def get_user(user_id: str, db: Session = Depends(get_db)):
+    db.commit()
     pass
 # api = Namespace('users', description='User operations')
 
