@@ -4,7 +4,7 @@ from jose import jwt
 
 router = APIRouter(prefix='/auth', tags=['auth'])
 
-#pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 SECRET = "your-secret"  # REPLACE IT BEFORE PRODUCTION
 ALGORITHM = "HS256"
 

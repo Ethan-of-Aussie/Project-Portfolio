@@ -22,15 +22,21 @@ class Facade:
 
     def create_user(payload: UserCreate, db: Session):
         # Validating existing account
-        existing_un = db.query(UserOrm).filter(UserOrm.username == payload.username).first()
+        existing_un = db.query(UserOrm).filter(
+            UserOrm.username == payload.username).first()
         if existing_un:
             print("----Username already exists")
-            raise HTTPException(status_code=422, detail="Username already exists")
+            raise HTTPException(
+                status_code=422,
+                detail="Username already exists")
 
-        existing_e = db.query(UserOrm).filter(UserOrm.email == payload.email).first()
+        existing_e = db.query(UserOrm).filter(
+            UserOrm.email == payload.email).first()
         if existing_e:
             print("----Email already exists")
-            raise HTTPException(status_code=422, detail="Email already exists")
+            raise HTTPException(
+                status_code=422,
+                detail="Email already exists")
 
         # ORM instance
         user = UserOrm(

@@ -17,10 +17,12 @@ def create_user(payload: UserCreate, db: Session = Depends(get_db)):
     user = facade.create_user(payload, db)
     return user
 
+
 # Get all users testing only
 @router.get("/")
 def get_all_users(db: Session = Depends(get_db)):
     return facade.get_all_users(db)
+
 
 # Login user
 @router.post("/login")
