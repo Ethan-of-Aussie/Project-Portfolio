@@ -14,7 +14,7 @@ class UserCreate(BaseModel):
     customPlans: list[str] = Field(default_factory=list)  
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UserRead(BaseModel):
     id: UUID
@@ -27,7 +27,7 @@ class UserRead(BaseModel):
     customPlans: list[str] 
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UserLogin(BaseModel):
     username: str

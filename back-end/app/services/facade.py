@@ -1,35 +1,63 @@
 from sqlalchemy.orm import Session
-from models.user import UserOrm
-from core.auth import hash_password
+from app.models.user import UserOrm
+from app.core.auth import hash_password
 """ Facade class to obfuscate back-end from presentation"""
 
-def f_create_user(payload, db: Session):
+class Facade:
+    def __init__(self):
+        pass
 
-    # Validating existing account
-    existing_un = db.query(UserOrm).filter(UserOrm.username == payload.username).first()
-    if existing_un:
-        raise ValueError("Username already exists")
-    
-    existing_e = db.query(UserOrm).filter(UserOrm.email == payload.email).first()
-    if existing_e:
-        raise ValueError("Email already exists")
-    
-    # ORM instance
-    user = UserOrm(
-        username=payload.username,
-        password=hash_password(payload.password)
-        )
-    
-    # Add to DB, the .duckDB file
-    db.add(user)
-    db.commit()
+    # User queries ----------
 
-    # Refresh generated fields like id
-    db.refresh(user)
-    return user
+    def get_user_name(payload, db: Session):
+        pass
 
-#class DietFacade:
-  #  def __init__(self):
-    #    pass
+    def get_user_email(payload, db: Session):
+        pass
 
-   # pass
+    def create_user(payload, db: Session):
+
+        # Validating existing account
+        existing_un = db.query(UserOrm).filter(UserOrm.username == payload.username).first()
+        if existing_un:
+            raise ValueError("Username already exists")
+
+        existing_e = db.query(UserOrm).filter(UserOrm.email == payload.email).first()
+        if existing_e:
+            raise ValueError("Email already exists")
+
+        # ORM instance
+        user = UserOrm(
+            username=payload.username,
+            password=hash_password(payload.password)
+            )
+
+        # Add to DB, the .duckDB file
+        db.add(user)
+        db.commit()
+
+        # Refresh generated fields like id
+        db.refresh(user)
+        return user
+
+    def update_user(payload, db: Session):
+        pass
+
+    def delete_user(payload, db: Session):
+        pass
+
+    # Plan queries ----------
+
+    def get_plan(payload, db: Session):
+        pass
+
+    def get_plans_by_user(payload, db: Session):
+        pass
+
+    def create_plan(payload, db: Session):
+        pass
+
+    def update_plan(payload, db: Session):
+        pass
+
+    # Consumable queries ----------

@@ -12,7 +12,7 @@ class ConsumableCreate(BaseModel):
     allergies: list[str] = Field(default_factory=[])
    
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ConsumableModel(BaseModel):
     id: UUID
@@ -24,4 +24,4 @@ class ConsumableModel(BaseModel):
     allergies: list[str]
    
     class Config:
-        orm_mode = True
+        from_attributes = True

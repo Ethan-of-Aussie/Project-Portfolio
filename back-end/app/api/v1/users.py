@@ -28,7 +28,7 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
     pass
 
 # Delete user
-@router.delete("/user_id")
+@router.delete("/{user_id}")
 def delete_user(user_id: str, db: Session = Depends(get_db)):
    
     pass

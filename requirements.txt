@@ -1,0 +1,14 @@
+uvicorn 
+passlib
+bcrypt
+python-multipart 
+python-jose
+python-dotenv
+pandas
+duckdb
+sqlalchemy
+duckdb-sqlalchemy
+pydantic
+pydantic[email]
+fastapi
+fastapi[standard]

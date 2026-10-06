@@ -1,3 +1,3 @@
-from app.services.facade import DietFacade
+from app.services.facade import Facade
 
-facade = DietFacade
+facade = Facade
