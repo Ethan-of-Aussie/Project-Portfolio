@@ -1,7 +1,6 @@
-#!/usr/bin/python3
-
 from app.core.database import db
 from abc import ABC, abstractmethod
+
 
 class Repository(ABC):
     @abstractmethod
@@ -27,6 +26,7 @@ class Repository(ABC):
     @abstractmethod
     def get_by_attribute(self, attr_name, attr_value):
         pass
+
 
 class SQLAlchemyRepository(Repository):
     def __init__(self, model):

@@ -1,7 +1,9 @@
+""" Facade class to obfuscate back-end from presentation"""
 from sqlalchemy.orm import Session
 from app.models.user import UserOrm
 from app.core.auth import hash_password
-""" Facade class to obfuscate back-end from presentation"""
+from fastapi import HTTPException
+
 
 class Facade:
     def __init__(self):
@@ -15,21 +17,26 @@ class Facade:
     def get_user_email(payload, db: Session):
         pass
 
-    def create_user(payload, db: Session):
+    def get_all_users(db: Session):
+        return db.query(UserOrm).all()
 
+    def create_user(payload: UserCreate, db: Session):
         # Validating existing account
         existing_un = db.query(UserOrm).filter(UserOrm.username == payload.username).first()
         if existing_un:
-            raise ValueError("Username already exists")
+            print("----Username already exists")
+            raise HTTPException(status_code=422, detail="Username already exists")
 
         existing_e = db.query(UserOrm).filter(UserOrm.email == payload.email).first()
         if existing_e:
-            raise ValueError("Email already exists")
+            print("----Email already exists")
+            raise HTTPException(status_code=422, detail="Email already exists")
 
         # ORM instance
         user = UserOrm(
             username=payload.username,
-            password=hash_password(payload.password)
+            password=hash_password(payload.password),
+            email=payload.email
             )
 
         # Add to DB, the .duckDB file

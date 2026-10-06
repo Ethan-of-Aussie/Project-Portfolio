@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from app.models.base_model import Base
 
-engine = create_engine("duckdb:///local.duckdb",
+engine = create_engine(
+    "duckdb:///local.duckdb",
     connect_args={"read_only": False}
     )
 
@@ -11,5 +13,6 @@ def get_db():
     db = SessionLocal()
     try:
         yield db
+
     finally:
         db.close()

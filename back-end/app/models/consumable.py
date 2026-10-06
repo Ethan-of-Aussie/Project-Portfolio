@@ -1,22 +1,35 @@
-import uuid
+"""Model for expected rows in consumables table"""
 from sqlalchemy import String, JSON
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from app.models.base_model import BaseModel
 
 
-class Base(DeclarativeBase):
-    pass
+class ConsumableOrm(BaseModel):
+    __tablename__ = 'consumables'
 
-class ConsumableOrm(Base):
-    __tablename__ = 'plans'
+    diet_plan_id: Mapped[str] = mapped_column(
+        String,
+        nullable=False)
 
-    id: Mapped[str] = mapped_column(String,
-        primary_key=True,
-        default=lambda: str(uuid.uuid4()),
-        nullable=False
-        )
-    diet_plan_id: Mapped[str] = mapped_column(str, nullable=False)
-    name: Mapped[str] = mapped_column(String, nullable=False)
-    nutrients: Mapped[dict[str, float]] = mapped_column(JSON, nullable=False, default=dict)
-    weight: Mapped[float] = mapped_column(float, nullable=False, default=0)
-    quantity: Mapped[int] = mapped_column(int, nullable=False, default=0)
-    allergies: Mapped[list[str]] = mapped_column(JSON, default=list)
+    name: Mapped[str] = mapped_column(
+        String,
+        nullable=False)
+
+    nutrients: Mapped[dict[str, float]] = mapped_column(
+        JSON,
+        nullable=False,
+        default=dict)
+
+    weight: Mapped[float] = mapped_column(
+        float,
+        nullable=False,
+        default=0)
+
+    quantity: Mapped[int] = mapped_column(
+        int,
+        nullable=False,
+        default=0)
+
+    allergies: Mapped[list[str]] = mapped_column(
+        JSON,
+        default=list)

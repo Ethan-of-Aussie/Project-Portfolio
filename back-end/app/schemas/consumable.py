@@ -10,9 +10,10 @@ class ConsumableCreate(BaseModel):
     weight: float
     quantity: int
     allergies: list[str] = Field(default_factory=[])
-   
+
     class Config:
         from_attributes = True
+
 
 class ConsumableModel(BaseModel):
     id: UUID
@@ -22,6 +23,6 @@ class ConsumableModel(BaseModel):
     weight: float
     quantity: int
     allergies: list[str]
-   
+
     class Config:
         from_attributes = True
