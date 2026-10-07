@@ -1,6 +1,7 @@
 """ Facade class to obfuscate back-end from presentation"""
 from sqlalchemy.orm import Session
 from app.models.user import UserOrm
+from app.schemas.user import UserCreate, UserRead
 from app.core.auth import hash_password
 from fastapi import HTTPException
 
