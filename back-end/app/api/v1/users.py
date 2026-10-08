@@ -11,42 +11,43 @@ router = APIRouter(tags=["User methods"])
 
 
 # Create user
-@router.post("/usercreate")
-def create_user(payload: UserCreate, db: Session = Depends(get_db)):
+@router.post("/create")
+def create_user(payload: UserCreate):
     print("---Creating user")
-    user = facade.create_user(payload, db)
+    user = facade.create_user(payload)
     return user
 
 
 # Get all users testing only
 @router.get("/")
-def get_all_users(db: Session = Depends(get_db)):
-    return facade.get_all_users(db)
+def get_all_users():
+    print("---Retrieving all users")
+    return facade.get_all_users()
 
 
 # Login user
 @router.post("/login")
-def login_user(payload: UserLogin, db: Session = Depends(get_db)):
-
-    pass
+def login_user(payload: UserLogin):
+    print("---Authenticating user")
+    return facade.login_user(payload.username, payload.password)
 
 
 # Get user by id
-@router.get("/{user_id}", response_model=UserRead)
-def get_user(user_id: str, db: Session = Depends(get_db)):
-
-    pass
+@router.get("/{user_id}")
+def get_user(user_id: str):
+    print("---Retrieving user")
+    return facade.get_user_id(user_id)
 
 
 # Delete user
 @router.delete("/{user_id}")
-def delete_user(user_id: str, db: Session = Depends(get_db)):
-
-    pass
+def delete_user(user_id: str):
+    print("---Deleting user")
+    return facade.delete_user(user_id)
 
 
 # View UserPlans
 @router.get("/{user_id}/plans")
-def UserPlans(user_id: str, db: Session = Depends(get_db)):
+def UserPlans(user_id: str):
 
     pass

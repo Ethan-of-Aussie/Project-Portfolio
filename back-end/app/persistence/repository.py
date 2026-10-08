@@ -1,6 +1,7 @@
-from app.core.database import db
 from abc import ABC, abstractmethod
-
+from app import duckDB
+from sqlalchemy import text
+import json
 
 class Repository(ABC):
     @abstractmethod
@@ -28,9 +29,44 @@ class Repository(ABC):
         pass
 
 
-class SQLAlchemyRepository(Repository):
+class DuckDBRepository(Repository):
     def __init__(self, model):
         self.model = model
+        self.db = duckDB
+
+
+    def add(self, obj):
+        self.db.add(obj)
+        self.db.commit()
+
+    def get(self, obj_id):
+        u = self.db.get(self.model, obj_id)
+        if u == None:
+            raise KeyError("User not found")
+        return u
+
+    def get_all(self):
+        return self.db.query(self.model).all()
+
+    def update(self, obj_id, data):
+        obj = self.get(obj_id)
+        for key, value in data.items():
+            setattr(obj, key, value)
+        self.db.commit()
+
+    def delete(self, obj_id):
+        obj = self.get(obj_id)
+        self.db.delete(obj)
+        self.db.commit()
+
+    def get_by_attribute(self, attr_name, attr_value):
+        return self.db.query(self.model).filter(attr_name == attr_value).all()
+
+"""
+class SQLAlchemyRepository(Repository):
+    def __init__(self, model, db):
+        self.model = model
+        self.db = db
 
     def add(self, obj):
         db.session.add(obj)
@@ -57,3 +93,4 @@ class SQLAlchemyRepository(Repository):
 
     def get_by_attribute(self, attr_name, attr_value):
         return self.model.query.filter_by(**{attr_name: attr_value}).first()
+"""
