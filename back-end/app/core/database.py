@@ -6,7 +6,7 @@ engine = create_engine(
     "duckdb:///local.duckdb",
     connect_args={"read_only": False}
     )
-
+Base.metadata.create_all(engine) 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 

@@ -11,7 +11,7 @@ router = APIRouter(tags=["User methods"])
 
 
 # Create user
-@router.post("/")
+@router.post("/usercreate")
 def create_user(payload: UserCreate, db: Session = Depends(get_db)):
     print("---Creating user")
     user = facade.create_user(payload, db)
