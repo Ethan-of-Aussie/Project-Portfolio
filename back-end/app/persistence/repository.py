@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from app import duckDB
 from sqlalchemy import text
 import json
 
@@ -30,9 +29,9 @@ class Repository(ABC):
 
 
 class SQLAlchemyRepository(Repository):
-    def __init__(self, model):
+    def __init__(self, model, db):
         self.model = model
-        self.db = duckDB
+        self.db = db
 
 
     def add(self, obj):

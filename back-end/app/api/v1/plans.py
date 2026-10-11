@@ -8,7 +8,7 @@ router = APIRouter(tags=["Plan methods"])
 
 
 @router.post("/create")
-def create_plan(user_id: str, payload: PlanCreate, auth: str = Header(None)):
+def create_plan(user_id: str, payload: PlanCreate, auth: str = Header()):
     print("---Creating plan")
     return facade.create_plan(payload, auth)
 
@@ -19,10 +19,10 @@ def get_plan(plan_id: str):
 
 
 @router.patch("/{plan_id}", response_model=PlanModel)
-def update_plan(plan_id: str, auth: str = Header(None)):  # Not sure if we need a new pydantic schema for a payload: schema
+def update_plan(plan_id: str, auth: str = Header()):  # Not sure if we need a new pydantic schema for a payload: schema
     return facade.update_plan(plan_id, auth)
 
 
 @router.delete("/{plan_id}")
-def delete_plan(plan_id: str, auth: str = Header(None)):
+def delete_plan(plan_id: str, auth: str = Header()):
     return facade.delete_plan(plan_id, auth)

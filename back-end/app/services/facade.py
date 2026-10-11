@@ -9,18 +9,20 @@ from fastapi import HTTPException
 from app.persistence.user import UserRepository
 from app.persistence.plan import PlanRepository
 from jose.exceptions import JWTError
+from app.core.database import get_db
 
 class Facade:
 
     def __init__(self):
-        self.UserRepo = UserRepository()
-        self.PlanRepo = PlanRepository()
+        db = next(get_db())
+        self.UserRepo = UserRepository(db)
+        self.PlanRepo = PlanRepository(db)
 
     # Auth queries ----------
 
     def get_JWT_user(self, auth):
         try:
-            id = decode_token(auth)["sub"]
+            id = decode_token(auth)["id"]
             return self.get_user_id(id)
         except JWTError, KeyError:
             raise HTTPException(
@@ -39,6 +41,7 @@ class Facade:
 
     def get_user_name(self, username):
         u = self.UserRepo.get_by_attribute(UserOrm.username, username)
+        print (u)
         if u == None or len(u) == 0:
             raise HTTPException(
                 status_code=404,
@@ -64,48 +67,56 @@ class Facade:
             raise HTTPException(
                 status_code=422,
                 detail="Username already exists")
-        except:
-            pass
+        except HTTPException as e:
+            if e.status_code == 404:
+                pass
+            else:
+                raise e
 
         try:
-            self.get_user_id_email(payload.email)
+            self.get_user_email(payload.email)
             print("----Email already exists")
             raise HTTPException(
                 status_code=422,
                 detail="Email already exists")
-        except:
-            pass
+        except HTTPException as e:
+            if e.status_code == 404:
+                pass
+            else:
+                raise e
 
         # ORM instance
         user = UserOrm(
             username=payload.username,
             password=hash_password(payload.password),
-            email=payload.email
+            email=payload.email,
+            height=payload.height,
+            weight=payload.weight,
+            allergies=payload.allergies,
+            favFood=payload.favFood
             )
 
         # Add to DB, the .duckDB file
         self.UserRepo.add(user)
-
-        # Refresh generated fields like id
-        #db.refresh(user)
-        return user
+        # Grant auth token
+        return self.login_user(payload.username, payload.password)
 
     def update_user(self, payload, auth):
         pass
 
-    def delete_user(self, auth):
-        self.UserRepo.delete(self.get_JWT_user(auth))
+    def delete_user(self, id, auth):
+        self.UserRepo.delete(self.get_JWT_user(auth).id)
 
     def login_user(self, username: str, password: str):
         """ Issue a JWT for a user logging in"""
-        u = self.get_username(username)[0]
+        u = self.get_user_name(username)[0]
         if verify_password(password, u.password) == False:
             raise HTTPException(
                 status_code=401,
                 detail="Incorrect password")
 
         payload = {
-            "sub": u.id,
+            "id": u.id,
             }
         return create_token(payload)
 

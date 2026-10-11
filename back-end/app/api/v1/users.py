@@ -14,8 +14,7 @@ router = APIRouter(tags=["User methods"])
 @router.post("/create")
 def create_user(payload: UserCreate):
     print("---Creating user")
-    user = facade.create_user(payload)
-    return user
+    return facade.create_user(payload)
 
 
 # Get all users testing only
@@ -41,8 +40,8 @@ def get_user(user_id: str):
 
 
 # Delete user
-@router.delete("/")
-def delete_user(user_id: str, auth: str = Header(None)):
+@router.delete("/{user_id}")
+def delete_user(user_id: str, auth: str = Header()):
     print("---Deleting user")
     return facade.delete_user(user_id, auth)
 

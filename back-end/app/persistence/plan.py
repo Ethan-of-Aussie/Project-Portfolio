@@ -4,5 +4,5 @@ from app.models.plan import PlanOrm
 
 class PlanRepository(SQLAlchemyRepository):
 
-    def __init__(self):
-        super().__init__(PlanOrm)
+    def __init__(self, db):
+        super().__init__(PlanOrm, db)

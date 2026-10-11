@@ -16,4 +16,3 @@ class UserOrm(BaseModel):
 
     allergies: Mapped[list[str]] = mapped_column(JSON, default=list)
     favFood: Mapped[list[str]] = mapped_column(JSON, default=list)
-    customPlans: Mapped[list["PlanOrm"]] = relationship()
