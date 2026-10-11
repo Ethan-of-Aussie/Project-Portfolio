@@ -12,3 +12,5 @@ pydantic[email]
 fastapi
 fastapi[standard]
 uv
+pyjwt
+pwdlib[argon2]

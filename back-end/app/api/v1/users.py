@@ -6,7 +6,6 @@ from fastapi import APIRouter, Depends, HTTPException, Header
 from pydantic import ValidationError
 from app.schemas.user import UserCreate, UserLogin, UserRead
 
-
 router = APIRouter(tags=["User methods"])
 
 
@@ -30,7 +29,6 @@ def login_user(payload: UserLogin):
     print("---Authenticating user")
     print(payload)
     return facade.login_user(payload.username, payload.password)
-
 
 # Get user by id
 @router.get("/{user_id}")

@@ -118,6 +118,7 @@ class Facade:
         payload = {
             "id": u.id,
             }
+        print(f"uid is {u.id}")
         return create_token(payload)
 
     # Plan queries ----------
@@ -133,8 +134,9 @@ class Facade:
     def get_plans_by_user(self, payload):
         pass
 
-    def create_plan(self, payload, auth):
-        pass
+    def create_plan(self, payload):
+        print(payload)
+        return {"data": payload.name}
 
     def update_plan(self, payload, auth):
         pass

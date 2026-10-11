@@ -3,7 +3,6 @@ from sqlalchemy import String, JSON
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from app.models.base_model import BaseModel
 
-
 class UserOrm(BaseModel):
     __tablename__ = 'users'
 
