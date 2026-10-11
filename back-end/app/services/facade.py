@@ -1,6 +1,7 @@
 """ Facade class to obfuscate back-end from presentation"""
 from sqlalchemy.orm import Session
 from app.models.user import UserOrm
+from app.models.plan import PlanOrm
 from app.schemas.user import UserCreate, UserRead
 from app.schemas.plan import PlanCreate
 from app.core.auth import hash_password, verify_password
@@ -10,6 +11,7 @@ from app.persistence.user import UserRepository
 from app.persistence.plan import PlanRepository
 from jose.exceptions import JWTError
 from app.core.database import get_db
+from app.models.consumable import ConsumableOrm
 
 class Facade:
 
@@ -134,9 +136,18 @@ class Facade:
     def get_plans_by_user(self, payload):
         pass
 
-    def create_plan(self, payload):
-        print(payload)
-        return {"data": payload.name}
+    def create_plan(self, payload: PlanCreate, user_id: str):
+        owner = self.UserRepo.get(user_id)
+        if owner is None:
+            return {"error": "user dose not exist"}
+        plan = PlanOrm(**payload.model_dump(exclude={"consumables"}))
+        plan.owner = user_id
+        plan.consumables = [ConsumableOrm(**item.model_dump()) for item in payload.consumables]
+        try:
+            self.PlanRepo.add(plan)
+        except Exception as e:
+            return {"error": str(e)}
+        return {"plan id": plan.id}
 
     def update_plan(self, payload, auth):
         pass

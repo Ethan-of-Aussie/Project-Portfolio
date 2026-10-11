@@ -35,8 +35,12 @@ class SQLAlchemyRepository(Repository):
 
 
     def add(self, obj):
-        self.db.add(obj)
-        self.db.commit()
+        try:
+            self.db.add(obj)
+            self.db.commit()
+        except Exception as e:
+            self.db.rollback()
+            raise Exception(f"error: {e}")
 
     def get(self, obj_id):
         u = self.db.get(self.model, obj_id)

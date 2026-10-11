@@ -18,8 +18,7 @@ def create_plan(
                 ):
     id = decode_token(token=token).get("id")
     print("---Creating plan")
-    # return {"test plan": f"plan is created {id}"}
-    return facade.create_plan(payload)
+    return facade.create_plan(payload, user_id)
 
 
 @router.get("/{plan_id}", response_model=PlanModel)
