@@ -15,9 +15,11 @@ class BaseModel(Base):
         default=lambda: str(uuid.uuid4()),
         nullable=False
         )
+
     created_at: Mapped[DateTime] = mapped_column(
         DateTime,
         default=datetime.utcnow)
+
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime,
         default=datetime.utcnow)

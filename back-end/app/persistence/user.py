@@ -1,8 +1,8 @@
 """Class defining behaviours for CRUDing user data"""
-from app.persistence.repository import DuckDBRepository
+from app.persistence.repository import SQLAlchemyRepository
 from app.models.user import UserOrm
 
-class UserRepository(DuckDBRepository):
+class UserRepository(SQLAlchemyRepository):
 
     def __init__(self):
         super().__init__(UserOrm)

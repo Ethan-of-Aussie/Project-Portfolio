@@ -1,6 +1,6 @@
 """Model for expected rows in users table"""
 from sqlalchemy import String, JSON
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from app.models.base_model import BaseModel
 
 
@@ -16,11 +16,4 @@ class UserOrm(BaseModel):
 
     allergies: Mapped[list[str]] = mapped_column(JSON, default=list)
     favFood: Mapped[list[str]] = mapped_column(JSON, default=list)
-    customPlans: Mapped[list[str]] = mapped_column(JSON, default=list)
-
-    # Password hashing ----------
-    def hash_password(self, password):
-        return password
-
-    def verify_password(self, password):
-        return password == self.password
+    customPlans: Mapped[list["PlanOrm"]] = relationship()

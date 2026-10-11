@@ -29,7 +29,7 @@ class Repository(ABC):
         pass
 
 
-class DuckDBRepository(Repository):
+class SQLAlchemyRepository(Repository):
     def __init__(self, model):
         self.model = model
         self.db = duckDB
@@ -42,7 +42,7 @@ class DuckDBRepository(Repository):
     def get(self, obj_id):
         u = self.db.get(self.model, obj_id)
         if u == None:
-            raise KeyError("User not found")
+            raise KeyError("Item not found")
         return u
 
     def get_all(self):

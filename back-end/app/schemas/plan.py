@@ -4,7 +4,6 @@ from app.schemas.consumable import ConsumableModel
 
 
 class PlanCreate(BaseModel):
-    id: UUID | None = None
     name: str
     consumables: list[ConsumableModel]
     nutrients: dict[str, float] = Field(default_factory=dict)
@@ -14,6 +13,7 @@ class PlanCreate(BaseModel):
 
 
 class PlanModel(BaseModel):
+    owner: UUID
     name: str
     consumables: list[ConsumableModel]
     nutrients: dict[str, float]

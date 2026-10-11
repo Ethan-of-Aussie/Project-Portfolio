@@ -2,7 +2,7 @@
 from app.services import facade
 from app.core.database import get_db
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Header
 from pydantic import ValidationError
 from app.schemas.user import UserCreate, UserLogin, UserRead
 
@@ -29,6 +29,7 @@ def get_all_users():
 @router.post("/login")
 def login_user(payload: UserLogin):
     print("---Authenticating user")
+    print(payload)
     return facade.login_user(payload.username, payload.password)
 
 
@@ -40,14 +41,14 @@ def get_user(user_id: str):
 
 
 # Delete user
-@router.delete("/{user_id}")
-def delete_user(user_id: str):
+@router.delete("/")
+def delete_user(user_id: str, auth: str = Header(None)):
     print("---Deleting user")
-    return facade.delete_user(user_id)
+    return facade.delete_user(user_id, auth)
 
 
 # View UserPlans
 @router.get("/{user_id}/plans")
 def UserPlans(user_id: str):
-
-    pass
+    print("---Getting user's plans")
+    return facade.get_plans_by_user(user_id)

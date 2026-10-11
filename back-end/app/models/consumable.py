@@ -1,5 +1,5 @@
 """Model for expected rows in consumables table"""
-from sqlalchemy import String, JSON
+from sqlalchemy import String, JSON, Float, Integer, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from app.models.base_model import BaseModel
 
@@ -7,9 +7,7 @@ from app.models.base_model import BaseModel
 class ConsumableOrm(BaseModel):
     __tablename__ = 'consumables'
 
-    diet_plan_id: Mapped[str] = mapped_column(
-        String,
-        nullable=False)
+    diet_plan_id: Mapped[str] = mapped_column(ForeignKey("plans.id"))
 
     name: Mapped[str] = mapped_column(
         String,
@@ -21,12 +19,12 @@ class ConsumableOrm(BaseModel):
         default=dict)
 
     weight: Mapped[float] = mapped_column(
-        float,
+        Float,
         nullable=False,
         default=0)
 
     quantity: Mapped[int] = mapped_column(
-        int,
+        Integer,
         nullable=False,
         default=0)
 
