@@ -11,6 +11,8 @@ export default function LoginPage() {
         email: "",
         password: "",
         confirmPassword: "",
+        height: "",
+        weight: "",
     })
 
     // Tracks form fields to display validation error
@@ -19,6 +21,8 @@ export default function LoginPage() {
         email: false,
         password: false,
         confirmPassword: false,
+        height: false,
+        weight: false,
     })
 
     const [submitted, setSubmitted] = useState(false);
@@ -60,6 +64,30 @@ export default function LoginPage() {
         return ""
     }
 
+    function validateHeight(height: string) {
+        if (!height) {
+            return "Height is required."
+        }
+
+        if (Number(height) <= 0) {
+            return "Height must be greater than zero."
+        }
+
+        return ""
+    }
+
+    function validateWeight(weight: string) {
+        if (!weight) {
+            return "Weight is required."
+        }
+
+        if (Number(weight) <= 0) {
+            return "Weight must be greater than zero."
+        }
+
+        return ""
+    }
+
     return (
         <main className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
             <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
@@ -82,12 +110,26 @@ export default function LoginPage() {
                         email: true,
                         password: true,
                         confirmPassword: true,
+                        height: true,
+                        weight: true,
                     })
 
                     const emailError = validateEmail(formData.email)
                     const passwordError = validatePassword(formData.password)
+                    const confirmPasswordError = validateConfirmPassword(
+                        formData.password,
+                        formData.confirmPassword
+                    )
+                    const heightError = validateHeight(formData.height)
+                    const weightError = validateWeight(formData.weight)
 
-                    if (emailError || passwordError) {
+
+                    if (emailError ||
+                        passwordError ||
+                        confirmPasswordError ||
+                        heightError ||
+                        weightError
+                    ) {
                         return
                     }
                 }}>
@@ -122,6 +164,74 @@ export default function LoginPage() {
                         {submitted && touched.email && validateEmail(formData.email) && (
                             <p className="mt-2 text-sm text-red-600">
                                 {validateEmail(formData.email)}
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Height Field */}
+
+                    <div>
+                        <label htmlFor="height" className="w-full rounded-lg border 
+                        border-gray-300 
+                        px-4 py-3 
+                        outline-none 
+                        focus:border-green-700 focus:ring-2 focus:ring-green-100">
+                            Height (cm)
+                        </label>
+
+                        <input
+                            id="height"
+                            name="height"
+                            type="number"
+                            value={formData.height}
+                            onChange={(event) => {
+                                const value = event.target.value
+
+                                setFormData({ ...formData, height: value })
+
+                                if (value === "") {
+                                    setTouched({ ...touched, height: false })
+                                }
+                            }}
+                        />
+
+                        {submitted && touched.height && validateHeight(formData.height) && (
+                            <p className="mt-2 text-sm text-red-600">
+                                {validateHeight(formData.height)}
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Weight Field */}
+
+                    <div>
+                        <label htmlFor="weight" className="w-full rounded-lg border 
+                        border-gray-300 
+                        px-4 py-3 
+                        outline-none 
+                        focus:border-green-700 focus:ring-2 focus:ring-green-100">
+                            Weight (kg)
+                        </label>
+
+                        <input
+                            id="weight"
+                            name="weight"
+                            type="number"
+                            value={formData.weight}
+                            onChange={(event) => {
+                                const value = event.target.value
+
+                                setFormData({ ...formData, weight: value })
+
+                                if (value === "") {
+                                    setTouched({ ...touched, weight: false })
+                                }
+                            }}
+                        />
+
+                        {submitted && touched.weight && validateWeight(formData.weight) && (
+                            <p className="mt-2 text-sm text-red-600">
+                                {validateWeight(formData.weight)}
                             </p>
                         )}
                     </div>
