@@ -14,6 +14,7 @@ from app.persistence.consumable import ConsumableRepository
 from jose.exceptions import JWTError
 from app.core.database import get_db
 from app.models.consumable import ConsumableOrm
+from app.services.r2_duckdb import getDataFromFoodFile
 
 class Facade:
 
@@ -150,6 +151,7 @@ class Facade:
             self.PlanRepo.add(plan)
             print(f"plann id {plan.id}")
             self.create_consumables([item for item in payload.consumables], plan_id=plan.id)
+            self.get_consumable_from_external_file()
         except Exception as e:
             return {"error": str(e)}
         return {"plan id": plan.id}
@@ -168,7 +170,7 @@ class Facade:
         return 200
 
     # Consumable queries ----------
-    
+
     def create_consumables(self, consumablesData: list[ConsumableCreate], plan_id):
             plan = self.PlanRepo.get(plan_id)
     
@@ -182,4 +184,8 @@ class Facade:
             print("all consumables created")
     
     def get_consumable_from_external_file(self):
-        pass
+        result = getDataFromFoodFile(10, 3)
+        print("---new data testttt--")
+        for index, row in result.iterrows():
+            print(row["brands_tags"])
+        return result
