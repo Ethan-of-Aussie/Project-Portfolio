@@ -4,7 +4,6 @@ from uuid import UUID
 
 class ConsumableCreate(BaseModel):
     id: UUID | None = None
-    diet_plan_id: str
     name: str
     nutrients: dict[str, float] = Field(default_factory=dict)
     weight: float
@@ -17,7 +16,6 @@ class ConsumableCreate(BaseModel):
 
 class ConsumableModel(BaseModel):
     id: UUID
-    diet_plan_id: str
     name: str
     nutrients: dict[str, float]
     weight: float

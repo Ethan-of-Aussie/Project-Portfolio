@@ -13,12 +13,7 @@ class PlanOrm(BaseModel):
     owner: Mapped[str] = mapped_column(ForeignKey("users.id"))
     name: Mapped[str] = mapped_column(String, nullable=False)
 
-    children: Mapped[list[ConsumableOrm]] = relationship(secondary=consumableAndPlanOrm)
-
-    consumables: Mapped[list["ConsumableOrm"]] = relationship(
-        back_populates=None,
-        cascade="all, delete-orphan"
-    )
+    consumables: Mapped[list[ConsumableOrm]] = relationship(secondary=consumableAndPlanOrm)
 
     nutrients: Mapped[dict[str, float]] = mapped_column(
         JSON,

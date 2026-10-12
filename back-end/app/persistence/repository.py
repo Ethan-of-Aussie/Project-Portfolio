@@ -62,6 +62,13 @@ class SQLAlchemyRepository(Repository):
         self.db.delete(obj)
         self.db.commit()
 
+    def commit(self):
+        try:
+            self.db.commit()
+        except Exception as e:
+            self.db.rollback()
+            raise Exception(f"e: {e}")
+
     def get_by_attribute(self, attr_name, attr_value):
         return self.db.query(self.model).filter(attr_name == attr_value).all()
 

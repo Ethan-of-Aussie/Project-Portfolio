@@ -7,8 +7,6 @@ from app.models.base_model import BaseModel
 class ConsumableOrm(BaseModel):
     __tablename__ = 'consumables'
 
-    diet_plan_id: Mapped[str] = mapped_column(ForeignKey("plans.id"))
-
     name: Mapped[str] = mapped_column(
         String,
         nullable=False)

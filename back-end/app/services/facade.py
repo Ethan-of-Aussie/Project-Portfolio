@@ -4,11 +4,13 @@ from app.models.user import UserOrm
 from app.models.plan import PlanOrm
 from app.schemas.user import UserCreate, UserRead
 from app.schemas.plan import PlanCreate
+from app.schemas.consumable import ConsumableCreate
 from app.core.auth import hash_password, verify_password
 from app.core.auth import create_token, decode_token
 from fastapi import HTTPException
 from app.persistence.user import UserRepository
 from app.persistence.plan import PlanRepository
+from app.persistence.consumable import ConsumableRepository
 from jose.exceptions import JWTError
 from app.core.database import get_db
 from app.models.consumable import ConsumableOrm
@@ -19,6 +21,7 @@ class Facade:
         db = next(get_db())
         self.UserRepo = UserRepository(db)
         self.PlanRepo = PlanRepository(db)
+        self.ConsumableRepo = ConsumableRepository(db)
 
     # Auth queries ----------
 
@@ -142,9 +145,11 @@ class Facade:
             return {"error": "user dose not exist"}
         plan = PlanOrm(**payload.model_dump(exclude={"consumables"}))
         plan.owner = user_id
-        plan.consumables = [ConsumableOrm(**item.model_dump()) for item in payload.consumables]
+        plan.consumables = []
         try:
             self.PlanRepo.add(plan)
+            print(f"plann id {plan.id}")
+            self.create_consumables([item for item in payload.consumables], plan_id=plan.id)
         except Exception as e:
             return {"error": str(e)}
         return {"plan id": plan.id}
@@ -162,7 +167,19 @@ class Facade:
         self.PlanRepo.delete(id)
         return 200
 
-    def create_consumables(self):
-        pass
-
     # Consumable queries ----------
+    
+    def create_consumables(self, consumablesData: list[ConsumableCreate], plan_id):
+            plan = self.PlanRepo.get(plan_id)
+    
+            for item in consumablesData:
+                consumable = ConsumableOrm(**item.model_dump())
+                plan.consumables.append(consumable)
+            try:
+                self.PlanRepo.commit()
+            except Exception as e:
+                raise Exception(e)
+            print("all consumables created")
+    
+    def get_consumable_from_external_file(self):
+        pass
