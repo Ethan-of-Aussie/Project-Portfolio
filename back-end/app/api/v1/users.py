@@ -1,46 +1,51 @@
-import os
-from flask_restx import Namespace, Resource, fields, marshal
+""" Route management for user related requests"""
 from app.services import facade
-from flask_jwt_extended import jwt_required, get_jwt_identity
-import duckdb
-import pandas as pd
-from dotenv import load_dotenv
+from app.core.database import get_db
+from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException, Header
+from pydantic import ValidationError
+from app.schemas.user import UserCreate, UserLogin, UserRead
 
-load_dotenv()
-conn = duckdb.connect()
+router = APIRouter(tags=["User methods"])
 
-account_id = os.getenv("ACCOUNT_ID")
-access_key = os.getenv("ACCESS_KEY_ID")
-secret_key = os.getenv("SECRET_ACCESS_KEY")
 
-conn.execute("INSTALL httpfs")
-conn.execute("LOAD httpfs")
+# Create user
+@router.post("/create")
+def create_user(payload: UserCreate):
+    print("---Creating user")
+    return facade.create_user(payload)
 
-conn.execute("""
-    CREATE SECRET r2_secret (
-        TYPE S3,
-        KEY_ID ?,
-        SECRET ?,
-        REGION 'auto',
-        ENDPOINT ?
-    )
-""", [
-    access_key,
-    secret_key,
-    f"{account_id}.r2.cloudflarestorage.com"
-])
 
-api = Namespace('users', description='User operations')
+# Get all users testing only
+@router.get("/")
+def get_all_users():
+    print("---Retrieving all users")
+    return facade.get_all_users()
 
-@api.route("/")
-class User(Resource):
-    def get(self):
-        result = conn.execute("""
-            SELECT *
-            FROM read_parquet('s3://dietplan/food.parquet')
-            LIMIT 10
-        """).fetchdf()
-        print(f"result {result}")
-        # data = duckdb.sql("SELECT * FROM 'analytical-data/en.openfoodfacts.org.products.csv.gz' LIMIT 100 OFFSET 99")
-        print(result)
-        return "Cat is not a user", 200
+
+# Login user
+@router.post("/login")
+def login_user(payload: UserLogin):
+    print("---Authenticating user")
+    print(payload)
+    return facade.login_user(payload.username, payload.password)
+
+# Get user by id
+@router.get("/{user_id}")
+def get_user(user_id: str):
+    print("---Retrieving user")
+    return facade.get_user_id(user_id)
+
+
+# Delete user
+@router.delete("/{user_id}")
+def delete_user(user_id: str, auth: str = Header()):
+    print("---Deleting user")
+    return facade.delete_user(user_id, auth)
+
+
+# View UserPlans
+@router.get("/{user_id}/plans")
+def UserPlans(user_id: str):
+    print("---Getting user's plans")
+    return facade.get_plans_by_user(user_id)
