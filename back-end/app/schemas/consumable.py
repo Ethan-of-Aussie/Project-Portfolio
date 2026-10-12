@@ -17,6 +17,7 @@ class ConsumableCreate(BaseModel):
 class ConsumableModel(BaseModel):
     id: UUID
     name: str
+    code: int
     nutrients: dict[str, float]
     weight: float
     quantity: int

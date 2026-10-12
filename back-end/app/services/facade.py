@@ -142,21 +142,20 @@ class Facade:
 
     def create_plan(self, payload: PlanCreate, user_id: str):
         # might need more edge case checking later
-
-        owner = self.UserRepo.get(user_id)
-        if owner is None:
-            return {"error": "user dose not exist"}
-        plan = PlanOrm(**payload.model_dump(exclude={"consumables"}))
-        plan.owner = user_id
-        plan.consumables = []
         try:
+            self.UserRepo.get(user_id)
+
+            plan = PlanOrm(**payload.model_dump(exclude={"consumables"}))
+            plan.owner = user_id
+            plan.consumables = []
             self.PlanRepo.add(plan)
             print(f"plann id {plan.id}")
             self.create_consumables([item for item in payload.consumables], plan_id=plan.id)
-            self.get_consumable_from_external_file()
+            return {"plan id": plan.id}
         except Exception as e:
-            return {"error": str(e)}
-        return {"plan id": plan.id}
+           raise HTTPException(
+            status_code=403,
+            detail= str(e))
 
     def update_plan(self, payload, auth):
         pass
@@ -177,6 +176,13 @@ class Facade:
             plan = self.PlanRepo.get(plan_id)
     
             for item in consumablesData:
+                foundedConsumables = self.ConsumableRepo.get_by_attribute_2("code", item.code)
+                if (foundedConsumables is not None and len(foundedConsumables) > 0):
+                    print("-----consumables---")
+                    print(foundedConsumables[0])
+                    plan.consumables.append(foundedConsumables[0])
+                    continue
+
                 consumable = ConsumableOrm(**item.model_dump())
                 plan.consumables.append(consumable)
             try:
@@ -186,8 +192,8 @@ class Facade:
             print("all consumables created")
     
     def get_consumable_from_external_file(self):
-        result = getDataFromFoodFile(10, 3)
+        result = getDataFromFoodFile(50, 5)
         print("---new data testttt--")
-        for index, row in result.iterrows():
-            print(row["brands_tags"])
+        # for index, row in result.iterrows():
+        #     print(row["brands_tags"])
         return result
