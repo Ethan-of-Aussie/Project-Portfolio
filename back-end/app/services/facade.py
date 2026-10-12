@@ -153,7 +153,6 @@ class Facade:
             self.PlanRepo.add(plan)
             print(f"plann id {plan.id}")
             self.create_consumables([item for item in payload.consumables], plan_id=plan.id)
-            self.get_consumable_from_external_file()
         except Exception as e:
             return {"error": str(e)}
         return {"plan id": plan.id}
@@ -177,6 +176,13 @@ class Facade:
             plan = self.PlanRepo.get(plan_id)
     
             for item in consumablesData:
+                foundedConsumables = self.ConsumableRepo.get_by_attribute_2("code", item.code)
+                if (foundedConsumables is not None and len(foundedConsumables) > 0):
+                    print("-----consumables---")
+                    print(foundedConsumables[0])
+                    plan.consumables.append(foundedConsumables[0])
+                    continue
+
                 consumable = ConsumableOrm(**item.model_dump())
                 plan.consumables.append(consumable)
             try:
@@ -186,8 +192,8 @@ class Facade:
             print("all consumables created")
     
     def get_consumable_from_external_file(self):
-        result = getDataFromFoodFile(10, 3)
+        result = getDataFromFoodFile(50, 5)
         print("---new data testttt--")
-        for index, row in result.iterrows():
-            print(row["brands_tags"])
+        # for index, row in result.iterrows():
+        #     print(row["brands_tags"])
         return result

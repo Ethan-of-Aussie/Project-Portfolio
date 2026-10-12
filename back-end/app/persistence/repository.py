@@ -72,6 +72,15 @@ class SQLAlchemyRepository(Repository):
     def get_by_attribute(self, attr_name, attr_value):
         return self.db.query(self.model).filter(attr_name == attr_value).all()
 
+    def get_by_attribute_2(self, attr_name, attr_value):
+        column = getattr(self.model, attr_name)
+
+        return (
+            self.db.query(self.model)
+            .filter(column == attr_value)
+            .all()
+        )
+
 """
 class SQLAlchemyRepository(Repository):
     def __init__(self, model, db):
