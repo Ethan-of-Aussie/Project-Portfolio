@@ -137,8 +137,10 @@ class Facade:
                 status_code=404,
                 detail="Plan not found")
 
-    def get_plans_by_user(self, payload):
-        pass
+    def get_plans_by_user(self, user_id: str):
+        userPlans = self.PlanRepo.get_by_attribute_2("owner", user_id)
+        print(userPlans)
+        return userPlans
 
     def create_plan(self, payload: PlanCreate, user_id: str):
         # might need more edge case checking later
@@ -150,7 +152,12 @@ class Facade:
             plan.consumables = []
             self.PlanRepo.add(plan)
             print(f"plann id {plan.id}")
-            self.create_consumables([item for item in payload.consumables], plan_id=plan.id)
+            existingConsumables = self.create_consumables([item for item in payload.consumables], plan_id=plan.id)
+            if len(existingConsumables) > 0:
+                return {"plan id": plan.id, 
+                        "existing consumables": existingConsumables, 
+                        "message": "Consumables with the code is already existing we will replace it with existing one"
+                        }
             return {"plan id": plan.id}
         except Exception as e:
            raise HTTPException(
@@ -174,12 +181,18 @@ class Facade:
 
     def create_consumables(self, consumablesData: list[ConsumableCreate], plan_id):
             plan = self.PlanRepo.get(plan_id)
-    
+            existingConsumables = []
             for item in consumablesData:
                 foundedConsumables = self.ConsumableRepo.get_by_attribute_2("code", item.code)
                 if (foundedConsumables is not None and len(foundedConsumables) > 0):
                     print("-----consumables---")
                     print(foundedConsumables[0])
+                    existingConsumables.append(
+                            {
+                                "name": foundedConsumables[0].name,
+                                "code": foundedConsumables[0].code
+                            }
+                        )
                     plan.consumables.append(foundedConsumables[0])
                     continue
 
@@ -190,6 +203,7 @@ class Facade:
             except Exception as e:
                 raise Exception(e)
             print("all consumables created")
+            return existingConsumables
     
     def get_consumable_from_external_file(self):
         result = getDataFromFoodFile(50, 5)

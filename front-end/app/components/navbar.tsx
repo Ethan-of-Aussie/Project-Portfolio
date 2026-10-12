@@ -2,8 +2,8 @@ import Link from "next/link"
 
 export default function NavBar() {
     return (
-        <nav className="bg-green-700">
-            <div className="flex items-center justify-between w-full px-6 text-white">
+        <nav className="bg-gray-300">
+            <div className="flex items-center justify-between w-full px-6 text-black">
                 <div>
                     <Link href={"/"}>Logo</Link>
                 </div>

@@ -11,7 +11,7 @@ export default function RootLayout({
       <body>
         <NavBar />
         <h1 className='bg-sky-800 m-3'>Title</h1>
-        <div className='mx-auto grid max-w-7xl'>
+        <div className='mx-auto grid px-4'>
           <main>{children}</main>
         </div>
       </body>

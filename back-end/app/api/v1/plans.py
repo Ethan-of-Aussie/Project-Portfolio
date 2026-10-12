@@ -18,8 +18,14 @@ def create_plan(
                 ):
     id = decode_token(token=token).get("id")
     print("---Creating plan")
-    return facade.create_plan(payload, user_id)
+    return facade.create_plan(payload, id)
 
+@router.get("/userplans", response_model=list[PlanModel])
+def get_user_plan(
+    token: Annotated[str, Depends(oauth2_scheme)]
+):
+    id = decode_token(token=token).get("id")
+    return facade.get_plans_by_user(id)
 
 @router.get("/{plan_id}", response_model=PlanModel)
 def get_plan(plan_id: str):
