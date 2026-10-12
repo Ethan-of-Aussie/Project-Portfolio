@@ -141,6 +141,8 @@ class Facade:
         pass
 
     def create_plan(self, payload: PlanCreate, user_id: str):
+        # might need more edge case checking later
+
         owner = self.UserRepo.get(user_id)
         if owner is None:
             return {"error": "user dose not exist"}
