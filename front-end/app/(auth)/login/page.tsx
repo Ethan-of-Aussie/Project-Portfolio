@@ -2,12 +2,19 @@
 import { useState } from "react"
 import Link from "next/link"
 import Button from "@/app/components/button"
+import { api } from "@/lib/api"
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [submitted, setSubmitted] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
+    api.post("/api/v1/users/login", {
+            "username": "venghour4",
+            "password": "1234"
+            }).then((res) => {
+                localStorage.setItem("access_token", res.data)
+            })
 
     function validateEmail(email: string) {
         if (!email) {

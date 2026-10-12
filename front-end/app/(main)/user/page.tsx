@@ -8,6 +8,8 @@ export default function user () {
     const getDisplayText = async () => {
         const response = await api.get("/api/v1/users/");
         const data = response.data;
+        console.log("datasss");
+        
         setDisplayText(data);
     }
     return (
