@@ -162,4 +162,7 @@ class Facade:
         self.PlanRepo.delete(id)
         return 200
 
+    def create_consumables(self):
+        pass
+
     # Consumable queries ----------
