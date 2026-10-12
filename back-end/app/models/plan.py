@@ -3,8 +3,8 @@ from sqlalchemy import String, JSON, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from app.models.base_model import BaseModel
 from app.models.consumable import ConsumableOrm
-from consumable_and_plan import consumableAndPlanOrm
-from consumable import ConsumableOrm
+from app.models.consumable_and_plan import consumableAndPlanOrm
+from app.models.consumable import ConsumableOrm
 
 
 class PlanOrm(BaseModel):
