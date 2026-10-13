@@ -3,84 +3,89 @@
 import { api } from "@/lib/api"
 import { useEffect, useState } from "react";
 import DietPlanCard from '@/app/components/dietPlanCard'
-import type { DietProp } from "@/lib/user/dietPlan"
-import { getDietPlan } from "@/lib/user/dietPlan";
 import Button from '@mui/material/Button';
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import Typography from '@mui/material/Typography';
-import { blue } from '@mui/material/colors';
+import Consumable from "@/app/components/consumable"
 
-
+import type { DietProp, ExternalConsumables, ExternalConsumable } from "@/lib/user/dietPlan"
+import { getDietPlan, getExternalConsumables } from "@/lib/user/dietPlan";
+import { Field } from '@base-ui/react/field';
+import styles from './index.module.css';
 export interface SimpleDialogProps {
   open: boolean;
   selectedValue: string;
   onClose: (value: string) => void;
 }
 
-
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 
-function SimpleDialog(props: SimpleDialogProps) {
-  const { onClose, selectedValue, open } = props;
+export function DietPlanForm() {
+    const [selectedConsumables, setSelectedConsumables] = useState<ExternalConsumable[]>([])
+    const [externalConsumablesData, setExternalConsumablesData] = useState<ExternalConsumables>();
+    const [isGetFoodLoading, setIsGetFoodLoading] = useState<boolean>()
 
-  const handleClose = () => {
-    onClose(selectedValue);
-  };
+    const addSelectedConsumables = (consumable: ExternalConsumable) => {
+        setSelectedConsumables((prev) => [...prev, consumable])        
+    }
+    const removeSelectedConsumables = (Consumable: ExternalConsumable) => {
+        setSelectedConsumables((prev) => prev.filter((item) => item.code !== Consumable.code))
+    }
+    const setExternalConsumables = async () => {
+        setIsGetFoodLoading(true)
+        const respond = await getExternalConsumables() as ExternalConsumables;
+        setExternalConsumablesData(respond)
+        setIsGetFoodLoading(false)
+    }
+    return (
+        <Field.Root className={`${styles.Field} !max-w-[None]`}>
+            <Field.Label className={styles.Label}>Name</Field.Label>
+            <Field.Control required placeholder="Required" className={styles.Input} />
 
-  const handleListItemClick = (value: string) => {
-    onClose(value);
-  };
+            <Field.Error className={styles.Error} match="valueMissing">
+                Please enter your name
+            </Field.Error>
+            <Field.Label className={styles.Label}>Foods and Drinks</Field.Label>
+            <Field.Control required placeholder="Required" className={styles.Input} />
 
-  return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Set backup account</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        {emails.map((email) => (
-          <ListItem disablePadding key={email}>
-            <ListItemButton onClick={() => handleListItemClick(email)}>
-              <ListItemAvatar>
-                <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={email} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-        <ListItem disablePadding>
-          <ListItemButton
-            autoFocus
-            onClick={() => handleListItemClick('addAccount')}
-          >
-            <ListItemAvatar>
-              <Avatar>
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Add account" />
-          </ListItemButton>
-        </ListItem>
-      </List>
-    </Dialog>
-  );
+            <Field.Error className={styles.Error} match="valueMissing">
+                pick your favorite
+            </Field.Error>
+
+            <Field.Label className={styles.Label}>Select food</Field.Label>
+            <Field.Control required placeholder="Required" className={styles.Input} />
+            <div>
+                {
+                    selectedConsumables.map((item, index) => (
+                        <div key={index}>{item.product_name[0].text}</div>
+                    ))
+                }
+            </div>
+            <div className="pb-3">
+                <Button variant="contained" onClick={setExternalConsumables} loading={isGetFoodLoading}>Get all Foods</Button>
+            </div>
+            <div className="flex flex-wrap gap-1">
+                {
+                    externalConsumablesData?.consumables.map((item, index) => (
+                        <Consumable key={index} addConsumableClick={addSelectedConsumables} removeConsumableClick={removeSelectedConsumables} consumable={item} />
+                    ))
+                }
+            </div>
+        <Button variant="contained" color="error">Submit</Button>
+        </Field.Root>
+        );
 }
 
 export default function dietPlan () {
     console.log("test data");
     // const getFoodData
 
-    const [open, setOpen] = React.useState(false);
-    const [selectedValue, setSelectedValue] = React.useState(emails[1]);
+    const [open, setOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState(emails[1]);
     const [foodDatas, setFoodDatas] = useState([]);
     const [dietPlans, setDietPlans] = useState<DietProp[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    
     const handleClickOpen = () => {
             setOpen(true);
         };
@@ -103,7 +108,7 @@ export default function dietPlan () {
             console.log(foodDatas);
             setIsLoading(false)
         })
-                .catch((err) => console.error("Failed:", err));
+        .catch((err) => console.error("Failed:", err));
     }
 
     function SimpleDialog(props: SimpleDialogProps) {
@@ -119,32 +124,10 @@ export default function dietPlan () {
 
         return (
             <Dialog onClose={handleClose} open={open}>
-            <DialogTitle>Set backup account</DialogTitle>
-            <List sx={{ pt: 0 }}>
-                {emails.map((email) => (
-                <ListItem disablePadding key={email}>
-                    <ListItemButton onClick={() => handleListItemClick(email)}>
-                    <ListItemAvatar>
-                        <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={email} />
-                    </ListItemButton>
-                </ListItem>
-                ))}
-                <ListItem disablePadding>
-                <ListItemButton
-                    autoFocus
-                    onClick={() => handleListItemClick('addAccount')}
-                >
-                    <ListItemAvatar>
-                    <Avatar>
-                    </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Add account" />
-                </ListItemButton>
-                </ListItem>
-            </List>
+                <div className="w-[500px] h-[800px] border-[lightseagreen] p-3">
+                    <p className="font-bold text-lg py-3">Create Plan</p>
+                    <DietPlanForm/>
+                </div>
             </Dialog>
         );
     }
