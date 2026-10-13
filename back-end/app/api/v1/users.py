@@ -4,7 +4,7 @@ from app.core.database import get_db
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException, Header
 from pydantic import ValidationError
-from app.schemas.user import UserCreate, UserLogin, UserRead
+from app.schemas.user import UserCreate, UserLogin, UserRead, UserUpdate
 
 router = APIRouter(tags=["User methods"])
 
@@ -35,6 +35,13 @@ def login_user(payload: UserLogin):
 def get_user(user_id: str):
     print("---Retrieving user")
     return facade.get_user_id(user_id)
+
+
+# Update user info
+@router.patch("/{user_id}")
+def update_user(user_id: str, payload: UserUpdate, auth: str = Header()):
+    print("--Updating user")
+    return facade.update_user(user_id, payload, auth)
 
 
 # Delete user

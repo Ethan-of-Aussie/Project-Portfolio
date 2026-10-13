@@ -19,10 +19,22 @@ class UserRead(BaseModel):
     id: UUID
     username: str
     email: EmailStr
-    Height: int
-    Weight: int
+    height: int
+    weight: int
     allergies: list[str]
-    FavFood: list[str]
+    favFood: list[str]
+
+    class Config:
+        from_attributes = True
+
+
+class UserUpdate(BaseModel):
+    username: str | None = None
+    email: EmailStr | None = None
+    height: int | None = None
+    weight: int | None = None
+    allergies: list[str] | None = None
+    favFood: list[str] | None = None
 
     class Config:
         from_attributes = True
