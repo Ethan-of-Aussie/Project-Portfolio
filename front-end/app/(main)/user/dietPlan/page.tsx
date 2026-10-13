@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Consumable from "@/app/components/consumable"
 
-import type { DietProp, ExternalConsumables, ExternalConsumable } from "@/lib/user/dietPlan"
+import type { DietProp, ExternalConsumables, ExternalConsumable, CreateTableRequestType, ConsumableRequest } from "@/lib/user/dietPlan"
 import { getDietPlan, getExternalConsumables } from "@/lib/user/dietPlan";
 import { Field } from '@base-ui/react/field';
 import styles from './index.module.css';
@@ -23,7 +23,26 @@ export function DietPlanForm() {
     const [selectedConsumables, setSelectedConsumables] = useState<ExternalConsumable[]>([])
     const [externalConsumablesData, setExternalConsumablesData] = useState<ExternalConsumables>();
     const [isGetFoodLoading, setIsGetFoodLoading] = useState<boolean>()
+    const [tableName, setTableName] = useState("")
 
+    const onSubmitCreateDietPlan = async () => {
+        console.log("summited");
+        let createTableRequest: CreateTableRequestType = {} as CreateTableRequestType;
+        createTableRequest.name = tableName;
+        createTableRequest.consumables = selectedConsumables.map((item) => {
+                return {
+                    name: item.product_name[0].text,
+                    code: Number(item.code),
+                    allergies: [],
+                    nutrients: {},
+                    quantity: 0,
+                    weight: 0
+                } as ConsumableRequest})
+
+        const response = await api.post("/api/v1/plans/create", createTableRequest);
+        console.log("is respond back", response);
+        
+    }
     const addSelectedConsumables = (consumable: ExternalConsumable) => {
         setSelectedConsumables((prev) => [...prev, consumable])        
     }
@@ -39,20 +58,24 @@ export function DietPlanForm() {
     return (
         <Field.Root className={`${styles.Field} !max-w-[None]`}>
             <Field.Label className={styles.Label}>Name</Field.Label>
-            <Field.Control required placeholder="Required" className={styles.Input} />
+            <Field.Control 
+                required 
+                placeholder="Required" 
+                className={styles.Input} 
+                value={tableName}
+                onChange={(e) => {
+                    setTableName(e.target.value);
+                }}
+                />
 
             <Field.Error className={styles.Error} match="valueMissing">
                 Please enter your name
             </Field.Error>
             <Field.Label className={styles.Label}>Foods and Drinks</Field.Label>
-            <Field.Control required placeholder="Required" className={styles.Input} />
 
             <Field.Error className={styles.Error} match="valueMissing">
                 pick your favorite
             </Field.Error>
-
-            <Field.Label className={styles.Label}>Select food</Field.Label>
-            <Field.Control required placeholder="Required" className={styles.Input} />
             <div>
                 {
                     selectedConsumables.map((item, index) => (
@@ -70,7 +93,7 @@ export function DietPlanForm() {
                     ))
                 }
             </div>
-        <Button variant="contained" color="error">Submit</Button>
+        <Button variant="contained" color="error" onClick={onSubmitCreateDietPlan}>Submit</Button>
         </Field.Root>
         );
 }
