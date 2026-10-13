@@ -38,6 +38,19 @@ type ExternalConsumable = {
 type ExternalConsumables = {
     consumables: ExternalConsumable[]
 }
+type nutrientsRequest = {
+    additionalProp1: number,
+    additionalProp2: number,
+    additionalProp3: number
+}
+type ConsumableRequest = {
+    name: string,
+      code: number,
+      nutrients: nutrientsRequest,
+      weight: number,
+      quantity: number,
+      allergies: string[]
+}
 
 const getDietPlan = async () => {
     let dietPlan = await api.get("/api/v1/plans/userplans");
@@ -53,7 +66,8 @@ export type {
     Consumables,
     DietProp,
     ExternalConsumable,
-    ExternalConsumables
+    ExternalConsumables,
+    ConsumableRequest
 }
 
 export {

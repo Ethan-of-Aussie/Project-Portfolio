@@ -84,7 +84,6 @@ export default function dietPlan () {
     const [foodDatas, setFoodDatas] = useState([]);
     const [dietPlans, setDietPlans] = useState<DietProp[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-
     
     const handleClickOpen = () => {
             setOpen(true);

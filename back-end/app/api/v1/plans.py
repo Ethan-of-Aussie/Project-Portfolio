@@ -12,8 +12,7 @@ router = APIRouter(tags=["Plan methods"])
 
 @router.post("/create")
 def create_plan(
-                token: Annotated[str, Depends(oauth2_scheme)]
-                ,user_id: str, 
+                token: Annotated[str, Depends(oauth2_scheme)],
                 payload: PlanCreate
                 ):
     id = decode_token(token=token).get("id")
