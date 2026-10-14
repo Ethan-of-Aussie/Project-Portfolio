@@ -1,13 +1,15 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Button from "@/app/components/button"
+import user from "@/app/(main)/user/page"
 
-export default function LoginPage() {
+export default function SignUpPage() {
 
     // Stores value entered in form fields
 
     const [formData, setFormData] = useState({
+        username: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -19,6 +21,7 @@ export default function LoginPage() {
     // Tracks form fields to display validation error
 
     const [touched, setTouched] = useState({
+        username: false,
         email: false,
         password: false,
         confirmPassword: false,
@@ -38,6 +41,34 @@ export default function LoginPage() {
 
     // State for displaying confirmation screen
     const [isComplete, setIsComplete] = useState(false)
+
+    // State for controlling navigation animations for forms
+    const [direction, setDirection] = useState(1)
+
+    useEffect(() => {
+        const card = cardRef.current;
+
+        if (!card) {
+            return;
+        }
+
+        card.classList.remove("step-enter");
+
+        void card.offsetWidth;
+
+        card.classList.add("step-enter")
+    }, [currentStep]);
+
+    const cardRef = useRef<HTMLDivElement>(null);
+
+
+    function validateUsername(username: string) {
+        if (!username.trim()) {
+            return "Username is required."
+        }
+
+        return ""
+    }
 
     function validateEmail(email: string) {
         if (!email) {
@@ -114,6 +145,7 @@ export default function LoginPage() {
 
     function validateAccountDetails() {
         return (
+            validateUsername(formData.username) ||
             validateEmail(formData.email) ||
             validatePassword(formData.password) ||
             validateConfirmPassword(
@@ -131,6 +163,7 @@ export default function LoginPage() {
         if (currentStep === 1) {
             setTouched({
                 ...touched,
+                username: true,
                 email: true,
                 password: true,
                 confirmPassword: true,
@@ -142,6 +175,7 @@ export default function LoginPage() {
                 return
             }
 
+            setDirection(1)
             setCurrentStep(2)
         } else if (currentStep === 2) {
             setTouched({
@@ -158,6 +192,7 @@ export default function LoginPage() {
             }
 
             setSubmitted(false)
+            setDirection(1)
             setCurrentStep(3)
         } else if (currentStep === 3) {
             const goalError = validateGoal(formData.goal)
@@ -172,7 +207,13 @@ export default function LoginPage() {
 
     return (
         <main className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-            <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
+            <div
+                ref={cardRef}
+                className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl step-enter"
+                style={{
+                    "--slide-from": direction === 1 ? "30px" : "-30px",
+                } as React.CSSProperties}
+            >
 
                 <form noValidate autoComplete="off" className="mt-8 space-y-5" onSubmit={(event) => {
                     event.preventDefault()
@@ -222,8 +263,99 @@ export default function LoginPage() {
                         </div>
                     ) : (
                         <>
+
+                            {/* Signup progress indicator */}
+                            <div className="mb-8">
+
+                                <div className="mb-3 flex justify-between">
+                                    {/* Step 1 */}
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div
+                                            className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ${currentStep === 1
+                                                ? "bg-green-600 text-white"
+                                                : currentStep > 1
+                                                    ? "bg-green-600 text-white"
+                                                    : "bg-gray-200 text-gray-500"
+                                                }`}
+                                        >
+                                            {currentStep > 1 ? (
+                                                <svg
+                                                    className="h-5 w-5"
+                                                    viewBox="0 0 20 20"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                >
+                                                    <path
+                                                        d="M4 10.5l4 4 8-9"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </svg>
+                                            ) : (
+                                                1
+                                            )}
+                                        </div>
+                                        <span className="text-sm font-semibold text-green-700">
+                                            Account
+                                        </span>
+                                    </div>
+
+                                    {/* Step 2 */}
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div
+                                            className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ${currentStep === 2
+                                                ? "bg-green-600 text-white"
+                                                : currentStep > 2
+                                                    ? "bg-green-600 text-white"
+                                                    : "bg-gray-200 text-gray-500"
+                                                }`}
+                                        >
+                                            {currentStep > 2 ? (
+                                                <svg
+                                                    className="h-5 w-5"
+                                                    viewBox="0 0 20 20"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                >
+                                                    <path
+                                                        d="M4 10.5l4 4 8-9"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </svg>
+                                            ) : (
+                                                2
+                                            )}
+                                        </div>
+                                        <span className="text-sm text-gray-500">
+                                            About you
+                                        </span>
+                                    </div>
+
+                                    {/* Step 3 */}
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div
+                                            className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ${currentStep === 3
+                                                ? "bg-green-600 text-white"
+                                                : "bg-gray-200 text-gray-500"
+                                                }`}
+                                        >
+                                            3
+                                        </div>
+                                        <span className="text-sm text-gray-500">
+                                            Goals
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            {/* First form for username, email and password */}
+
                             {currentStep === 1 && (
-                                <>
+                                <div>
                                     <Link href="/">
                                         <h1 className="text-center text-3xl font-bold text-green-800 transition-transform duration-200 hover:scale-105">
                                             DietPlanner
@@ -234,9 +366,40 @@ export default function LoginPage() {
                                         Welcome! Please enter your details to create an account.
                                     </p>
 
+                                    {/* Username Field */}
+
+                                    <div className="mb-4">
+                                        <label
+                                            htmlFor="username"
+                                            className="mb-2 block text-sm font-medium text-gray-700"
+                                        >
+                                            Username
+                                        </label>
+
+                                        <input
+                                            id="username"
+                                            name="username"
+                                            type="text"
+                                            autoComplete="username"
+                                            placeholder="Choose a username"
+                                            required
+                                            value={formData.username}
+                                            onChange={(event) => {
+                                                const value = event.target.value
+                                                setFormData({ ...formData, username: value })
+                                            }}
+                                            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all duration-200 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                        />
+                                    </div>
+                                    {touched.username && validateUsername(formData.username) && (
+                                        <p className="mt-1 mb-4 text-sm text-red-600">
+                                            {validateUsername(formData.username)}
+                                        </p>
+                                    )}
+
                                     {/* Email Field */}
 
-                                    <div>
+                                    <div className="mb-4">
                                         <label
                                             htmlFor="email"
                                             className="mb-2 block text-sm font-medium text-gray-700"
@@ -259,7 +422,7 @@ export default function LoginPage() {
                                                     setTouched({ ...touched, email: false })
                                                 }
                                             }}
-                                            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all duration-200 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                                         />
                                         {submitted && touched.email && validateEmail(formData.email) && (
                                             <p className="mt-2 text-sm text-red-600">
@@ -270,7 +433,7 @@ export default function LoginPage() {
 
                                     {/* Password Field */}
 
-                                    <div>
+                                    <div className="space-y-3">
                                         <label
                                             htmlFor="password"
                                             className="mb-2 block text-sm font-medium text-gray-700"
@@ -294,7 +457,7 @@ export default function LoginPage() {
                                                         setTouched({ ...touched, password: false })
                                                     }
                                                 }}
-                                                className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                                className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all duration-200 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                                             />
 
                                             {formData.password && (
@@ -317,6 +480,13 @@ export default function LoginPage() {
 
                                         {/* Confirm Password Field */}
 
+                                        <label
+                                            htmlFor="confirmPassword"
+                                            className="mb-2 block text-sm font-medium text-gray-700"
+                                        >
+                                            Confirm Password
+                                        </label>
+
                                         <div className="relative">
                                             <input
                                                 id="password"
@@ -334,7 +504,7 @@ export default function LoginPage() {
                                                         setTouched({ ...touched, confirmPassword: false })
                                                     }
                                                 }}
-                                                className="w-full rounded-lg border border-gray-300 my-4 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                                className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all duration-200 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                                             />
 
                                             {formData.confirmPassword && (
@@ -382,12 +552,13 @@ export default function LoginPage() {
                                             Guest
                                         </Link>
                                     </p>
-                                </>
+                                </div>
                             )}
 
-                            {currentStep === 2 && (
-                                <>
+                            {/* Second form for height and weight */}
 
+                            {currentStep === 2 && (
+                                <div>
                                     <div className="text-center">
                                         <h2 className="text-3xl font-bold text-green-800">
                                             About you
@@ -411,7 +582,7 @@ export default function LoginPage() {
                                                 name="height"
                                                 type="text"
                                                 inputMode="numeric"
-                                                className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                                className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all duration-200 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                                                 placeholder="Enter height"
                                                 value={formData.height}
                                                 onChange={(event) => {
@@ -448,7 +619,7 @@ export default function LoginPage() {
                                                 name="weight"
                                                 type="text"
                                                 inputMode="decimal"
-                                                className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                                className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all duration-200 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                                                 placeholder="Enter weight"
                                                 value={formData.weight}
                                                 onChange={(event) => {
@@ -473,8 +644,10 @@ export default function LoginPage() {
                                             )}
                                         </div>
                                     </div>
-                                </>
+                                </div>
                             )}
+
+                            {/* Third form for goals */}
 
                             {currentStep === 3 && (
                                 <div>
@@ -665,6 +838,7 @@ export default function LoginPage() {
                                             type="button"
                                             variant="secondary"
                                             onClick={() => {
+                                                setDirection(-1)
                                                 setCurrentStep(currentStep - 1)
                                                 setTouched({
                                                     ...touched,
