@@ -1,11 +1,12 @@
 from pydantic import BaseModel, EmailStr, Field
 from uuid import UUID
-from app.schemas.consumable import ConsumableModel, ConsumableCreate
+from app.schemas.consumable import ConsumableModel
 
 
 class PlanCreate(BaseModel):
+    id: UUID | None = None
     name: str
-    consumables: list[ConsumableCreate]
+    consumables: list[ConsumableModel]
     nutrients: dict[str, float] = Field(default_factory=dict)
 
     class Config:
@@ -13,7 +14,6 @@ class PlanCreate(BaseModel):
 
 
 class PlanModel(BaseModel):
-    owner: UUID
     name: str
     consumables: list[ConsumableModel]
     nutrients: dict[str, float]
