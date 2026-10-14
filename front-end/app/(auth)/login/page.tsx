@@ -94,6 +94,44 @@ export default function LoginPage() {
                     Password
                     </label>
                     <div className="relative">
+            <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
+                <Link href="/">
+                    <h1 className="text-center text-3xl font-bold text-green-800 transition-transform duration-200 hover:scale-105">
+                        DietPlanner
+                    </h1>
+                </Link>
+
+                <p className="mt-2 text-center text-gray-600">
+                    Welcome back! Please log in to your account.
+                </p>
+
+
+                <form noValidate autoComplete="off" className="mt-8 space-y-5" onSubmit={(event) => {
+                    event.preventDefault()
+                    setSubmitted(true)
+                    setTouched({
+                        ...touched,
+                        email: true,
+                        password: true,
+                    })
+
+                    const emailError = validateEmail(formData.email)
+                    const passwordError = validatePassword(formData.password)
+
+                    if (emailError || passwordError) {
+                        return
+                    }
+                }}>
+
+                    {/* Email field */}
+
+                    <div>
+                        <label
+                            htmlFor="email"
+                            className="mb-2 block text-sm font-medium text-gray-700"
+                        >
+                            Email Address
+                        </label>
                         <input
                         id="password"
                         name="password"
