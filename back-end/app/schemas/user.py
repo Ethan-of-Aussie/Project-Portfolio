@@ -3,15 +3,13 @@ from uuid import UUID
 
 
 class UserCreate(BaseModel):
-    id: UUID | None = None
     username: str
     password: str
     email: EmailStr
-    Height: int = 0
-    Weight: int = 0
+    height: int = 0
+    weight: int = 0
     allergies: list[str] = Field(default_factory=list)
-    FavFood: list[str] = Field(default_factory=list)
-    customPlans: list[str] = Field(default_factory=list)
+    favFood: list[str] = Field(default_factory=list)
 
     class Config:
         from_attributes = True
@@ -25,7 +23,6 @@ class UserRead(BaseModel):
     Weight: int
     allergies: list[str]
     FavFood: list[str]
-    customPlans: list[str]
 
     class Config:
         from_attributes = True
