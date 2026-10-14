@@ -29,3 +29,12 @@ conn.execute("""
     secret_key,
     f"{account_id}.r2.cloudflarestorage.com"
 ])
+
+def getDataFromFoodFile(limit: int, offset: int):
+    result = conn.execute(f"""
+                SELECT product_name, code, ingredients_text, nutriments, ingredients
+                FROM read_parquet('s3://dietplan/food.parquet')
+                LIMIT {limit} OFFSET {offset}
+            """).fetchdf()
+    return result
+# product_name, code, ingredients_text, nutriments, ingredients
