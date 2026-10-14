@@ -3,8 +3,9 @@ from uuid import UUID
 
 
 class ConsumableCreate(BaseModel):
-    id: UUID | None = None
+    # id: UUID | None = None
     name: str
+    code: int
     nutrients: dict[str, float] = Field(default_factory=dict)
     weight: float
     quantity: int

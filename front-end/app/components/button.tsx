@@ -1,11 +1,10 @@
+
 import Link from "next/link"
 
 type ButtonProps = {
   children: React.ReactNode
   type?: "button" | "submit" | "reset"
   href?: string
-  onClick?: () => void
-  variant?: "primary" | "secondary"
 }
 
 const buttonStyles = `
@@ -28,6 +27,10 @@ export default function Button({
   children,
   type = "submit",
   href,
+}: ButtonProps) {
+  if (href) {
+    return (
+      <Link href={href} className={buttonStyles}>
   onClick,
   variant = "primary",
 }: ButtonProps) {
@@ -45,6 +48,7 @@ export default function Button({
   }
 
   return (
+    <button type={type} className={buttonStyles}>
     <button type={type} onClick={onClick} className={styles}>
       {children}
     </button>
