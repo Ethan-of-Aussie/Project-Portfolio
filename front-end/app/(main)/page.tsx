@@ -2,7 +2,7 @@ import InfoCard from "../components/infocard"
 
 export default function Page() {
   return (
-    <>
+    <div className="grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12">
       {/* Temp layout grid */}
       {Array.from({ length: 12 }, (_, i) => (
         <div
@@ -50,6 +50,6 @@ export default function Page() {
             />
         </section>
       </div>
-    </>
+    </div>
   )
 }

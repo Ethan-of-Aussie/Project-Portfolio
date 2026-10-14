@@ -81,7 +81,7 @@ export default function LoginPage() {
                             htmlFor="email"
                             className="mb-2 block text-sm font-medium text-gray-700"
                         >
-                            Email Address <span className="text-red-500">* Required Field</span>
+                            Email Address
                         </label>
                         <input
                             id="email"
