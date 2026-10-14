@@ -15,6 +15,14 @@ const buttonStyles = `
   focus:ring-green-600 focus:ring-offset-2
 `
 
+const secondaryButtonStyles = `
+  w-full rounded-lg bg-gray-200 px-4 py-3
+  font-semibold text-gray-800 transition
+  hover:bg-gray-300
+  focus:outline-none focus:ring-2
+  focus:ring-gray-400 focus:ring-offset-2
+`
+
 export default function Button({
   children,
   type = "submit",
@@ -23,6 +31,17 @@ export default function Button({
   if (href) {
     return (
       <Link href={href} className={buttonStyles}>
+  onClick,
+  variant = "primary",
+}: ButtonProps) {
+  const styles =
+  variant === "secondary"
+    ? secondaryButtonStyles
+    : buttonStyles
+  
+  if (href) {
+    return (
+      <Link href={href} className={styles}>
         {children}
       </Link>
     )
@@ -30,6 +49,7 @@ export default function Button({
 
   return (
     <button type={type} className={buttonStyles}>
+    <button type={type} onClick={onClick} className={styles}>
       {children}
     </button>
   )

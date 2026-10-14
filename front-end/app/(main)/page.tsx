@@ -1,7 +1,9 @@
+import InfoCard from "../components/infocard"
+
 export default function Page() {
   return (
-     <>
-     {/* Temp layout grid */}
+    <>
+      {/* Temp layout grid */}
       {Array.from({ length: 12 }, (_, i) => (
         <div
           key={i}

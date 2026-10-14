@@ -29,6 +29,7 @@ class Facade:
     def get_JWT_user(self, auth):
         try:
             id = decode_token(auth)["id"]
+            print(id)
             return self.get_user_id(id)
         except JWTError, KeyError:
             raise HTTPException(
@@ -107,8 +108,20 @@ class Facade:
         # Grant auth token
         return self.login_user(payload.username, payload.password)
 
-    def update_user(self, payload, auth):
-        pass
+    def update_user(self, id, payload, auth):
+        if (id != decode_token(auth)["id"]):
+            raise HTTPException(
+                status_code=403,
+                detail="Forbidden"
+            )
+        try:
+            if (payload.password):
+                payload.password = hash_password(payload.password)
+            return self.UserRepo.update(id, payload.model_dump(exclude_unset=True))
+        except KeyError:
+            raise HTTPException(
+                status_code=404,
+                detail="User not found")
 
     def delete_user(self, id, auth):
         self.UserRepo.delete(self.get_JWT_user(auth).id)
