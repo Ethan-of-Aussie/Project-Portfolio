@@ -222,427 +222,470 @@ export default function LoginPage() {
                         </div>
                     ) : (
                         <>
-                         {currentStep === 1 && (
-                        <>
-                            <Link href="/">
-                                <h1 className="text-center text-3xl font-bold text-green-800 transition-transform duration-200 hover:scale-105">
-                                    DietPlanner
-                                </h1>
-                            </Link>
+                            {currentStep === 1 && (
+                                <>
+                                    <Link href="/">
+                                        <h1 className="text-center text-3xl font-bold text-green-800 transition-transform duration-200 hover:scale-105">
+                                            DietPlanner
+                                        </h1>
+                                    </Link>
 
-                            <p className="mt-2 text-center text-gray-600">
-                                Welcome! Please enter your details to create an account.
-                            </p>
-
-                            {/* Email Field */}
-
-                            <div>
-                                <label
-                                    htmlFor="email"
-                                    className="mb-2 block text-sm font-medium text-gray-700"
-                                >
-                                    Email Address
-                                </label>
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    placeholder="you@example.com"
-                                    required
-                                    value={formData.email}
-                                    onChange={(event) => {
-                                        const value = event.target.value
-                                        setFormData({ ...formData, email: value })
-
-                                        if (value === "") {
-                                            setTouched({ ...touched, email: false })
-                                        }
-                                    }}
-                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
-                                />
-                                {submitted && touched.email && validateEmail(formData.email) && (
-                                    <p className="mt-2 text-sm text-red-600">
-                                        {validateEmail(formData.email)}
+                                    <p className="mt-2 text-center text-gray-600">
+                                        Welcome! Please enter your details to create an account.
                                     </p>
-                                )}
-                            </div>
 
-                            {/* Password Field */}
+                                    {/* Email Field */}
 
-                            <div>
-                                <label
-                                    htmlFor="password"
-                                    className="mb-2 block text-sm font-medium text-gray-700"
-                                >
-                                    Password
-                                </label>
-                                <div className="relative">
-                                    <input
-                                        id="password"
-                                        name="password"
-                                        type={showPassword ? "text" : "password"}
-                                        autoComplete="current-password"
-                                        placeholder="Enter your password"
-                                        required
-                                        value={formData.password}
-                                        onChange={(event) => {
-                                            const value = event.target.value
-                                            setFormData({ ...formData, password: value })
-
-                                            if (value === "") {
-                                                setTouched({ ...touched, password: false })
-                                            }
-                                        }}
-                                        className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
-                                    />
-
-                                    {formData.password && (
-                                        <button
-                                            type="button"
-                                            aria-label={showPassword ? "Hide password" : "Show password"}
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute inset-y-0 right-3 text-sm font-medium text-green-700 hover:text-green-900"
+                                    <div>
+                                        <label
+                                            htmlFor="email"
+                                            className="mb-2 block text-sm font-medium text-gray-700"
                                         >
-                                            {showPassword ? "Hide" : "Show"}
-                                        </button>
-                                    )}
-                                </div>
+                                            Email Address
+                                        </label>
+                                        <input
+                                            id="email"
+                                            name="email"
+                                            type="email"
+                                            autoComplete="email"
+                                            placeholder="you@example.com"
+                                            required
+                                            value={formData.email}
+                                            onChange={(event) => {
+                                                const value = event.target.value
+                                                setFormData({ ...formData, email: value })
 
-                                {submitted && touched.password && validatePassword(formData.password) && (
-                                    <p className="mt-2 text-sm text-red-600">
-                                        {validatePassword(formData.password)}
-                                    </p>
-                                )}
+                                                if (value === "") {
+                                                    setTouched({ ...touched, email: false })
+                                                }
+                                            }}
+                                            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                        />
+                                        {submitted && touched.email && validateEmail(formData.email) && (
+                                            <p className="mt-2 text-sm text-red-600">
+                                                {validateEmail(formData.email)}
+                                            </p>
+                                        )}
+                                    </div>
 
-                                {/* Confirm Password Field */}
+                                    {/* Password Field */}
 
-                                <div className="relative">
-                                    <input
-                                        id="password"
-                                        name="password"
-                                        type={showConfirmPassword ? "text" : "password"}
-                                        autoComplete="current-password"
-                                        placeholder="Confirm your password"
-                                        required
-                                        value={formData.confirmPassword}
-                                        onChange={(event) => {
-                                            const value = event.target.value
-                                            setFormData({ ...formData, confirmPassword: value })
-
-                                            if (value === "") {
-                                                setTouched({ ...touched, confirmPassword: false })
-                                            }
-                                        }}
-                                        className="w-full rounded-lg border border-gray-300 my-4 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
-                                    />
-
-                                    {formData.confirmPassword && (
-                                        <button
-                                            type="button"
-                                            aria-label={showConfirmPassword ? "Hide password" : "Show password"}
-                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                            className="absolute inset-y-0 right-3 text-sm font-medium text-green-700 hover:text-green-900"
+                                    <div>
+                                        <label
+                                            htmlFor="password"
+                                            className="mb-2 block text-sm font-medium text-gray-700"
                                         >
-                                            {showConfirmPassword ? "Hide" : "Show"}
-                                        </button>
-                                    )}
-                                </div>
+                                            Password
+                                        </label>
+                                        <div className="relative">
+                                            <input
+                                                id="password"
+                                                name="password"
+                                                type={showPassword ? "text" : "password"}
+                                                autoComplete="current-password"
+                                                placeholder="Enter your password"
+                                                required
+                                                value={formData.password}
+                                                onChange={(event) => {
+                                                    const value = event.target.value
+                                                    setFormData({ ...formData, password: value })
 
-                                {submitted &&
-                                    touched.confirmPassword &&
-                                    validateConfirmPassword(
-                                        formData.password,
-                                        formData.confirmPassword
-                                    ) && (
-                                        <p className="mt-2 text-sm text-red-600">
-                                            {validateConfirmPassword(
+                                                    if (value === "") {
+                                                        setTouched({ ...touched, password: false })
+                                                    }
+                                                }}
+                                                className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                            />
+
+                                            {formData.password && (
+                                                <button
+                                                    type="button"
+                                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    className="absolute inset-y-0 right-3 text-sm font-medium text-green-700 hover:text-green-900"
+                                                >
+                                                    {showPassword ? "Hide" : "Show"}
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {submitted && touched.password && validatePassword(formData.password) && (
+                                            <p className="mt-2 text-sm text-red-600">
+                                                {validatePassword(formData.password)}
+                                            </p>
+                                        )}
+
+                                        {/* Confirm Password Field */}
+
+                                        <div className="relative">
+                                            <input
+                                                id="password"
+                                                name="password"
+                                                type={showConfirmPassword ? "text" : "password"}
+                                                autoComplete="current-password"
+                                                placeholder="Confirm your password"
+                                                required
+                                                value={formData.confirmPassword}
+                                                onChange={(event) => {
+                                                    const value = event.target.value
+                                                    setFormData({ ...formData, confirmPassword: value })
+
+                                                    if (value === "") {
+                                                        setTouched({ ...touched, confirmPassword: false })
+                                                    }
+                                                }}
+                                                className="w-full rounded-lg border border-gray-300 my-4 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                            />
+
+                                            {formData.confirmPassword && (
+                                                <button
+                                                    type="button"
+                                                    aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                    className="absolute inset-y-0 right-3 text-sm font-medium text-green-700 hover:text-green-900"
+                                                >
+                                                    {showConfirmPassword ? "Hide" : "Show"}
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {submitted &&
+                                            touched.confirmPassword &&
+                                            validateConfirmPassword(
                                                 formData.password,
                                                 formData.confirmPassword
+                                            ) && (
+                                                <p className="mt-2 text-sm text-red-600">
+                                                    {validateConfirmPassword(
+                                                        formData.password,
+                                                        formData.confirmPassword
+                                                    )}
+                                                </p>
                                             )}
-                                        </p>
-                                    )}
-                            </div>
-                        </>
-                    )}
+                                    </div>
+                                    <p className="mt-5 text-center text-sm text-gray-600">
+                                        Already have an account?{" "}
+                                        <Link
+                                            href="/login"
+                                            className="font-medium text-green-700 hover:text-green-900 hover:underline"
+                                        >
+                                            Log In
+                                        </Link>
+                                    </p>
 
-                    {currentStep === 2 && (
-                        <>
-
-                            <div className="text-center">
-                                <h2 className="text-3xl font-bold text-green-800">
-                                    About you
-                                </h2>
-                                <p className="mt-2 text-center text-gray-600">
-                                    Add your height and weight to help personalise your plan.
-                                </p>
-                            </div>
-
-                            <div className="space-y-5">
-
-                                {/* Height Field */}
-
-                                <div>
-                                    <label htmlFor="height" className="block text-sm mb-2 font-medium text-gray-700">
-                                        Height (cm)
-                                    </label>
-
-                                    <input
-                                        id="height"
-                                        name="height"
-                                        type="text"
-                                        inputMode="numeric"
-                                        className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
-                                        placeholder="Enter height"
-                                        value={formData.height}
-                                        onChange={(event) => {
-                                            const value = event.target.value
-
-                                            if (value !== "" && !/^\d+$/.test(value)) {
-                                                return
-                                            }
-
-                                            setFormData({ ...formData, height: value })
-
-                                            if (value === "") {
-                                                setTouched({ ...touched, height: false })
-                                            }
-                                        }}
-                                    />
-
-                                    {submitted && touched.height && validateHeight(formData.height) && (
-                                        <p className="mt-2 text-sm text-red-600">
-                                            {validateHeight(formData.height)}
-                                        </p>
-                                    )}
-                                </div>
-
-                                {/* Weight Field */}
-
-                                <div>
-                                    <label htmlFor="weight" className="block text-sm mb-2 font-medium text-gray-700">
-                                        Weight (kg)
-                                    </label>
-
-                                    <input
-                                        id="weight"
-                                        name="weight"
-                                        type="text"
-                                        inputMode="decimal"
-                                        className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
-                                        placeholder="Enter weight"
-                                        value={formData.weight}
-                                        onChange={(event) => {
-                                            const value = event.target.value
-
-                                            if (value !== "" && !/^\d+\.?\d*$/.test(value)) {
-                                                return
-                                            }
-
-                                            setFormData({ ...formData, weight: value })
-
-                                            if (value === "") {
-                                                setTouched({ ...touched, weight: false })
-                                            }
-                                        }}
-                                    />
-
-                                    {submitted && touched.weight && validateWeight(formData.weight) && (
-                                        <p className="mt-2 text-sm text-red-600">
-                                            {validateWeight(formData.weight)}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                        </>
-                    )}
-
-                    {currentStep === 3 && (
-                        <div>
-                            <h2>Personal preferences</h2>
-                            <p>What is your main health or fitness goals?</p>
-
-                            <div>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="goal"
-                                        value="lose"
-                                        checked={formData.goal === "lose"}
-                                        onClick={() => {
-                                            if (formData.goal === "lose") {
-                                                event.preventDefault()
-                                                setFormData({
-                                                    ...formData,
-                                                    goal: "",
-                                                })
-                                            }
-                                        }}
-                                        onChange={(event) => {
-                                            setFormData({
-                                                ...formData,
-                                                goal: event.target.value,
-                                            })
-                                        }}
-                                    />
-                                    Lose weight
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="goal"
-                                        value="maintain"
-                                        checked={formData.goal === "maintain"}
-                                        onClick={() => {
-                                            if (formData.goal === "maintain") {
-                                                setFormData({
-                                                    ...formData,
-                                                    goal: "",
-                                                })
-                                            }
-                                        }}
-                                        onChange={(event) => {
-                                            setFormData({
-                                                ...formData,
-                                                goal: event.target.value,
-                                            })
-                                        }}
-                                    />
-                                    Maintain weight
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="goal"
-                                        value="gain"
-                                        checked={formData.goal === "gain"}
-                                        onClick={() => {
-                                            if (formData.goal === "gain") {
-                                                setFormData({
-                                                    ...formData,
-                                                    goal: "",
-                                                })
-                                            }
-                                        }}
-                                        onChange={(event) => {
-                                            setFormData({
-                                                ...formData,
-                                                goal: event.target.value,
-                                            })
-                                        }}
-                                    />
-                                    Gain weight
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="goal"
-                                        value="muscle"
-                                        checked={formData.goal === "muscle"}
-                                        onClick={() => {
-                                            if (formData.goal === "muscle") {
-                                                setFormData({
-                                                    ...formData,
-                                                    goal: "",
-                                                })
-                                            }
-                                        }}
-                                        onChange={(event) => {
-                                            setFormData({
-                                                ...formData,
-                                                goal: event.target.value,
-                                            })
-                                        }}
-                                    />
-                                    Build muscle
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="goal"
-                                        value="healthy"
-                                        checked={formData.goal === "healthy"}
-                                        onClick={() => {
-                                            if (formData.goal === "healthy") {
-                                                setFormData({
-                                                    ...formData,
-                                                    goal: "",
-                                                })
-                                            }
-                                        }}
-                                        onChange={(event) => {
-                                            setFormData({
-                                                ...formData,
-                                                goal: event.target.value,
-                                            })
-                                        }}
-                                    />
-                                    Eat healthier
-                                </label>
-                            </div>
-
-                            {submitted && validateGoal(formData.goal) && (
-                                <p className="mt-2 text-sm text-red-600">
-                                    {validateGoal(formData.goal)}
-                                </p>
+                                    <p className="mt-3 text-center text-sm text-gray-600">
+                                        View as guest?{" "}
+                                        <Link
+                                            href="/"
+                                            className="font-medium text-green-700 hover:text-green-900 hover:underline"
+                                        >
+                                            Guest
+                                        </Link>
+                                    </p>
+                                </>
                             )}
-                        </div>
-                    )}
 
-                    {currentStep === 1 ? (
-                        <Button
-                            type="button"
-                            onClick={handleNext}
-                        >Next
-                        </Button>
-                    ) : (
-                        <div className="flex w-full gap-3 pt-2">
-                            <div className="flex-1">
-                                <Button
-                                    type="button"
-                                    variant="secondary"
-                                    onClick={() => {
-                                        setCurrentStep(currentStep - 1)
-                                        setTouched({
-                                            ...touched,
-                                            height: false,
-                                            weight: false,
-                                        })
-                                    }}
-                                >
-                                    Back
-                                </Button>
-                            </div>
-                            <div className="flex-1">
+                            {currentStep === 2 && (
+                                <>
+
+                                    <div className="text-center">
+                                        <h2 className="text-3xl font-bold text-green-800">
+                                            About you
+                                        </h2>
+                                        <p className="mt-2 text-center text-gray-600">
+                                            Add your height and weight to help personalise your plan.
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-5">
+
+                                        {/* Height Field */}
+
+                                        <div>
+                                            <label htmlFor="height" className="block text-sm mb-2 font-medium text-gray-700">
+                                                Height (cm)
+                                            </label>
+
+                                            <input
+                                                id="height"
+                                                name="height"
+                                                type="text"
+                                                inputMode="numeric"
+                                                className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                                placeholder="Enter height"
+                                                value={formData.height}
+                                                onChange={(event) => {
+                                                    const value = event.target.value
+
+                                                    if (value !== "" && !/^\d+$/.test(value)) {
+                                                        return
+                                                    }
+
+                                                    setFormData({ ...formData, height: value })
+
+                                                    if (value === "") {
+                                                        setTouched({ ...touched, height: false })
+                                                    }
+                                                }}
+                                            />
+
+                                            {submitted && touched.height && validateHeight(formData.height) && (
+                                                <p className="mt-2 text-sm text-red-600">
+                                                    {validateHeight(formData.height)}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        {/* Weight Field */}
+
+                                        <div>
+                                            <label htmlFor="weight" className="block text-sm mb-2 font-medium text-gray-700">
+                                                Weight (kg)
+                                            </label>
+
+                                            <input
+                                                id="weight"
+                                                name="weight"
+                                                type="text"
+                                                inputMode="decimal"
+                                                className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                                                placeholder="Enter weight"
+                                                value={formData.weight}
+                                                onChange={(event) => {
+                                                    const value = event.target.value
+
+                                                    if (value !== "" && !/^\d+\.?\d*$/.test(value)) {
+                                                        return
+                                                    }
+
+                                                    setFormData({ ...formData, weight: value })
+
+                                                    if (value === "") {
+                                                        setTouched({ ...touched, weight: false })
+                                                    }
+                                                }}
+                                            />
+
+                                            {submitted && touched.weight && validateWeight(formData.weight) && (
+                                                <p className="mt-2 text-sm text-red-600">
+                                                    {validateWeight(formData.weight)}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
+                            {currentStep === 3 && (
+                                <div>
+                                    <h2>Personal preferences</h2>
+                                    <p>What is your main health or fitness goals?</p>
+
+                                    <div className="mt-5 grid grid-cols-1 gap-3">
+                                        <label className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors ${formData.goal === "lose"
+                                            ? "border-green-500 bg-green-50"
+                                            : "border-gray-200 hover:border-green-400"
+                                            }`}>
+                                            <input
+                                                type="radio"
+                                                name="goal"
+                                                className="sr-only"
+                                                value="lose"
+                                                checked={formData.goal === "lose"}
+                                                onClick={() => {
+                                                    if (formData.goal === "lose") {
+                                                        setFormData({
+                                                            ...formData,
+                                                            goal: "",
+                                                        })
+                                                    }
+                                                }}
+                                                onChange={(event) => {
+                                                    setFormData({
+                                                        ...formData,
+                                                        goal: event.target.value,
+                                                    })
+                                                }}
+                                            />
+                                            <span>Lose weight</span>
+                                            {formData.goal === "lose" && (
+                                                <span className="ml-auto text-lg font-bold text-green-600">
+                                                    ✓
+                                                </span>
+                                            )}
+                                        </label>
+                                        <label className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors ${formData.goal === "maintain"
+                                            ? "border-green-500 bg-green-50"
+                                            : "border-gray-200 hover:border-green-400"
+                                            }`}>
+                                            <input
+                                                type="radio"
+                                                name="goal"
+                                                value="maintain"
+                                                className="sr-only"
+                                                checked={formData.goal === "maintain"}
+                                                onClick={() => {
+                                                    if (formData.goal === "maintain") {
+                                                        setFormData({
+                                                            ...formData,
+                                                            goal: "",
+                                                        })
+                                                    }
+                                                }}
+                                                onChange={(event) => {
+                                                    setFormData({
+                                                        ...formData,
+                                                        goal: event.target.value,
+                                                    })
+                                                }}
+                                            />
+                                            <span>Maintain weight</span>
+                                            {formData.goal === "maintain" && (
+                                                <span className="ml-auto text-lg font-bold text-green-600">
+                                                    ✓
+                                                </span>
+                                            )}
+                                        </label>
+                                        <label className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors ${formData.goal === "gain"
+                                            ? "border-green-500 bg-green-50"
+                                            : "border-gray-200 hover:border-green-400"
+                                            }`}>
+                                            <input
+                                                type="radio"
+                                                name="goal"
+                                                value="gain"
+                                                className="sr-only"
+                                                checked={formData.goal === "gain"}
+                                                onClick={() => {
+                                                    if (formData.goal === "gain") {
+                                                        setFormData({
+                                                            ...formData,
+                                                            goal: "",
+                                                        })
+                                                    }
+                                                }}
+                                                onChange={(event) => {
+                                                    setFormData({
+                                                        ...formData,
+                                                        goal: event.target.value,
+                                                    })
+                                                }}
+                                            />
+                                            <span>Gain weight</span>
+                                            {formData.goal === "gain" && (
+                                                <span className="ml-auto text-lg font-bold text-green-600">
+                                                    ✓
+                                                </span>
+                                            )}
+                                        </label>
+                                        <label className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors ${formData.goal === "muscle"
+                                            ? "border-green-500 bg-green-50"
+                                            : "border-gray-200 hover:border-green-400"
+                                            }`}>
+                                            <input
+                                                type="radio"
+                                                name="goal"
+                                                value="muscle"
+                                                className="sr-only"
+                                                checked={formData.goal === "muscle"}
+                                                onClick={() => {
+                                                    if (formData.goal === "muscle") {
+                                                        setFormData({
+                                                            ...formData,
+                                                            goal: "",
+                                                        })
+                                                    }
+                                                }}
+                                                onChange={(event) => {
+                                                    setFormData({
+                                                        ...formData,
+                                                        goal: event.target.value,
+                                                    })
+                                                }}
+                                            />
+                                            <span>Build muscle</span>
+                                            {formData.goal === "muscle" && (
+                                                <span className="ml-auto text-lg font-bold text-green-600">
+                                                    ✓
+                                                </span>
+                                            )}
+                                        </label>
+                                        <label className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors ${formData.goal === "healthy"
+                                            ? "border-green-500 bg-green-50"
+                                            : "border-gray-200 hover:border-green-400"
+                                            }`}>
+                                            <input
+                                                type="radio"
+                                                name="goal"
+                                                value="healthy"
+                                                className="sr-only"
+                                                checked={formData.goal === "healthy"}
+                                                onClick={() => {
+                                                    if (formData.goal === "healthy") {
+                                                        setFormData({
+                                                            ...formData,
+                                                            goal: "",
+                                                        })
+                                                    }
+                                                }}
+                                                onChange={(event) => {
+                                                    setFormData({
+                                                        ...formData,
+                                                        goal: event.target.value,
+                                                    })
+                                                }}
+                                            />
+                                            <span>Eat healthier</span>
+                                            {formData.goal === "healthy" && (
+                                                <span className="ml-auto text-lg font-bold text-green-600">
+                                                    ✓
+                                                </span>
+                                            )}
+                                        </label>
+                                    </div>
+
+                                    {submitted && validateGoal(formData.goal) && (
+                                        <p className="mt-2 text-sm text-red-600">
+                                            {validateGoal(formData.goal)}
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+
+                            {currentStep === 1 ? (
                                 <Button
                                     type="button"
                                     onClick={handleNext}
-                                >
-                                    Next
+                                >Next
                                 </Button>
-                            </div>
-                        </div>
-                    )}
-
-                    <p className="mt-5 text-center text-sm text-gray-600">
-                        Already have an account?{" "}
-                        <Link
-                            href="/login"
-                            className="font-medium text-green-700 hover:text-green-900 hover:underline"
-                        >
-                            Log In
-                        </Link>
-                    </p>
-
-                    <p className="mt-3 text-center text-sm text-gray-600">
-                        View as guest?{" "}
-                        <Link
-                            href="/"
-                            className="font-medium text-green-700 hover:text-green-900 hover:underline"
-                        >
-                            Guest
-                        </Link>
-                    </p>
+                            ) : (
+                                <div className="flex w-full gap-3 pt-2">
+                                    <div className="flex-1">
+                                        <Button
+                                            type="button"
+                                            variant="secondary"
+                                            onClick={() => {
+                                                setCurrentStep(currentStep - 1)
+                                                setTouched({
+                                                    ...touched,
+                                                    height: false,
+                                                    weight: false,
+                                                })
+                                            }}
+                                        >
+                                            Back
+                                        </Button>
+                                    </div>
+                                    <div className="flex-1">
+                                        <Button
+                                            type="button"
+                                            onClick={handleNext}
+                                        >
+                                            {currentStep === 3 ? "Create Account" : "Next"}
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
                         </>
                     )}
                 </form>
