@@ -2,50 +2,51 @@
 from app.services import facade
 from app.core.database import get_db
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import ValidationError
 from app.schemas.user import UserCreate, UserLogin, UserRead
+
 
 router = APIRouter(tags=["User methods"])
 
 
 # Create user
-@router.post("/create")
-def create_user(payload: UserCreate):
+@router.post("/usercreate")
+def create_user(payload: UserCreate, db: Session = Depends(get_db)):
     print("---Creating user")
-    return facade.create_user(payload)
+    user = facade.create_user(payload, db)
+    return user
 
 
 # Get all users testing only
 @router.get("/")
-def get_all_users():
-    print("---Retrieving all users")
-    return facade.get_all_users()
+def get_all_users(db: Session = Depends(get_db)):
+    return facade.get_all_users(db)
 
 
 # Login user
 @router.post("/login")
-def login_user(payload: UserLogin):
-    print("---Authenticating user")
-    print(payload)
-    return facade.login_user(payload.username, payload.password)
+def login_user(payload: UserLogin, db: Session = Depends(get_db)):
+
+    pass
+
 
 # Get user by id
-@router.get("/{user_id}")
-def get_user(user_id: str):
-    print("---Retrieving user")
-    return facade.get_user_id(user_id)
+@router.get("/{user_id}", response_model=UserRead)
+def get_user(user_id: str, db: Session = Depends(get_db)):
+
+    pass
 
 
 # Delete user
 @router.delete("/{user_id}")
-def delete_user(user_id: str, auth: str = Header()):
-    print("---Deleting user")
-    return facade.delete_user(user_id, auth)
+def delete_user(user_id: str, db: Session = Depends(get_db)):
+
+    pass
 
 
 # View UserPlans
 @router.get("/{user_id}/plans")
-def UserPlans(user_id: str):
-    print("---Getting user's plans")
-    return facade.get_plans_by_user(user_id)
+def UserPlans(user_id: str, db: Session = Depends(get_db)):
+
+    pass
