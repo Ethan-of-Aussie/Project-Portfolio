@@ -115,6 +115,8 @@ class Facade:
                 detail="Forbidden"
             )
         try:
+            if (payload.password):
+                payload.password = hash_password(payload.password)
             return self.UserRepo.update(id, payload.model_dump(exclude_unset=True))
         except KeyError:
             raise HTTPException(

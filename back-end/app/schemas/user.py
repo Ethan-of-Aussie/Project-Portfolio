@@ -30,6 +30,7 @@ class UserRead(BaseModel):
 
 class UserUpdate(BaseModel):
     username: str | None = None
+    password: str | None = None
     email: EmailStr | None = None
     height: int | None = None
     weight: int | None = None
