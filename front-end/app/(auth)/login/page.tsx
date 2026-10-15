@@ -2,20 +2,21 @@
 import { useState } from "react"
 import Link from "next/link"
 import Button from "@/app/components/button"
+import { api } from "@/lib/api"
 
 export default function LoginPage() {
 
     // Stores value entered in form fields
 
     const [formData, setFormData] = useState({
-        email: "",
+        username: "",
         password: "",
     })
 
     // Tracks form fields to display validation error
 
     const [touched, setTouched] = useState({
-        email: false,
+        username: false,
         password: false,
     })
 
@@ -23,13 +24,9 @@ export default function LoginPage() {
     const [submitted, setSubmitted] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
 
-    function validateEmail(email: string) {
-        if (!email) {
-            return "Email is required."
-        }
-
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            return "Please enter a valid email address."
+    function validateUsername(username: string) {
+        if (!username.trim()) {
+            return "Username is required."
         }
 
         return ""
@@ -41,6 +38,11 @@ export default function LoginPage() {
         }
 
         return ""
+    }
+
+    const onSubmitLogin = async () => {
+        const response = await api.post("/api/v1/users/login", formData);
+        localStorage.setItem('access_token', response.data);
     }
 
     return (
@@ -62,11 +64,11 @@ export default function LoginPage() {
                     setSubmitted(true)
                     setTouched({
                         ...touched,
-                        email: true,
+                        username: true,
                         password: true,
                     })
 
-                    const emailError = validateEmail(formData.email)
+                    const emailError = validateUsername(formData.username)
                     const passwordError = validatePassword(formData.password)
 
                     if (emailError || passwordError) {
@@ -78,32 +80,32 @@ export default function LoginPage() {
 
                     <div>
                         <label
-                            htmlFor="email"
+                            htmlFor="username"
                             className="mb-2 block text-sm font-medium text-gray-700"
                         >
                             Email Address
                         </label>
                         <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            autoComplete="email"
-                            placeholder="you@example.com"
+                            id="username"
+                            name="username"
+                            type="username"
+                            autoComplete="username"
+                            placeholder="Enter your username"
                             required
-                            value={formData.email}
+                            value={formData.username}
                             onChange={(event) => {
                                 const value = event.target.value
-                                setFormData({ ...formData, email: value })
+                                setFormData({ ...formData, username: value })
 
                                 if (value === "") {
-                                    setTouched({...touched, email: false})
+                                    setTouched({...touched, username: false})
                                 }
                             }}
                             className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
                         />
-                        {submitted && touched.email && validateEmail(formData.email) && (
+                        {submitted && touched.username && validateUsername(formData.username) && (
                             <p className="mt-2 text-sm text-red-600">
-                                {validateEmail(formData.email)}
+                                {validateUsername(formData.username)}
                             </p>
                         )}
                     </div>
@@ -166,7 +168,7 @@ export default function LoginPage() {
                         </div>
                     </div>
 
-                    <Button>Log In</Button>
+                    <Button onClick={onSubmitLogin}>Log In</Button>
 
                     <p className="mt-5 text-center text-sm text-gray-600">
                         Don't have an account?{" "}
