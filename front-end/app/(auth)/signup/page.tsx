@@ -1,11 +1,12 @@
 "use client"
+import { api } from "@/lib/api"
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Button from "@/app/components/button"
 import user from "@/app/(main)/user/page"
-
+import { CreateTableRequestType } from "@/lib/user/dietPlan"
 export default function SignUpPage() {
-
+    const [tableName, setTableName] = useState("")
     // Stores value entered in form fields
 
     const [formData, setFormData] = useState({
@@ -15,7 +16,6 @@ export default function SignUpPage() {
         confirmPassword: "",
         height: "",
         weight: "",
-        goal: "",
     })
 
     // Tracks form fields to display validation error
@@ -45,6 +45,11 @@ export default function SignUpPage() {
     // State for controlling navigation animations for forms
     const [direction, setDirection] = useState(1)
 
+
+     const onSubmitCreateUser = async () => {
+        await api.post("api/v1/users/create", formData);
+         console.log("Account created succesfully")
+     }
     useEffect(() => {
         const card = cardRef.current;
 
@@ -192,17 +197,19 @@ export default function SignUpPage() {
             }
 
             setSubmitted(false)
-            setDirection(1)
-            setCurrentStep(3)
-        } else if (currentStep === 3) {
-            const goalError = validateGoal(formData.goal)
+            setIsComplete(true)
+            // setDirection(1)
+            // setCurrentStep(3)
+        } {/* else if (currentStep === 3) {
+             const goalError = validateGoal(formData.goal)
 
-            if (goalError) {
-                return
-            }
+             if (goalError) {
+               return
+             }
 
             setIsComplete(true)
-        }
+
+       */ } 
     }
 
     return (
@@ -212,8 +219,7 @@ export default function SignUpPage() {
                 className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl step-enter"
                 style={{
                     "--slide-from": direction === 1 ? "30px" : "-30px",
-                } as React.CSSProperties}
-            >
+                } as React.CSSProperties}>
 
                 <form noValidate autoComplete="off" className="mt-8 space-y-5" onSubmit={(event) => {
                     event.preventDefault()
@@ -340,9 +346,7 @@ export default function SignUpPage() {
                                             className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ${currentStep === 3
                                                 ? "bg-green-600 text-white"
                                                 : "bg-gray-200 text-gray-500"
-                                                }`}
-                                        >
-                                            3
+                                                }`}>3
                                         </div>
                                         <span className="text-sm text-gray-500">
                                             Goals
@@ -649,7 +653,7 @@ export default function SignUpPage() {
 
                             {/* Third form for goals */}
 
-                            {currentStep === 3 && (
+                            {/* {currentStep === 3 && (
                                 <div>
                                     <h2>Personal preferences</h2>
                                     <p>What is your main health or fitness goals?</p>
@@ -823,8 +827,7 @@ export default function SignUpPage() {
                                         </p>
                                     )}
                                 </div>
-                            )}
-
+                            )}*/}
                             {currentStep === 1 ? (
                                 <Button
                                     type="button"
@@ -845,25 +848,19 @@ export default function SignUpPage() {
                                                     height: false,
                                                     weight: false,
                                                 })
-                                            }}
-                                        >
-                                            Back
-                                        </Button>
+                                            }}>Back</Button>
                                     </div>
                                     <div className="flex-1">
-                                        <Button
-                                            type="button"
-                                            onClick={handleNext}
-                                        >
-                                            {currentStep === 3 ? "Create Account" : "Next"}
+                                        <Button type="button" onClick={onSubmitCreateUser}> {/*{handleNext}*/}
+                                            {currentStep === 2 ? "Create Account" : "Next"}
                                         </Button>
-                                    </div>
+                                </div>
                                 </div>
                             )}
-                        </>
+                </>
                     )}
-                </form>
-            </div>
-        </main>
+            </form>
+        </div>
+        </main >
     )
 }
