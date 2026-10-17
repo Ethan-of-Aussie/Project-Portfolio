@@ -76,17 +76,3 @@ export function validateGoal(goal: string) {
 
     return ""
 }
-
-// // Bundling previous created validation funcions for reuse
-
-// function validateAccountDetails() {
-//     return (
-//         validateUsername(formData.username) ||
-//         validateEmail(formData.email) ||
-//         validatePassword(formData.password) ||
-//         validateConfirmPassword(
-//             formData.password,
-//             formData.confirmPassword
-//         )
-//     )
-// }
