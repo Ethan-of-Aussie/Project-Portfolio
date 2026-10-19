@@ -31,7 +31,7 @@ class Facade:
             id = decode_token(auth)["id"]
             print(id)
             return self.get_user_id(id)
-        except JWTError, KeyError:
+        except (JWTError, KeyError):
             raise HTTPException(
                 status_code=401,
                 detail="Invalid token")

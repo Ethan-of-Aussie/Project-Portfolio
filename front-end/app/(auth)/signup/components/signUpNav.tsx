@@ -1,4 +1,10 @@
+import { api } from "@/lib/api";
 import Button from "@/app/components/button";
+import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useRef } from "react"
+
+
+
 
 type SignUpNavProps = {
     currentStep: number;
@@ -22,6 +28,7 @@ export default function SignUpNav({
     touched,
     setTouched,
 }: SignUpNavProps) {
+    const router = useRouter()
     return (
         <div>
             {currentStep === 1 ? (
@@ -52,9 +59,9 @@ export default function SignUpNav({
                     <div className="flex-1">
                         <Button
                             type="button"
-                            onClick={handleNext}
+                            onClick={() => {handleNext(); router.push('/')}}  /*{handleNext}*/
                         >
-                            {currentStep === 3 ? "Create Account" : "Next"}
+                            {currentStep === 2 ? "Create Account" : "Next"}
                         </Button>
                     </div>
                 </div>

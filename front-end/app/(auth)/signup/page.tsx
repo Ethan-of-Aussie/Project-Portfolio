@@ -1,4 +1,5 @@
 "use client"
+import { api } from "@/lib/api"
 import React, { useState, useEffect, useRef } from "react"
 import {
     validateUsername, validateEmail, validatePassword, validateConfirmPassword,
@@ -11,8 +12,10 @@ import GoalsForm from "./forms/goalsForm"
 import ProgressStatus from "./components/progressStatus"
 import SignUpNav from "./components/signUpNav"
 
-export default function SignUpPage() {
 
+
+export default function SignUpPage() {
+    
     // Stores value entered in form fields
 
     const [formData, setFormData] = useState({
@@ -22,8 +25,8 @@ export default function SignUpPage() {
         confirmPassword: "",
         height: "",
         weight: "",
-        goal: "",
-    })
+        // goal: "",
+    }) 
 
     // Tracks form fields to display validation error
 
@@ -47,7 +50,12 @@ export default function SignUpPage() {
 
     // State for controlling navigation animations for forms
     const [direction, setDirection] = useState(1)
-
+    
+    /*const onSubmitCreateUser = async () => {
+        await api.post("api/v1/users/create", formData);
+        console.log("Account created succesfully")
+    }*/
+    
     useEffect(() => {
         const card = cardRef.current;
 
@@ -90,7 +98,7 @@ export default function SignUpPage() {
 
         const heightError = validateHeight(formData.height);
         const weightError = validateWeight(formData.weight);
-        const goalError = validateGoal(formData.goal);
+       // const goalError = validateGoal(formData.goal);
 
         if (
             userNameError ||
@@ -98,8 +106,8 @@ export default function SignUpPage() {
             passwordError ||
             confirmPasswordError ||
             heightError ||
-            weightError ||
-            goalError
+            weightError // ||
+           // goalError
         ) {
             return false;
         }
@@ -109,7 +117,7 @@ export default function SignUpPage() {
 
     // Next button validation
 
-    function handleNext() {
+    async function handleNext() {
         setSubmitted(true)
 
         if (currentStep === 1) {
@@ -144,16 +152,21 @@ export default function SignUpPage() {
             }
 
             setSubmitted(false)
-            setDirection(1)
-            setCurrentStep(3)
-        } else if (currentStep === 3) {
+            setIsComplete(true)
+
+            await api.post("api/v1/users/create", formData);
+            console.log("Account created succesfully")
+
+            // setDirection(1)
+            // setCurrentStep(3)
+        } /* else if (currentStep === 3) {
             if (!validateForm()) {
                 return
             }
 
             setIsComplete(true)
-        }
-    }
+        }*/
+    } 
 
     return (
         <main className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
@@ -228,7 +241,7 @@ export default function SignUpPage() {
 
                             {/* Third form for goals */}
 
-                            {currentStep === 3 && (
+                            {/* {currentStep === 3 && (
                                 <GoalsForm
                                     goal={formData.goal}
                                     setGoal={(goal) => {
@@ -236,7 +249,7 @@ export default function SignUpPage() {
                                     }}
                                     submitted={submitted}
                                 />
-                            )}
+                            )} */}
 
                             {/* Signup Form Nav buttons */}
 
@@ -254,4 +267,5 @@ export default function SignUpPage() {
             </div>
         </main>
     )
+    
 }
