@@ -16,7 +16,7 @@ type AccountFormProps = {
         confirmPassword: string;
         height: string;
         weight: string;
-        goal: string;
+       // goal: string;
     };
     setFormData: React.Dispatch<
         React.SetStateAction<AccountFormProps["formData"]>
