@@ -38,3 +38,20 @@ def getDataFromFoodFile(limit: int, offset: int):
             """).fetchdf()
     return result
 # product_name, code, ingredients_text, nutriments, ingredients
+
+
+# For filtering. Checkboxes, dropdown filtering functions (all the visual logic is of course in the frontend)
+# def filterBoxes(trait):
+    # Need to filter based on criteras of the items in .parquet.
+    #result = conn.execute(f"""
+    #            SELECT product_name, code, ingredients_text, nutriments, ingredients
+     #           FROM read_parquet('s3://dietplan/food.parquet')
+     #           WHERE EXISTS (
+                 #   SELECT 1
+                 #   FROM UNNEST(ingredients) AS t(item)
+                 #   WHERE item.text ILIKE '%{trait}%'
+                 #)
+            #    
+     #           LIMIT 50 OFFSET 5
+     #       """).fetchdf()
+    #return result
