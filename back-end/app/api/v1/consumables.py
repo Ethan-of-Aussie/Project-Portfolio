@@ -17,3 +17,12 @@ def getExternalConsumable(token: Annotated[str, Depends(oauth2_scheme)]):
         consumables.to_json(orient="records")
     )
     return {"consumables": display_consumables}
+
+@router.get("/sciencedata/filter")
+def getFilteredExternalConsumable(trait):
+    consumables = facade.get_filtered_consumable_from_external_file(trait)
+    display_consumables = json.loads(
+        consumables.to_json(orient="records")
+    )
+    return {"consumables": display_consumables}
+
