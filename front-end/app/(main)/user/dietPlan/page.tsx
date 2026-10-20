@@ -52,6 +52,7 @@ export function DietPlanForm() {
     const setExternalConsumables = async () => {
         setIsGetFoodLoading(true)
         const respond = await getExternalConsumables() as ExternalConsumables;
+        console.log(respond)
         setExternalConsumablesData(respond)
         setIsGetFoodLoading(false)
     }
