@@ -10,7 +10,7 @@ type DietProp = {
 }
 
 type NutrimentType = {
-    "100g": null | Number,
+    "100g": null | number,
     name: string,
     prepared_100g: null | number,
     prepared_serving: null | number,

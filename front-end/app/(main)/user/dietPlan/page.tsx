@@ -80,7 +80,15 @@ export function DietPlanForm() {
             <div>
                 {
                     selectedConsumables.map((item, index) => (
-                        <div key={index}>{item.product_name[0].text}</div>
+                        <div key={index}>{item.product_name[0].text}
+                        
+                        {   item.nutriments !== null &&
+                            item.nutriments.map((nutriment, index) => (
+                                <li key={index}>
+                                {nutriment.name}: {nutriment["100g"] === null?nutriment.value:nutriment["100g"]}{nutriment.unit}
+                                </li>
+                        ))
+                        }</div>
                     ))
                 }
             </div>
