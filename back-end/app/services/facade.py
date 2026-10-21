@@ -14,7 +14,7 @@ from app.persistence.consumable import ConsumableRepository
 from jose.exceptions import JWTError
 from app.core.database import get_db
 from app.models.consumable import ConsumableOrm
-from app.services.r2_duckdb import getDataFromFoodFile, filterBoxes
+from app.services.r2_duckdb import getDataFromFoodFile, filterBoxes, testFilterBoxes
 
 class Facade:
 
@@ -226,6 +226,12 @@ class Facade:
         return result
     def get_filtered_consumable_from_external_file(self, trait):
         result = filterBoxes(trait)
+        print("---new data testttt--")
+        # for index, row in result.iterrows():
+        #     print(row["brands_tags"])
+        return result
+    def test_get_filtered_consumable_from_external_file(self):
+        result = testFilterBoxes()
         print("---new data testttt--")
         # for index, row in result.iterrows():
         #     print(row["brands_tags"])

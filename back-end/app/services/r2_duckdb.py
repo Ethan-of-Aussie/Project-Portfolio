@@ -29,7 +29,20 @@ conn.execute("""
     secret_key,
     f"{account_id}.r2.cloudflarestorage.com"
 ])
-
+# ︾ Creating the database as an index for performence ︾
+conn.execute("""
+    CREATE OR REPLACE TABLE nutriment_index AS
+    SELECT
+        code,
+        product_name,
+        item.name AS nutriments_name,
+        item."100g" AS value_100g,
+        item.value AS nutrient_amount,
+        item.unit AS unit,
+        item.serving as serving_size
+    FROM read_parquet('s3://dietplan/food.parquet'),
+    UNNEST(nutriments) AS t(item)
+""")
 def getDataFromFoodFile(limit: int, offset: int):
     result = conn.execute(f"""
                 SELECT product_name, code, ingredients_text, nutriments, ingredients
@@ -44,14 +57,31 @@ def getDataFromFoodFile(limit: int, offset: int):
 def filterBoxes(trait):
 # Need to filter based on criteras of the items in .parquet.
     result = conn.execute(f"""
-            SELECT product_name, code, ingredients_text, nutriments, ingredients
+            SELECT product_name, code, nutriments
             FROM read_parquet('s3://dietplan/food.parquet')
-            WHERE nutriments IS NOT NULL
-            AND EXISTS (
+            WHERE EXISTS (
                 SELECT 1
                 FROM UNNEST(nutriments) AS t(item)
                 WHERE item.name ILIKE '%{trait}%'
-                )
-            LIMIT 50 OFFSET 5
+            )
+            Limit 10
         """).fetchdf()
+    return result
+
+def testFilterBoxes():
+# Need to filter based on criteras of the items in .parquet.
+    result = conn.execute("""
+            SELECT 
+            code, 
+            product_name, 
+            nutriments_name, 
+            value_100g, 
+            FLOOR(nutrient_amount) AS nutrient_amount,
+            unit,
+            serving_size
+                FROM nutriment_index
+                WHERE nutriments_name ILIKE 'sugars'
+                LIMIT 50;    
+    """).fetchdf()
+
     return result
