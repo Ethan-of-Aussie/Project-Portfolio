@@ -10,6 +10,7 @@ import Consumable from "@/app/components/consumable"
 import type { DietProp, ExternalConsumables, ExternalConsumable, CreateTableRequestType, ConsumableRequest } from "@/lib/user/dietPlan"
 import { getDietPlan, getExternalConsumables } from "@/lib/user/dietPlan";
 import { Field } from '@base-ui/react/field';
+import NutrientCard from "./components/nutrientCard";
 import styles from './index.module.css';
 export interface SimpleDialogProps {
   open: boolean;
@@ -80,15 +81,7 @@ export function DietPlanForm() {
             <div>
                 {
                     selectedConsumables.map((item, index) => (
-                        <div key={index}>{item.product_name[0].text}
-                        
-                        {   item.nutriments !== null &&
-                            item.nutriments.map((nutriment, index) => (
-                                <li key={index}>
-                                {nutriment.name}: {nutriment["100g"] === null?nutriment.value:nutriment["100g"]}{nutriment.unit}
-                                </li>
-                        ))
-                        }</div>
+                        <NutrientCard key={index} item={item} />
                     ))
                 }
             </div>
