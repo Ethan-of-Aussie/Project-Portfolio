@@ -27,6 +27,15 @@ def getFilteredExternalConsumable(trait: str):
     )
     return {"consumables": display_consumables}
 
+@router.get("/sciencedata/search")
+def getSearchedExternalConsumable(string: str):
+    print("Product Name:", string)
+    consumables = facade.get_searched_consumable_from_external_file(string)
+    display_consumables = json.loads(
+        consumables.to_json(orient="records")
+    )
+    return {"consumables": display_consumables}
+
 @router.get("/sciencedata/filtertest")
 def testGetExternalConsumable():
     consumables = facade.test_get_filtered_consumable_from_external_file()

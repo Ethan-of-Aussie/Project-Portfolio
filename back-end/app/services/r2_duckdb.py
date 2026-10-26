@@ -54,8 +54,8 @@ def getDataFromFoodFile(limit: int, offset: int):
 
 
 # For filtering. Checkboxes, dropdown filtering functions (all the visual logic is of course in the frontend)
-def filterBoxes(trait):
-# Need to filter based on criteras of the items in .parquet.
+def filterBoxes(trait: str):
+# Filter Logic based on nutriments properties
     result = conn.execute(f"""
             SELECT *
             FROM nutriment_index
@@ -68,8 +68,23 @@ def filterBoxes(trait):
         """).fetchdf()
     return result
 
+def searchField(string: str):
+# Search Logic based on product_name text
+    res = conn.execute(f"""
+        SELECT *
+        FROM nutriment_index
+        WHERE code IN (
+        SELECT code
+        FROM nutriment_index,
+        UNNEST(product_name) AS p(product)
+        WHERE product.text ILIKE '%{string}%'
+        )
+        LIMIT 50
+    """).fetchdf()
+    return res
+
 def testFilterBoxes():
-# Need to filter based on criteras of the items in .parquet.
+# Filter Logic based on nutriments properties
     result = conn.execute("""
             SELECT *
             FROM nutriment_index
