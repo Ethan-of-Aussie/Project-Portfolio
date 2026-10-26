@@ -57,30 +57,27 @@ def getDataFromFoodFile(limit: int, offset: int):
 def filterBoxes(trait):
 # Need to filter based on criteras of the items in .parquet.
     result = conn.execute(f"""
-            SELECT product_name, code, nutriments
-            FROM read_parquet('s3://dietplan/food.parquet')
-            WHERE EXISTS (
-                SELECT 1
-                FROM UNNEST(nutriments) AS t(item)
-                WHERE item.name ILIKE '%{trait}%'
-            )
-            Limit 10
+            SELECT *
+            FROM nutriment_index
+            WHERE code IN (
+                SELECT code
+                FROM nutriment_index
+                WHERE nutriments_name ILIKE '%{trait}%'
+                )
+                LIMIT 50;    
         """).fetchdf()
     return result
 
 def testFilterBoxes():
 # Need to filter based on criteras of the items in .parquet.
     result = conn.execute("""
-            SELECT 
-            code, 
-            product_name, 
-            nutriments_name, 
-            value_100g, 
-            FLOOR(nutrient_amount) AS nutrient_amount,
-            unit,
-            serving_size
+            SELECT *
+            FROM nutriment_index
+            WHERE code IN (
+                SELECT code
                 FROM nutriment_index
-                WHERE nutriments_name ILIKE 'sugars'
+                WHERE nutriments_name ILIKE '%sugars%'
+                )
                 LIMIT 50;    
     """).fetchdf()
 
