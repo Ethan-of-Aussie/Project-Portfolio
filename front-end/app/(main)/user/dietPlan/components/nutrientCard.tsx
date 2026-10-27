@@ -1,5 +1,7 @@
+import { ExternalConsumable } from "@/lib/user/dietPlan";
+
 type NutrientCardProps = {
-    item: any;
+    item: ExternalConsumable;
 };
 
 export default function NutrientCard({ item }: NutrientCardProps) {
