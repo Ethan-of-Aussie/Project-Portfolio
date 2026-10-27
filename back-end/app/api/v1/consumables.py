@@ -19,26 +19,26 @@ def getExternalConsumable(token: Annotated[str, Depends(oauth2_scheme)]):
     return {"consumables": display_consumables}
 
 @router.get("/sciencedata/filter")
-def getFilteredExternalConsumable(trait: str):
+def getFilteredExternalConsumable(trait: str, limit: int, offset: int):
     print("trait:", trait)
-    consumables = facade.get_filtered_consumable_from_external_file(trait)
+    consumables = facade.get_filtered_consumable_from_external_file(trait, limit, offset)
     display_consumables = json.loads(
         consumables.to_json(orient="records")
     )
     return {"consumables": display_consumables}
 
 @router.get("/sciencedata/search")
-def getSearchedExternalConsumable(string: str):
+def getSearchedExternalConsumable(string: str, limit: int, offset: int):
     print("Product Name:", string)
-    consumables = facade.get_searched_consumable_from_external_file(string)
+    consumables = facade.get_searched_consumable_from_external_file(string, limit, offset)
     display_consumables = json.loads(
         consumables.to_json(orient="records")
     )
     return {"consumables": display_consumables}
 
 @router.get("/sciencedata/filtertest")
-def testGetExternalConsumable():
-    consumables = facade.test_get_filtered_consumable_from_external_file()
+def testGetExternalConsumable(limit: int, offset: int):
+    consumables = facade.test_get_filtered_consumable_from_external_file(limit, offset)
     display_consumables = json.loads(
         consumables.to_json(orient="records")
     )

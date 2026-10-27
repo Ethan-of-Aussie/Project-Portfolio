@@ -35,6 +35,7 @@ conn.execute("""
     SELECT
         code,
         product_name,
+        allergens_tags AS allergies,
         item.name AS nutriments_name,
         item."100g" AS value_100g,
         item.value AS nutrient_amount,
@@ -54,7 +55,7 @@ def getDataFromFoodFile(limit: int, offset: int):
 
 
 # For filtering. Checkboxes, dropdown filtering functions (all the visual logic is of course in the frontend)
-def filterBoxes(trait: str):
+def filterBoxes(trait: str, limit: int, offset: int):
 # Filter Logic based on nutriments properties
     result = conn.execute(f"""
             SELECT *
@@ -64,11 +65,11 @@ def filterBoxes(trait: str):
                 FROM nutriment_index
                 WHERE nutriments_name ILIKE '%{trait}%'
                 )
-            LIMIT 50;    
+            LIMIT {limit} OFFSET {offset}    
         """).fetchdf()
     return result
 
-def searchField(string: str):
+def searchField(string: str, limit: int, offset: int):
 # Search Logic based on product_name text
     res = conn.execute(f"""
         SELECT *
@@ -79,21 +80,21 @@ def searchField(string: str):
         UNNEST(product_name) AS p(product)
         WHERE product.text ILIKE '%{string}%'
         )
-        LIMIT 50
+        LIMIT {limit} OFFSET {offset}
     """).fetchdf()
     return res
 
-def testFilterBoxes():
+def testFilterBoxes(limit: int, offset: int):
 # Filter Logic based on nutriments properties
-    result = conn.execute("""
-            SELECT *
+    result = conn.execute(f"""
+        SELECT *
+        FROM nutriment_index
+        WHERE code IN (
+            SELECT code
             FROM nutriment_index
-            WHERE code IN (
-                SELECT code
-                FROM nutriment_index
-                WHERE nutriments_name ILIKE '%sugars%'
-                )
-                LIMIT 50;    
+            WHERE nutriments_name ILIKE '%sugars%'
+            )
+        LIMIT {limit} OFFSET {offset}    
     """).fetchdf()
 
     return result

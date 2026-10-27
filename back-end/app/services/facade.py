@@ -224,19 +224,19 @@ class Facade:
         # for index, row in result.iterrows():
         #     print(row["brands_tags"])
         return result
-    def get_filtered_consumable_from_external_file(self, trait):
-        result = filterBoxes(trait)
+    def get_filtered_consumable_from_external_file(self, trait: str, limit: int, offset: int):
+        result = filterBoxes(trait, limit, offset)
         print("---new data testttt--")
 
         return result
 
-    def get_searched_consumable_from_external_file(self, string: str):
-        result = searchField(string)
+    def get_searched_consumable_from_external_file(self, string: str, limit: int, offset: int):
+        result = searchField(string, limit, offset)
         print("---new data testttt--")
 
         return result
-    def test_get_filtered_consumable_from_external_file(self):
-        result = testFilterBoxes()
+    def test_get_filtered_consumable_from_external_file(self, limit: int, offset: int):
+        result = testFilterBoxes(limit, offset)
         print("---new data testttt--")
 
         return result
