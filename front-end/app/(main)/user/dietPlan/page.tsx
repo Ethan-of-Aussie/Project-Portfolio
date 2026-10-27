@@ -4,7 +4,7 @@ import { api } from "@/lib/api"
 import { useEffect, useState } from "react";
 import DietPlanCard from '@/app/components/dietPlanCard'
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
+// import Dialog from '@mui/material/Dialog';
 import Consumable from "@/app/components/consumable"
 
 import type { DietProp, ExternalConsumables, ExternalConsumable, CreateTableRequestType, ConsumableRequest } from "@/lib/user/dietPlan"
@@ -12,40 +12,53 @@ import { getDietPlan, getExternalConsumables } from "@/lib/user/dietPlan";
 import { Field } from '@base-ui/react/field';
 import NutrientCard from "./components/nutrientCard";
 import styles from './index.module.css';
-export interface SimpleDialogProps {
-  open: boolean;
-  selectedValue: string;
-  onClose: (value: string) => void;
-}
+// export interface SimpleDialogProps {
+//     open: boolean;
+//     selectedValue: string;
+//     onClose: (value: string) => void;
+// }
 
-const emails = ['username@gmail.com', 'user02@gmail.com'];
+// const emails = ['username@gmail.com', 'user02@gmail.com'];
 
 export function DietPlanForm() {
     const [selectedConsumables, setSelectedConsumables] = useState<ExternalConsumable[]>([])
+    const [currentPage, setCurrentPage] = useState(1);
     const [externalConsumablesData, setExternalConsumablesData] = useState<ExternalConsumables>();
     const [isGetFoodLoading, setIsGetFoodLoading] = useState<boolean>()
     const [tableName, setTableName] = useState("")
+
+    const itemsPerPage = 10;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentItems = externalConsumablesData?.consumables.slice(
+        startIndex,
+        endIndex
+    );
+    const totalPages = Math.ceil(
+        (externalConsumablesData?.consumables.length ?? 0) / itemsPerPage
+    )
 
     const onSubmitCreateDietPlan = async () => {
         console.log("summited");
         let createTableRequest: CreateTableRequestType = {} as CreateTableRequestType;
         createTableRequest.name = tableName;
         createTableRequest.consumables = selectedConsumables.map((item) => {
-                return {
-                    name: item.product_name[0].text,
-                    code: Number(item.code),
-                    allergies: [],
-                    nutrients: {},
-                    quantity: 0,
-                    weight: 0
-                } as ConsumableRequest})
+            return {
+                name: item.product_name[0].text,
+                code: Number(item.code),
+                allergies: [],
+                nutrients: {},
+                quantity: 0,
+                weight: 0
+            } as ConsumableRequest
+        })
 
         const response = await api.post("/api/v1/plans/create", createTableRequest);
         console.log("is respond back", response);
-        
+
     }
     const addSelectedConsumables = (consumable: ExternalConsumable) => {
-        setSelectedConsumables((prev) => [...prev, consumable])        
+        setSelectedConsumables((prev) => [...prev, consumable])
     }
     const removeSelectedConsumables = (Consumable: ExternalConsumable) => {
         setSelectedConsumables((prev) => prev.filter((item) => item.code !== Consumable.code))
@@ -60,15 +73,15 @@ export function DietPlanForm() {
     return (
         <Field.Root className={`${styles.Field} !max-w-[None]`}>
             <Field.Label className={styles.Label}>Name</Field.Label>
-            <Field.Control 
-                required 
-                placeholder="Required" 
-                className={styles.Input} 
+            <Field.Control
+                required
+                placeholder="Required"
+                className={styles.Input}
                 value={tableName}
                 onChange={(e) => {
                     setTableName(e.target.value);
                 }}
-                />
+            />
 
             <Field.Error className={styles.Error} match="valueMissing">
                 Please enter your name
@@ -78,50 +91,69 @@ export function DietPlanForm() {
             <Field.Error className={styles.Error} match="valueMissing">
                 pick your favorite
             </Field.Error>
-            <div>
+            <div className="flex flex-wrap gap-2 pb-3">
                 {
                     selectedConsumables.map((item, index) => (
-                        <NutrientCard key={index} item={item} />
+                        <p key={index}
+                            className="rounded-full bg-gray-400 px-4 py-2">
+                            {item.product_name[0].text}
+                        </p>
                     ))
                 }
             </div>
-            <div className="pb-3">
+            <div className="pb-3 ">
                 <Button variant="contained" onClick={setExternalConsumables} loading={isGetFoodLoading}>Get all Foods</Button>
             </div>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-col gap-3 pb-3">
                 {
-                    externalConsumablesData?.consumables.map((item, index) => (
-                        <Consumable key={index} addConsumableClick={addSelectedConsumables} removeConsumableClick={removeSelectedConsumables} consumable={item} />
+                    currentItems?.map((item, index) => (
+                        <Consumable
+                            key={index}
+                            addConsumableClick={addSelectedConsumables}
+                            removeConsumableClick={removeSelectedConsumables}
+                            consumable={item}
+                        />
                     ))
                 }
             </div>
-        <Button variant="contained" color="error" onClick={onSubmitCreateDietPlan}>Submit</Button>
+            {externalConsumablesData?.consumables.length > 0 && (
+                <>
+                    <div className="flex flex-wrap gap-2">
+                        <Button variant="contained" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</Button>
+                        <Button variant="contained" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</Button>
+                    </div>
+                    <p className="py-3">Page {currentPage} of {totalPages}</p>
+                </>
+            )}
+            <Button variant="contained" color="error" onClick={onSubmitCreateDietPlan}>Submit</Button>
         </Field.Root>
-        );
+    );
 }
 
-export default function dietPlan () {
+export default function dietPlan() {
     console.log("test data");
     // const getFoodData
 
-    const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(emails[1]);
+    // const [open, setOpen] = useState(false);
+    const [showFoodBrowser, setShowFoodBrowser] = useState(false);
+    // const [selectedValue, setSelectedValue] = useState(emails[1]);
     const [foodDatas, setFoodDatas] = useState([]);
     const [dietPlans, setDietPlans] = useState<DietProp[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    
+
     const handleClickOpen = () => {
-            setOpen(true);
-        };
-    const handleClose = (value: string) => {
-            setOpen(false);
-            setSelectedValue(value);
-        };
+        // setOpen(true);
+        setShowFoodBrowser(true);
+    };
+    // const handleClose = (value: string) => {
+    //     setOpen(false);
+    //     setSelectedValue(value);
+    // };
 
     const setDietPlansData = async () => {
         let data = (await getDietPlan());
         console.log("hhhhaaa", data);
-        
+
         setDietPlans(data)
     }
     const get_res = async () => {
@@ -132,46 +164,54 @@ export default function dietPlan () {
             console.log(foodDatas);
             setIsLoading(false)
         })
-        .catch((err) => console.error("Failed:", err));
+            .catch((err) => console.error("Failed:", err));
     }
 
-    function SimpleDialog(props: SimpleDialogProps) {
-        const { onClose, selectedValue, open } = props;
+    // function SimpleDialog(props: SimpleDialogProps) {
+    //     const { onClose, selectedValue, open } = props;
 
-        const handleClose = () => {
-            onClose(selectedValue);
-        };
+    //     const handleClose = () => {
+    //         onClose(selectedValue);
+    //     };
 
-        const handleListItemClick = (value: string) => {
-            onClose(value);
-        };
+    //     const handleListItemClick = (value: string) => {
+    //         onClose(value);
+    //     };
 
-        return (
-            <Dialog onClose={handleClose} open={open}>
-                <div className="w-[500px] h-[800px] border-[lightseagreen] p-3">
-                    <p className="font-bold text-lg py-3">Create Plan</p>
-                    <DietPlanForm/>
-                </div>
-            </Dialog>
-        );
-    }
+    //     return (
+    //         <Dialog onClose={handleClose} open={open}>
+    //             <div className="w-[500px] h-[800px] border-[lightseagreen] p-3">
+    //                 <p className="font-bold text-lg py-3">Create Plan</p>
+    //                 <DietPlanForm />
+    //             </div>
+    //         </Dialog>
+    //     );
+    // }
     useEffect(() => {
         setDietPlansData()
     }, [])
     return (
         <div>
-            <div className="mb-3">
+            <div className="my-3">
                 <Button variant="contained" onClick={handleClickOpen}>Create Diet Plan</Button>
-                <SimpleDialog
-                selectedValue={selectedValue}
-                open={open}
-                onClose={handleClose}
-                />
+                {/* <SimpleDialog
+                    selectedValue={selectedValue}
+                    open={open}
+                    onClose={handleClose}
+                /> */}
             </div>
+            {showFoodBrowser && (
+                <div className="mt-6 rounded-xl border border-gray-200 p-4">
+                    <h2 className="text-xl font-bold">
+                        Select Food
+                    </h2>
+                    <DietPlanForm />
+                </div>
+            )}
             <div className="flex flex-col gap-3">
                 {
                     dietPlans.map((plan, index) => (
-                        <DietPlanCard dietPlan= {plan} key={index}></DietPlanCard>
+                        <DietPlanCard dietPlan={plan} key={index}></DietPlanCard>
                     ))
                 }
             </div>
@@ -183,7 +223,7 @@ export default function dietPlan () {
                 {
                     foodDatas.map((data, index) => (
                         <button key={index} className="p-4 bg-blue-300 rounded-full">
-                            {!data["product_name"] ? "No name found" : data["product_name"][0]["text"] }
+                            {!data["product_name"] ? "No name found" : data["product_name"][0]["text"]}
                         </button>
                     ))
                 }
