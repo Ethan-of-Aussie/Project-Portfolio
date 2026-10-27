@@ -177,8 +177,15 @@ class Facade:
             status_code=403,
             detail= str(e))
 
-    def update_plan(self, payload, auth):
-        pass
+    def update_plan(self, payload, plan_id, auth):
+        prior_plan = self.get_plan(plan_id)
+        if (id != decode_token(auth)["id"]):
+            raise HTTPException(
+                status_code=403,
+                detail="Forbidden"
+            )
+        self.PlanRepo.update(payload, payload.model_dump(exclude_unset=True))
+        return 200
 
     def delete_plan(self, id, auth):
         user_id = self.get_JWT_user(auth).id

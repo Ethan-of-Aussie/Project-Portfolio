@@ -32,8 +32,8 @@ def get_plan(plan_id: str):
 
 
 @router.patch("/{plan_id}", response_model=PlanModel)
-def update_plan(plan_id: str, auth: str = Header()):  # Not sure if we need a new pydantic schema for a payload: schema
-    return facade.update_plan(plan_id, auth)
+def update_plan(plan_id: str, payload: PlanCreate, auth: str = Header()):
+    return facade.update_plan(payload, plan_id, auth)
 
 
 @router.delete("/{plan_id}")
