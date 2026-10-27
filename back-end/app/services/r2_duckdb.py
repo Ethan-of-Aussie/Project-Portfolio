@@ -64,7 +64,7 @@ def filterBoxes(trait: str):
                 FROM nutriment_index
                 WHERE nutriments_name ILIKE '%{trait}%'
                 )
-                LIMIT 50;    
+            LIMIT 50;    
         """).fetchdf()
     return result
 
