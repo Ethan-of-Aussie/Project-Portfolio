@@ -4,24 +4,17 @@ import { api } from "@/lib/api"
 import { useEffect, useState } from "react";
 import DietPlanCard from '@/app/components/dietPlanCard'
 import Button from '@mui/material/Button';
-// import Dialog from '@mui/material/Dialog';
 import Consumable from "@/app/components/consumable"
 
 import type { DietProp, ExternalConsumables, ExternalConsumable, CreateTableRequestType, ConsumableRequest } from "@/lib/user/dietPlan"
 import { getDietPlan, getExternalConsumables } from "@/lib/user/dietPlan";
 import { Field } from '@base-ui/react/field';
-import NutrientCard from "./components/nutrientCard";
+import useAnimatedRemoval from "@/hooks/useAnimatedRemoval";
 import styles from './index.module.css';
-// export interface SimpleDialogProps {
-//     open: boolean;
-//     selectedValue: string;
-//     onClose: (value: string) => void;
-// }
-
-// const emails = ['username@gmail.com', 'user02@gmail.com'];
 
 export function DietPlanForm() {
     const [selectedConsumables, setSelectedConsumables] = useState<ExternalConsumable[]>([])
+    const { removingCodes, animateRemoval } = useAnimatedRemoval();
     const [currentPage, setCurrentPage] = useState(1);
     const [externalConsumablesData, setExternalConsumablesData] = useState<ExternalConsumables>();
     const [isGetFoodLoading, setIsGetFoodLoading] = useState<boolean>()
@@ -94,10 +87,19 @@ export function DietPlanForm() {
             <div className="flex flex-wrap gap-2 pb-3">
                 {
                     selectedConsumables.map((item, index) => (
-                        <p key={index}
-                            className="rounded-full bg-gray-400 px-4 py-2">
-                            {item.product_name[0].text}
-                        </p>
+                        <div key={index}
+                            className={`flex items-center gap-2 rounded-full bg-green-700 text-white px-4 py-2 ${removingCodes.includes(item.code) ? "chip-exit" : "chip-enter"}`}
+                        >
+                            <span>{item.product_name[0].text}</span>
+                            <button
+                                type="button"
+                                onClick={() => animateRemoval(item, removeSelectedConsumables)}
+                                className="flex h-6 w-6 items-center justify-center rounded-full font-bold text-[#d32f2f]"
+                                aria-label={`Remove ${item.product_name[0].text}`}
+                            >
+                                X
+                            </button>
+                        </div>
                     ))
                 }
             </div>
@@ -112,43 +114,39 @@ export function DietPlanForm() {
                             addConsumableClick={addSelectedConsumables}
                             removeConsumableClick={removeSelectedConsumables}
                             consumable={item}
+                            isSelected={selectedConsumables.some(
+                                (selectedItem) => selectedItem.code === item.code
+                            )}
+                            animateRemovalClick={animateRemoval}
                         />
                     ))
                 }
             </div>
-            {externalConsumablesData?.consumables.length > 0 && (
-                <>
-                    <div className="flex flex-wrap gap-2">
-                        <Button variant="contained" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</Button>
-                        <Button variant="contained" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</Button>
-                    </div>
-                    <p className="py-3">Page {currentPage} of {totalPages}</p>
-                </>
-            )}
+            {
+                externalConsumablesData?.consumables.length > 0 && (
+                    <>
+                        <div className="flex flex-wrap gap-2">
+                            <Button variant="contained" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</Button>
+                            <Button variant="contained" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</Button>
+                        </div>
+                        <p className="py-3">Page {currentPage} of {totalPages}</p>
+                    </>
+                )
+            }
             <Button variant="contained" color="error" onClick={onSubmitCreateDietPlan}>Submit</Button>
-        </Field.Root>
+        </Field.Root >
     );
 }
 
 export default function dietPlan() {
-    console.log("test data");
-    // const getFoodData
-
-    // const [open, setOpen] = useState(false);
     const [showFoodBrowser, setShowFoodBrowser] = useState(false);
-    // const [selectedValue, setSelectedValue] = useState(emails[1]);
     const [foodDatas, setFoodDatas] = useState([]);
     const [dietPlans, setDietPlans] = useState<DietProp[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleClickOpen = () => {
-        // setOpen(true);
         setShowFoodBrowser(true);
     };
-    // const handleClose = (value: string) => {
-    //     setOpen(false);
-    //     setSelectedValue(value);
-    // };
 
     const setDietPlansData = async () => {
         let data = (await getDietPlan());
@@ -167,26 +165,6 @@ export default function dietPlan() {
             .catch((err) => console.error("Failed:", err));
     }
 
-    // function SimpleDialog(props: SimpleDialogProps) {
-    //     const { onClose, selectedValue, open } = props;
-
-    //     const handleClose = () => {
-    //         onClose(selectedValue);
-    //     };
-
-    //     const handleListItemClick = (value: string) => {
-    //         onClose(value);
-    //     };
-
-    //     return (
-    //         <Dialog onClose={handleClose} open={open}>
-    //             <div className="w-[500px] h-[800px] border-[lightseagreen] p-3">
-    //                 <p className="font-bold text-lg py-3">Create Plan</p>
-    //                 <DietPlanForm />
-    //             </div>
-    //         </Dialog>
-    //     );
-    // }
     useEffect(() => {
         setDietPlansData()
     }, [])
@@ -194,14 +172,9 @@ export default function dietPlan() {
         <div>
             <div className="my-3">
                 <Button variant="contained" onClick={handleClickOpen}>Create Diet Plan</Button>
-                {/* <SimpleDialog
-                    selectedValue={selectedValue}
-                    open={open}
-                    onClose={handleClose}
-                /> */}
             </div>
             {showFoodBrowser && (
-                <div className="mt-6 rounded-xl border border-gray-200 p-4">
+                <div className="mt-6 rounded-xl border border-gray-200 p-4 chip-enter">
                     <h2 className="text-xl font-bold">
                         Select Food
                     </h2>
