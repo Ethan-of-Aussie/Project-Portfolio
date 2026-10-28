@@ -104,7 +104,7 @@ export function DietPlanForm() {
                 }
             </div>
             <div className="pb-3 ">
-                <Button variant="contained" onClick={setExternalConsumables} loading={isGetFoodLoading}>Get all Foods</Button>
+                <Button variant="contained" color="success" onClick={setExternalConsumables} loading={isGetFoodLoading}>Get all Foods</Button>
             </div>
             <div className="flex flex-col gap-3 pb-3">
                 {
@@ -126,8 +126,8 @@ export function DietPlanForm() {
                 externalConsumablesData?.consumables.length > 0 && (
                     <>
                         <div className="flex flex-wrap gap-2">
-                            <Button variant="contained" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</Button>
-                            <Button variant="contained" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</Button>
+                            <Button variant="contained" color="success" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</Button>
+                            <Button variant="contained" color="success" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</Button>
                         </div>
                         <p className="py-3">Page {currentPage} of {totalPages}</p>
                     </>
@@ -171,7 +171,7 @@ export default function dietPlan() {
     return (
         <div>
             <div className="my-3">
-                <Button variant="contained" onClick={handleClickOpen}>Create Diet Plan</Button>
+                <Button variant="contained" color="success" onClick={handleClickOpen}>Create Diet Plan</Button>
             </div>
             {showFoodBrowser && (
                 <div className="mt-6 rounded-xl border border-gray-200 p-4 chip-enter">
