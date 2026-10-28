@@ -133,7 +133,7 @@ export function DietPlanForm() {
                     </>
                 )
             }
-            <Button variant="contained" color="error" onClick={onSubmitCreateDietPlan}>Submit</Button>
+            <Button variant="contained" color="success" onClick={onSubmitCreateDietPlan}>Submit</Button>
         </Field.Root >
     );
 }
