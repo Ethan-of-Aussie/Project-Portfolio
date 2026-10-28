@@ -1,5 +1,6 @@
 import os
 import duckdb
+import shutil
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -7,6 +8,10 @@ load_dotenv()
 account_id = os.getenv("ACCOUNT_ID")
 access_key = os.getenv("ACCESS_KEY_ID")
 secret_key = os.getenv("SECRET_ACCESS_KEY")
+# need auto clear on /tmp for when server ends
+if os.path.exists("./tmp"):
+    shutil.rmtree("./tmp")
+os.makedirs("./tmp", exist_ok=True)
 
 # Raw DuckDB connection (not SQLAlchemy)
 conn = duckdb.connect()
@@ -44,7 +49,13 @@ conn.execute("""
         item.serving as serving_size
     FROM read_parquet('s3://dietplan/food.parquet'),
     UNNEST(nutriments) AS t(item)
-""")
+"""
+)
+print(
+    conn.execute(
+        "SELECT current_setting('memory_limit')"
+    ).fetchall()
+)
 def getDataFromFoodFile(limit: int, offset: int):
     result = conn.execute(f"""
                 SELECT product_name, code, ingredients_text, nutriments, ingredients
