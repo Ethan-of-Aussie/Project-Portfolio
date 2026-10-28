@@ -10,7 +10,8 @@ secret_key = os.getenv("SECRET_ACCESS_KEY")
 
 # Raw DuckDB connection (not SQLAlchemy)
 conn = duckdb.connect()
-
+conn.execute("SET memory_limit='12GB'")
+conn.execute("SET temp_directory='./tmp'")
 # Enable HTTPFS for S3/R2
 conn.execute("INSTALL httpfs")
 conn.execute("LOAD httpfs")

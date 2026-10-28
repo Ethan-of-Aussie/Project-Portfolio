@@ -18,8 +18,7 @@ from app.services.r2_duckdb import getDataFromFoodFile, filterBoxes, testFilterB
 
 class Facade:
 
-    def __init__(self):
-        db = next(get_db())
+    def __init__(self, db):
         self.UserRepo = UserRepository(db)
         self.PlanRepo = PlanRepository(db)
         self.ConsumableRepo = ConsumableRepository(db)
