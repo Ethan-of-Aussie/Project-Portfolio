@@ -8,7 +8,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <h1 className='bg-sky-800 m-3'>auth</h1>
         <main>{children}</main>
       </body>
     </html>

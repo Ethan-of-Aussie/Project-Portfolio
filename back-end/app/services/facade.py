@@ -14,12 +14,11 @@ from app.persistence.consumable import ConsumableRepository
 from jose.exceptions import JWTError
 from app.core.database import get_db
 from app.models.consumable import ConsumableOrm
-from app.services.r2_duckdb import getDataFromFoodFile
+from app.services.r2_duckdb import getDataFromFoodFile, filterBoxes, testFilterBoxes, searchField
 
 class Facade:
 
-    def __init__(self):
-        db = next(get_db())
+    def __init__(self, db):
         self.UserRepo = UserRepository(db)
         self.PlanRepo = PlanRepository(db)
         self.ConsumableRepo = ConsumableRepository(db)
@@ -29,8 +28,9 @@ class Facade:
     def get_JWT_user(self, auth):
         try:
             id = decode_token(auth)["id"]
+            print(id)
             return self.get_user_id(id)
-        except JWTError, KeyError:
+        except (JWTError, KeyError):
             raise HTTPException(
                 status_code=401,
                 detail="Invalid token")
@@ -107,8 +107,20 @@ class Facade:
         # Grant auth token
         return self.login_user(payload.username, payload.password)
 
-    def update_user(self, payload, auth):
-        pass
+    def update_user(self, id, payload, auth):
+        if (id != decode_token(auth)["id"]):
+            raise HTTPException(
+                status_code=403,
+                detail="Forbidden"
+            )
+        try:
+            if (payload.password):
+                payload.password = hash_password(payload.password)
+            return self.UserRepo.update(id, payload.model_dump(exclude_unset=True))
+        except KeyError:
+            raise HTTPException(
+                status_code=404,
+                detail="User not found")
 
     def delete_user(self, id, auth):
         self.UserRepo.delete(self.get_JWT_user(auth).id)
@@ -137,29 +149,42 @@ class Facade:
                 status_code=404,
                 detail="Plan not found")
 
-    def get_plans_by_user(self, payload):
-        pass
+    def get_plans_by_user(self, user_id: str):
+        userPlans = self.PlanRepo.get_by_attribute_2("owner", user_id)
+        print(userPlans)
+        return userPlans
 
     def create_plan(self, payload: PlanCreate, user_id: str):
         # might need more edge case checking later
-
-        owner = self.UserRepo.get(user_id)
-        if owner is None:
-            return {"error": "user dose not exist"}
-        plan = PlanOrm(**payload.model_dump(exclude={"consumables"}))
-        plan.owner = user_id
-        plan.consumables = []
         try:
+            self.UserRepo.get(user_id)
+
+            plan = PlanOrm(**payload.model_dump(exclude={"consumables"}))
+            plan.owner = user_id
+            plan.consumables = []
             self.PlanRepo.add(plan)
             print(f"plann id {plan.id}")
-            self.create_consumables([item for item in payload.consumables], plan_id=plan.id)
-            self.get_consumable_from_external_file()
+            existingConsumables = self.create_consumables([item for item in payload.consumables], plan_id=plan.id)
+            if len(existingConsumables) > 0:
+                return {"plan id": plan.id, 
+                        "existing consumables": existingConsumables, 
+                        "message": "Consumables with the code is already existing we will replace it with existing one"
+                        }
+            return {"plan id": plan.id}
         except Exception as e:
-            return {"error": str(e)}
-        return {"plan id": plan.id}
+           raise HTTPException(
+            status_code=403,
+            detail= str(e))
 
-    def update_plan(self, payload, auth):
-        pass
+    def update_plan(self, payload, plan_id, auth):
+        prior_plan = self.get_plan(plan_id)
+        if (id != decode_token(auth)["id"]):
+            raise HTTPException(
+                status_code=403,
+                detail="Forbidden"
+            )
+        self.PlanRepo.update(payload, payload.model_dump(exclude_unset=True))
+        return 200
 
     def delete_plan(self, id, auth):
         user_id = self.get_JWT_user(auth).id
@@ -175,8 +200,21 @@ class Facade:
 
     def create_consumables(self, consumablesData: list[ConsumableCreate], plan_id):
             plan = self.PlanRepo.get(plan_id)
-    
+            existingConsumables = []
             for item in consumablesData:
+                foundedConsumables = self.ConsumableRepo.get_by_attribute_2("code", item.code)
+                if (foundedConsumables is not None and len(foundedConsumables) > 0):
+                    print("-----consumables---")
+                    print(foundedConsumables[0])
+                    existingConsumables.append(
+                            {
+                                "name": foundedConsumables[0].name,
+                                "code": foundedConsumables[0].code
+                            }
+                        )
+                    plan.consumables.append(foundedConsumables[0])
+                    continue
+
                 consumable = ConsumableOrm(**item.model_dump())
                 plan.consumables.append(consumable)
             try:
@@ -184,10 +222,27 @@ class Facade:
             except Exception as e:
                 raise Exception(e)
             print("all consumables created")
+            return existingConsumables
     
     def get_consumable_from_external_file(self):
-        result = getDataFromFoodFile(10, 3)
+        result = getDataFromFoodFile(50, 5)
         print("---new data testttt--")
-        for index, row in result.iterrows():
-            print(row["brands_tags"])
+        # for index, row in result.iterrows():
+        #     print(row["brands_tags"])
+        return result
+    def get_filtered_consumable_from_external_file(self, trait: str, limit: int, offset: int):
+        result = filterBoxes(trait, limit, offset)
+        print("---new data testttt--")
+
+        return result
+
+    def get_searched_consumable_from_external_file(self, string: str, limit: int, offset: int):
+        result = searchField(string, limit, offset)
+        print("---new data testttt--")
+
+        return result
+    def test_get_filtered_consumable_from_external_file(self, limit: int, offset: int):
+        result = testFilterBoxes(limit, offset)
+        print("---new data testttt--")
+
         return result

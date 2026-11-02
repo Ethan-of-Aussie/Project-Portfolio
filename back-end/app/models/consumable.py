@@ -11,6 +11,11 @@ class ConsumableOrm(BaseModel):
         String,
         nullable=False)
 
+    code: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0)
+    
     nutrients: Mapped[dict[str, float]] = mapped_column(
         JSON,
         nullable=False,
@@ -25,6 +30,7 @@ class ConsumableOrm(BaseModel):
         Integer,
         nullable=False,
         default=0)
+    
 
     allergies: Mapped[list[str]] = mapped_column(
         JSON,
