@@ -1,5 +1,6 @@
 import '../globals.css'
-import NavBar from '../components/navbar'
+import NavBar from '../components/navBar/navbar'
+import BottomNav from '../components/navBar/bottomNav'
 
 export default function RootLayout({
   children,
@@ -8,11 +9,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className='mx-8'>
+      <body>
         <NavBar />
-        <div>
+        <div className='pt-16'>
           <main>{children}</main>
         </div>
+        <BottomNav />
       </body>
     </html>
   )

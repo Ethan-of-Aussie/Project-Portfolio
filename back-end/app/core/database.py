@@ -9,14 +9,13 @@ def duckdb_engine():
     echo=True
     )
 
-def get_db():
-    engine = duckdb_engine()
-    print("here")
-    Base.metadata.create_all(bind=engine)
-    engine.dispose()
+engine = duckdb_engine()
 
-    engine = duckdb_engine()
-    SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+# Base.metadata.create_all(bind=engine)
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+
+def get_db():
     db = SessionLocal()
     try:
         yield db

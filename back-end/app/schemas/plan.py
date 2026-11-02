@@ -11,6 +11,14 @@ class PlanCreate(BaseModel):
     class Config:
         from_attributes = True
 
+class PlanUpdate(BaseModel):
+    name: str | None = None
+    consumables: list[ConsumableCreate] | None = None
+    nutrients: dict[str, float] | None = None
+
+    class Config:
+        from_attributes = True
+
 
 class PlanModel(BaseModel):
     owner: UUID

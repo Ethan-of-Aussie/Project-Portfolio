@@ -14,12 +14,11 @@ from app.persistence.consumable import ConsumableRepository
 from jose.exceptions import JWTError
 from app.core.database import get_db
 from app.models.consumable import ConsumableOrm
-from app.services.r2_duckdb import getDataFromFoodFile
+from app.services.r2_duckdb import getDataFromFoodFile, filterBoxes, testFilterBoxes, searchField
 
 class Facade:
 
-    def __init__(self):
-        db = next(get_db())
+    def __init__(self, db):
         self.UserRepo = UserRepository(db)
         self.PlanRepo = PlanRepository(db)
         self.ConsumableRepo = ConsumableRepository(db)
@@ -31,7 +30,7 @@ class Facade:
             id = decode_token(auth)["id"]
             print(id)
             return self.get_user_id(id)
-        except JWTError, KeyError:
+        except (JWTError, KeyError):
             raise HTTPException(
                 status_code=401,
                 detail="Invalid token")
@@ -177,8 +176,15 @@ class Facade:
             status_code=403,
             detail= str(e))
 
-    def update_plan(self, payload, auth):
-        pass
+    def update_plan(self, payload, plan_id, auth):
+        prior_plan = self.get_plan(plan_id)
+        if (id != decode_token(auth)["id"]):
+            raise HTTPException(
+                status_code=403,
+                detail="Forbidden"
+            )
+        self.PlanRepo.update(payload, payload.model_dump(exclude_unset=True))
+        return 200
 
     def delete_plan(self, id, auth):
         user_id = self.get_JWT_user(auth).id
@@ -223,4 +229,20 @@ class Facade:
         print("---new data testttt--")
         # for index, row in result.iterrows():
         #     print(row["brands_tags"])
+        return result
+    def get_filtered_consumable_from_external_file(self, trait: str, limit: int, offset: int):
+        result = filterBoxes(trait, limit, offset)
+        print("---new data testttt--")
+
+        return result
+
+    def get_searched_consumable_from_external_file(self, string: str, limit: int, offset: int):
+        result = searchField(string, limit, offset)
+        print("---new data testttt--")
+
+        return result
+    def test_get_filtered_consumable_from_external_file(self, limit: int, offset: int):
+        result = testFilterBoxes(limit, offset)
+        print("---new data testttt--")
+
         return result
