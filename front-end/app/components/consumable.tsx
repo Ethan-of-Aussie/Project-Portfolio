@@ -4,18 +4,21 @@ import {
     AccordionDetails,
     Button
 } from "@mui/material";
-import type { DietProp, ExternalConsumables, ExternalConsumable } from "@/lib/user/dietPlan"
-import { useState } from "react"
+import type { ExternalConsumable } from "@/lib/user/dietPlan"
 import NutrientCard from "../(main)/user/dietPlan/components/nutrientCard";
 
 type ConsumableProp = {
     consumable: ExternalConsumable,
     addConsumableClick: (consumable: ExternalConsumable) => void
     removeConsumableClick: (consumable: ExternalConsumable) => void
+    animateRemovalClick: (
+        item: ExternalConsumable,
+        removeItem: (item: ExternalConsumable) => void
+    ) => void
+    isSelected: boolean
 }
 
-export default function Consumable({ consumable, addConsumableClick, removeConsumableClick }: ConsumableProp) {
-    const [isSelected, setIsSelected] = useState(false);
+export default function Consumable({ consumable, addConsumableClick, removeConsumableClick, animateRemovalClick, isSelected }: ConsumableProp) {
 
     return (
         <Accordion
@@ -31,31 +34,31 @@ export default function Consumable({ consumable, addConsumableClick, removeConsu
                 },
             }}
         >
-            <AccordionSummary>
-                <span className="flex-1">{consumable.product_name[0].text}</span>
+            <div className="flex items-center pr-3">
+                <div className="flex-1">
+                    <AccordionSummary>
+                        {consumable.product_name[0].text}
+                    </AccordionSummary>
+                </div>
                 <Button
                     variant="contained"
+                    color={isSelected ? "error" : "success"}
                     size="small"
                     onClick={(event) => {
                         event.stopPropagation();
                         if (!isSelected) {
                             addConsumableClick(consumable)
                         } else {
-                            removeConsumableClick(consumable)
+                            animateRemovalClick(consumable, removeConsumableClick)
                         }
-                        setIsSelected(!isSelected)
                     }}
                 >
-                    {isSelected ? "Deselect" : "Select"}
+                    {isSelected ? "Remove" : "Add"}
                 </Button>
-            </AccordionSummary>
+            </div>
             <AccordionDetails>
                 <NutrientCard item={consumable} />
             </AccordionDetails>
         </Accordion>
-        // <button
-        //     className={`${isSelected ? "bg-[lightseagreen]": "bg-gray-400"} !text-white rounded-full px-6 py-1 text-xs`}>
-        //     {consumable.product_name[0].text}
-        // </button>
     )
 }

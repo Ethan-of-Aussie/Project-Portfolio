@@ -3,6 +3,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Button from "@/app/components/button"
 import { api } from "@/lib/api"
+import { redirect } from "next/navigation"
 
 export default function LoginPage() {
 
@@ -43,6 +44,9 @@ export default function LoginPage() {
     const onSubmitLogin = async () => {
         const response = await api.post("/api/v1/users/login", formData);
         localStorage.setItem('access_token', response.data);
+        if (response) {
+            redirect("/")
+        }
     }
 
     return (
@@ -68,22 +72,22 @@ export default function LoginPage() {
                         password: true,
                     })
 
-                    const emailError = validateUsername(formData.username)
+                    const usernameError = validateUsername(formData.username)
                     const passwordError = validatePassword(formData.password)
 
-                    if (emailError || passwordError) {
+                    if (usernameError || passwordError) {
                         return
                     }
                 }}>
 
-                    {/* Email field */}
+                    {/* Username field */}
 
                     <div>
                         <label
                             htmlFor="username"
                             className="mb-2 block text-sm font-medium text-gray-700"
                         >
-                            Email Address
+                            Username
                         </label>
                         <input
                             id="username"
