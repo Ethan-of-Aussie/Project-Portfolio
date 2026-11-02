@@ -8,10 +8,6 @@ load_dotenv()
 account_id = os.getenv("ACCOUNT_ID")
 access_key = os.getenv("ACCESS_KEY_ID")
 secret_key = os.getenv("SECRET_ACCESS_KEY")
-# need auto clear on /tmp for when server ends
-if os.path.exists("./tmp"):
-    shutil.rmtree("./tmp")
-os.makedirs("./tmp", exist_ok=True)
 
 # Raw DuckDB connection (not SQLAlchemy)
 conn = duckdb.connect()
