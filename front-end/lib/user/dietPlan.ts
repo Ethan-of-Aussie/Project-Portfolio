@@ -32,7 +32,7 @@ type ExternalConsumable = {
         text: string,
     }[]
     nutriments: NutrimentType[],
-    product_name: ProductName[]
+    product: string
 }
 
 type ExternalConsumables = {

@@ -37,7 +37,7 @@ export function DietPlanForm() {
         createTableRequest.name = tableName;
         createTableRequest.consumables = selectedConsumables.map((item) => {
             return {
-                name: item.product_name[0].text,
+                name: item.product,
                 code: Number(item.code),
                 allergies: [],
                 nutrients: {},
@@ -90,12 +90,12 @@ export function DietPlanForm() {
                         <div key={index}
                             className={`flex items-center gap-2 rounded-full bg-green-700 text-white px-4 py-2 ${removingCodes.includes(item.code) ? "chip-exit" : "chip-enter"}`}
                         >
-                            <span>{item.product_name[0].text}</span>
+                            <span>{item.product}</span>
                             <button
                                 type="button"
                                 onClick={() => animateRemoval(item, removeSelectedConsumables)}
                                 className="flex h-6 w-6 items-center justify-center rounded-full font-bold text-[#d32f2f]"
-                                aria-label={`Remove ${item.product_name[0].text}`}
+                                aria-label={`Remove ${item.product}`}
                             >
                                 X
                             </button>
@@ -196,7 +196,7 @@ export default function dietPlan() {
                 {
                     foodDatas.map((data, index) => (
                         <button key={index} className="p-4 bg-blue-300 rounded-full">
-                            {!data["product_name"] ? "No name found" : data["product_name"][0]["text"]}
+                            {!data["product"] ? "No name found" : data["product"]}
                         </button>
                     ))
                 }
