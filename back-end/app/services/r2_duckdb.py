@@ -60,7 +60,7 @@ print(
 )
 def getDataFromFoodFile(limit: int, offset: int):
     result = conn.execute(f"""
-                SELECT product_name, code, ingredients_text, nutriments, ingredients
+                SELECT *
                 FROM read_parquet('nutriment_index.parquet')
                 LIMIT {limit} OFFSET {offset}
             """).fetchdf()
