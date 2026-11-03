@@ -8,10 +8,6 @@ load_dotenv()
 account_id = os.getenv("ACCOUNT_ID")
 access_key = os.getenv("ACCESS_KEY_ID")
 secret_key = os.getenv("SECRET_ACCESS_KEY")
-# need auto clear on /tmp for when server ends
-if os.path.exists("./tmp"):
-    shutil.rmtree("./tmp")
-os.makedirs("./tmp", exist_ok=True)
 
 # Raw DuckDB connection (not SQLAlchemy)
 conn = duckdb.connect()
@@ -36,21 +32,27 @@ conn.execute("""
     f"{account_id}.r2.cloudflarestorage.com"
 ])
 # ︾ Creating the database as an index for performence ︾
-conn.execute("""
-    CREATE OR REPLACE TABLE nutriment_index AS
-    SELECT
-        code,
-        product_name,
-        allergens_tags AS allergies,
-        item.name AS nutriments_name,
-        item."100g" AS value_100g,
-        item.value AS nutrient_amount,
-        item.unit AS unit,
-        item.serving as serving_size
-    FROM read_parquet('s3://dietplan/food.parquet'),
-    UNNEST(nutriments) AS t(item)
-"""
-)
+if not os.path.exists("nutriment_index.parquet"):
+    print("Generating nutriment_index")
+    conn.execute("""
+        COPY (
+        SELECT
+            code,
+            product_name[1].text AS product,
+            allergens_tags AS allergies,
+            item.name AS nutriments_name,
+            item."100g" AS value_100g,
+            item.value AS nutrient_amount,
+            item.unit AS unit,
+            item.serving as serving_size
+        FROM read_parquet('s3://dietplan/food.parquet'),
+        UNNEST(nutriments) AS t(item),
+        )
+        TO 'nutriment_index.parquet'
+        (FORMAT PARQUET)
+    """
+    )
+
 print(
     conn.execute(
         "SELECT current_setting('memory_limit')"
@@ -59,7 +61,7 @@ print(
 def getDataFromFoodFile(limit: int, offset: int):
     result = conn.execute(f"""
                 SELECT product_name, code, ingredients_text, nutriments, ingredients
-                FROM read_parquet('s3://dietplan/food.parquet')
+                FROM read_parquet('nutriment_index.parquet')
                 LIMIT {limit} OFFSET {offset}
             """).fetchdf()
     return result
@@ -71,10 +73,10 @@ def filterBoxes(trait: str, limit: int, offset: int):
 # Filter Logic based on nutriments properties
     result = conn.execute(f"""
             SELECT *
-            FROM nutriment_index
+            FROM read_parquet('nutriment_index.parquet')
             WHERE code IN (
                 SELECT code
-                FROM nutriment_index
+                FROM read_parquet('nutriment_index.parquet')
                 WHERE nutriments_name ILIKE '%{trait}%'
                 )
             LIMIT {limit} OFFSET {offset}    
@@ -85,13 +87,8 @@ def searchField(string: str, limit: int, offset: int):
 # Search Logic based on product_name text
     res = conn.execute(f"""
         SELECT *
-        FROM nutriment_index
-        WHERE code IN (
-        SELECT code
-        FROM nutriment_index,
-        UNNEST(product_name) AS p(product)
-        WHERE product.text ILIKE '%{string}%'
-        )
+        FROM read_parquet('nutriment_index.parquet')
+        WHERE product ILIKE '%{string}%'
         LIMIT {limit} OFFSET {offset}
     """).fetchdf()
     return res
@@ -100,10 +97,10 @@ def testFilterBoxes(limit: int, offset: int):
 # Filter Logic based on nutriments properties
     result = conn.execute(f"""
         SELECT *
-        FROM nutriment_index
+        FROM read_parquet('nutriment_index.parquet')
         WHERE code IN (
             SELECT code
-            FROM nutriment_index
+            FROM read_parquet('nutriment_index.parquet')
             WHERE nutriments_name ILIKE '%sugars%'
             )
         LIMIT {limit} OFFSET {offset}    
