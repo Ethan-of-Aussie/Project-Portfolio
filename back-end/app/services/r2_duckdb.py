@@ -44,7 +44,7 @@ if not os.path.exists("nutriment_index.parquet"):
             item."100g" AS value_100g,
             item.value AS nutrient_amount,
             item.unit AS unit,
-            item.serving as serving_size
+            item.serving as serving_size,
         FROM read_parquet('s3://dietplan/food.parquet'),
         UNNEST(nutriments) AS t(item),
         )
@@ -60,8 +60,21 @@ print(
 )
 def getDataFromFoodFile(limit: int, offset: int):
     result = conn.execute(f"""
-                SELECT *
+                SELECT
+                    code,
+                    product,
+                    allergies,
+                    list(
+                        struct_pack(
+                        name := nutriments_name,
+                        value_100g := value_100g,
+                        nutrient_amount := nutrient_amount,
+                        unit := unit,
+                        serving_size := serving_size
+                        )
+                    ) AS nutriments
                 FROM read_parquet('nutriment_index.parquet')
+                GROUP BY code, product, allergies
                 LIMIT {limit} OFFSET {offset}
             """).fetchdf()
     return result
@@ -72,23 +85,49 @@ def getDataFromFoodFile(limit: int, offset: int):
 def filterBoxes(trait: str, limit: int, offset: int):
 # Filter Logic based on nutriments properties
     result = conn.execute(f"""
-            SELECT *
-            FROM read_parquet('nutriment_index.parquet')
-            WHERE code IN (
-                SELECT code
-                FROM read_parquet('nutriment_index.parquet')
-                WHERE nutriments_name ILIKE '%{trait}%'
+        SELECT 
+            code,
+            product,
+            allergies,
+            list(
+                struct_pack(
+                name := nutriments_name,
+                value_100g := value_100g,
+                nutrient_amount := nutrient_amount,
+                unit := unit,
+                serving_size := serving_size
                 )
-            LIMIT {limit} OFFSET {offset}    
+            ) AS nutriments
+        FROM read_parquet('nutriment_index.parquet')
+        WHERE code IN (
+            SELECT code
+            FROM read_parquet('nutriment_index.parquet')
+            WHERE nutriments_name ILIKE '%{trait}%'
+            )
+        GROUP BY code, product, allergies
+        LIMIT {limit} OFFSET {offset}    
         """).fetchdf()
     return result
 
 def searchField(string: str, limit: int, offset: int):
 # Search Logic based on product_name text
     res = conn.execute(f"""
-        SELECT *
+        SELECT 
+            code,
+            product,
+            allergies,
+            list(
+                struct_pack(
+                name := nutriments_name,
+                value_100g := value_100g,
+                nutrient_amount := nutrient_amount,
+                unit := unit,
+                serving_size := serving_size
+                )
+            ) AS nutriments
         FROM read_parquet('nutriment_index.parquet')
         WHERE product ILIKE '%{string}%'
+        GROUP BY code, product, allergies
         LIMIT {limit} OFFSET {offset}
     """).fetchdf()
     return res
