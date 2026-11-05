@@ -49,6 +49,7 @@ export default function NavBar() {
                     <div className="hidden md:flex gap-10 h-full">
                         <Link href={"/"} className="self-stretch p-4 hover:bg-gray-200 hover:text-black">Home</Link>
                         <Link href={"/about"} className="self-stretch p-4 hover:bg-gray-200 hover:text-black">About</Link>
+                        <Link href={"/user/dietPlan"} className="self-stretch p-4 hover:bg-gray-200 hover:text-black">Diet Plans</Link>
                         <Link href={"/user"} className="self-stretch p-4 hover:bg-gray-200 hover:text-black">Profile</Link>
                         {accessToken ? (
                             <button onClick={handleLogout} className="self-stretch p-4 hover:bg-gray-200 hover:text-black">Logout</button>
