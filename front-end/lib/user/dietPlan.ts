@@ -46,7 +46,7 @@ type nutrientsRequest = {
 type ConsumableRequest = {
     name: string,
     code: number,
-    nutrients: nutrientsRequest,
+    nutrients: nutrientsRequest[],
     weight: number,
     quantity: number,
     allergies: string[]
