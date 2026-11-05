@@ -7,7 +7,7 @@ type NutrientCardProps = {
 export default function NutrientCard({ item }: NutrientCardProps) {
     return (
         <div className="rounded-xl border border-gray-200 p-4 shadow-sm">
-            <h2 className="mb-3 text-xl font-bold">{item.product_name[0].text}</h2>
+            <h2 className="mb-3 text-xl font-bold">{item.product}</h2>
             {item.nutriments !== null && (
                 <>
                     <h3 className="mb-2 text-sm font-semibold text-gray-500">
