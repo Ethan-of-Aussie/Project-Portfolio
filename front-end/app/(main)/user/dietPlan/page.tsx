@@ -36,16 +36,17 @@ export function DietPlanForm() {
         let createTableRequest: CreateTableRequestType = {} as CreateTableRequestType;
         createTableRequest.name = tableName;
         createTableRequest.consumables = selectedConsumables.map((item) => {
+            console.log(item)
             return {
                 name: item.product,
-                code: Number(item.code),
-                allergies: [],
-                nutrients: {},
+                code: item.code,
+                nutriments: item.nutriments,
+                weight: 0,
                 quantity: 0,
-                weight: 0
+                allergies: []
             } as ConsumableRequest
         })
-
+        console.log(createTableRequest);
         const response = await api.post("/api/v1/plans/create", createTableRequest);
         console.log("is respond back", response);
 

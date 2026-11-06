@@ -5,6 +5,7 @@ from app.models.base_model import BaseModel
 from app.models.consumable import ConsumableOrm
 from app.models.consumable_and_plan import consumableAndPlanOrm
 from app.models.consumable import ConsumableOrm
+from typing import Any
 
 
 class PlanOrm(BaseModel):
@@ -15,7 +16,7 @@ class PlanOrm(BaseModel):
 
     consumables: Mapped[list[ConsumableOrm]] = relationship(secondary=consumableAndPlanOrm)
 
-    nutrients: Mapped[dict[str, float]] = mapped_column(
-        JSON,
-        nullable=False,
-        default=dict)
+    #nutriments: Mapped[dict[str, Any]] = mapped_column(
+    #    JSON,
+    #    nullable=False,
+    #    default=dict)

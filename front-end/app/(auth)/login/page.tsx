@@ -45,7 +45,7 @@ export default function LoginPage() {
         const response = await api.post("/api/v1/users/login", formData);
         localStorage.setItem('access_token', response.data);
         if (response) {
-            redirect("/")
+            redirect("/user/dietPlan")
         }
     }
 

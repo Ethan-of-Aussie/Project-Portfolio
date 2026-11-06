@@ -159,7 +159,7 @@ class Facade:
         try:
             self.UserRepo.get(user_id)
 
-            plan = PlanOrm(**payload.model_dump(exclude={"consumables"}))
+            plan = PlanOrm(**payload.model_dump(exclude_unset=True))
             plan.owner = user_id
             plan.consumables = []
             self.PlanRepo.add(plan)
