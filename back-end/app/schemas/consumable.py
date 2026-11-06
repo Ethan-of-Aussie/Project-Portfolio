@@ -1,15 +1,26 @@
 from pydantic import BaseModel, EmailStr, Field
 from uuid import UUID
+from typing import Any
 
+class Nutriments(BaseModel):
+    name: str | None
+    value: float | None
+    value_100g: float | None
+    serving: float | None
+    unit: str | None
+    prepared_value: float | None
+    prepared_100g: float | None
+    prepared_serving: float | None
+    prepared_unit: str | None
 
 class ConsumableCreate(BaseModel):
     # id: UUID | None = None
-    name: str
-    code: int
-    nutrients: dict[str, float] = Field(default_factory=dict)
-    weight: float
-    quantity: int
-    allergies: list[str] = Field(default_factory=[])
+    product: str
+    code: str
+    nutriments: list[dict[str, Any]] = Field(default_factory=list)
+    # weight: float ""
+    # quantity: int ""
+    allergies: list[str] = Field(default_factory=list)
 
     class Config:
         from_attributes = True
@@ -17,12 +28,13 @@ class ConsumableCreate(BaseModel):
 
 class ConsumableModel(BaseModel):
     id: UUID
-    name: str
-    code: int
-    nutrients: dict[str, float]
-    weight: float
-    quantity: int
+    product: str
+    code: str
+    nutriments: list[dict[str, Any]]
+    # weight: float ""
+    # quantity: int ""
     allergies: list[str]
 
     class Config:
         from_attributes = True
+

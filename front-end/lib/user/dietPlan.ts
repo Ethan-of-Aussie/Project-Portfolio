@@ -10,15 +10,15 @@ type DietProp = {
 }
 
 type NutrimentType = {
-    "100g": null | number,
-    name: string,
-    prepared_100g: null | number,
-    prepared_serving: null | number,
-    prepared_unit:null | number,
-    prepared_value:null | number,
-    serving: number,
-    unit: string,
-    value: number
+    name: string | null,
+    value: number | null,
+    value_100g: number | null,
+    serving: number | null,
+    unit: string | null,
+    prepared_value: number | null,
+    prepared_100g: number | null,
+    prepared_serving: number | null,
+    prepared_unit: string | null,
 }
 type ProductName = {
     lang: string,
@@ -26,11 +26,11 @@ type ProductName = {
 }
 type ExternalConsumable = {
     code: string,
-    ingredients: string,
-    ingredients_text: {
-        lang: string,
-        text: string,
-    }[]
+    /* ingredients: string,
+     ingredients_text: {
+         lang: string,
+         text: string,
+     }[] */
     nutriments: NutrimentType[],
     product: string
 }
@@ -44,16 +44,17 @@ type nutrientsRequest = {
     additionalProp3: number
 }
 type ConsumableRequest = {
-    name: string,
-    code: number,
-    nutrients: nutrientsRequest[],
-    weight: number,
-    quantity: number,
+    product: string,
+    code: string,
+    nutriments: NutrimentType[],
+   /* weight: number,
+    quantity: number, */
     allergies: string[]
 }
 type CreateTableRequestType = {
     name: string,
     consumables: ConsumableRequest[]
+
 }
 const getDietPlan = async () => {
     let dietPlan = await api.get("/api/v1/plans/userplans");

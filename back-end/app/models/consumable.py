@@ -2,33 +2,32 @@
 from sqlalchemy import String, JSON, Float, Integer, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from app.models.base_model import BaseModel
-
+from typing import Any
+from app.schemas.consumable import Nutriments
 
 class ConsumableOrm(BaseModel):
     __tablename__ = 'consumables'
 
-    name: Mapped[str] = mapped_column(
+    product: Mapped[str] = mapped_column(
+        String)
+
+    code: Mapped[str] = mapped_column(
         String,
         nullable=False)
-
-    code: Mapped[int] = mapped_column(
-        Integer,
-        nullable=False,
-        default=0)
     
-    nutrients: Mapped[dict[str, float]] = mapped_column(
+    nutriments: Mapped[list[dict[str, Any]]] = mapped_column(
         JSON,
-        nullable=False,
-        default=dict)
+        nullable=True,
+        default=list)
 
     weight: Mapped[float] = mapped_column(
         Float,
-        nullable=False,
+        nullable=True,
         default=0)
 
     quantity: Mapped[int] = mapped_column(
         Integer,
-        nullable=False,
+        nullable=True,
         default=0)
     
 

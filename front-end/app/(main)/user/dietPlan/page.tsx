@@ -37,12 +37,11 @@ export function DietPlanForm() {
         createTableRequest.name = tableName;
         createTableRequest.consumables = selectedConsumables.map((item) => {
             return {
-                name: item.product,
-                code: Number(item.code),
-                allergies: [],
-                nutrients: {},
-                quantity: 0,
-                weight: 0
+                product: item.product,
+                code: item.code,
+
+                nutriments: item.nutriments,
+
             } as ConsumableRequest
         })
 
