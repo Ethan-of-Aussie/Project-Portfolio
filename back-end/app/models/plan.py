@@ -16,7 +16,7 @@ class PlanOrm(BaseModel):
 
     consumables: Mapped[list[ConsumableOrm]] = relationship(secondary=consumableAndPlanOrm)
 
-    #nutriments: Mapped[dict[str, Any]] = mapped_column(
-    #    JSON,
-    #    nullable=False,
-    #    default=dict)
+    """nutriments: Mapped[dict[str, Any]] = mapped_column(
+        JSON,
+       nullable=False,
+       default=dict) """
