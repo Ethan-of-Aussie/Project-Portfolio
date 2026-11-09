@@ -37,7 +37,7 @@ export default function Consumable({ consumable, addConsumableClick, removeConsu
             <div className="flex items-center pr-3">
                 <div className="flex-1">
                     <AccordionSummary>
-                        {consumable.product_name[0].text}
+                        {consumable.product}
                     </AccordionSummary>
                 </div>
                 <Button
