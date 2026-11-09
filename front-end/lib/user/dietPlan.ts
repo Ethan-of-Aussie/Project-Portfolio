@@ -10,7 +10,7 @@ type DietProp = {
 }
 
 type NutrimentType = {
-    "100g": null | number,
+    value_100g: null | number,
     name: string,
     prepared_100g: null | number,
     prepared_serving: null | number,
@@ -32,7 +32,7 @@ type ExternalConsumable = {
         text: string,
     }[]
     nutriments: NutrimentType[],
-    product_name: ProductName[]
+    product: string
 }
 
 type ExternalConsumables = {
@@ -45,8 +45,8 @@ type nutrientsRequest = {
 }
 type ConsumableRequest = {
     name: string,
-    code: number,
-    nutrients: nutrientsRequest,
+    code: string,
+    nutriments: NutrimentType[],
     weight: number,
     quantity: number,
     allergies: string[]

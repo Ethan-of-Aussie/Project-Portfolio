@@ -2,6 +2,8 @@
 # from flask_restx import Api
 # from flask_bcrypt import Bcrypt
 # from flask_jwt_extended import JWTManager
+import shutil
+import os
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.api.v1.users import router as users_router
@@ -14,11 +16,14 @@ from app.models.base_model import Base
 """ FastAPI way for startup and shutdown for the engine through lifespan."""
 @asynccontextmanager
 async def lifespan(app: FastAPI): # supposedly dont need to use app but needs to be in parameter regardless. 
-
+    if os.path.exists("./tmp"):
+        shutil.rmtree("./tmp")
+    os.makedirs("./tmp", exist_ok=True)
     Base.metadata.create_all(bind=engine)
 
     yield
-
+    if os.path.exists("./tmp"):
+        shutil.rmtree("./tmp")
     engine.dispose()
 
 def create_app():
