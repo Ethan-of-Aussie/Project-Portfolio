@@ -1,12 +1,15 @@
 from pydantic import BaseModel, EmailStr, Field
 from uuid import UUID
 from app.schemas.consumable import ConsumableModel, ConsumableCreate
-
+from app.schemas.nutriments import NutrimentModel
 
 class PlanCreate(BaseModel):
     name: str
     consumables: list[ConsumableCreate]
-    nutrients: dict[str, float] = Field(default_factory=dict)
+    #nutriments: list[NutrimentModel] = Field(default_factory=list)
+    #allergies: list[str] = Field(default_factory=list)
+    #weight: int
+    #quantity: int
 
     class Config:
         from_attributes = True
@@ -14,7 +17,10 @@ class PlanCreate(BaseModel):
 class PlanUpdate(BaseModel):
     name: str | None = None
     consumables: list[ConsumableCreate] | None = None
-    nutrients: dict[str, float] | None = None
+    #nutriments: list[NutrimentModel] | None = None
+    #allergies: list[str] | None = None
+    #weight: int | None = None
+    #quantity: int | None = None
 
     class Config:
         from_attributes = True
@@ -24,7 +30,10 @@ class PlanModel(BaseModel):
     owner: UUID
     name: str
     consumables: list[ConsumableModel]
-    nutrients: dict[str, float]
+    #nutriments: list[NutrimentModel] = Field(default_factory=list)
+    #allergies: list[str]
+    #weight: int
+    #quantity: int
 
     class Config:
         from_attributes = True

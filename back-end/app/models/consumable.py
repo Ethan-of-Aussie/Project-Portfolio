@@ -2,6 +2,7 @@
 from sqlalchemy import String, JSON, Float, Integer, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from app.models.base_model import BaseModel
+from typing import Any
 
 
 class ConsumableOrm(BaseModel):
@@ -11,14 +12,14 @@ class ConsumableOrm(BaseModel):
         String,
         nullable=False)
 
-    code: Mapped[int] = mapped_column(
-        Integer,
+    code: Mapped[str] = mapped_column(
+        String,
         nullable=False,
         default=0)
     
-    nutrients: Mapped[dict[str, float]] = mapped_column(
+    nutriments: Mapped[dict[str, Any]] = mapped_column(
         JSON,
-        nullable=False,
+        nullable=True,
         default=dict)
 
     weight: Mapped[float] = mapped_column(

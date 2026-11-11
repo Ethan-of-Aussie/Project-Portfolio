@@ -40,7 +40,17 @@ if not os.path.exists("nutriment_index.parquet"):
             code,
             product_name[1].text AS product,
             allergens_tags AS allergies,
-            item
+            {
+                'name': item.name,
+                'value': item.value,
+                'value_100g': item."100g",
+                'serving': item.serving,
+                'unit': item.unit,
+                'prepared_value': item.prepared_value,
+                'prepared_100g': item.prepared_100g,
+                'prepared_serving': item.prepared_serving,
+                'prepared_unit': item.prepared_unit,
+            } AS item,
         FROM read_parquet('s3://dietplan/food.parquet'),
         UNNEST(nutriments) AS t(item),
         )

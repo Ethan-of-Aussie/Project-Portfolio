@@ -19,9 +19,9 @@ export default function NutrientCard({ item }: NutrientCardProps) {
                                 className="flex justify-between gap-4 border-b border-gray-100 pb-2">
                                 <span>{nutriment.name}</span>
                                 <span className="font-medium text-gray-900">
-                                    {nutriment["100g"] === null ?
+                                    {nutriment["value_100g"] === null ?
                                         nutriment.value :
-                                        nutriment["100g"]}{nutriment.unit}
+                                        nutriment["value_100g"]}{nutriment.unit}
                                 </span>
                             </li>
                         ))}
