@@ -5,7 +5,7 @@ A diet planning assistant to assist with weight loss, gain, or just maintaining 
 0. Move into Directory `back-end/`
 1. Create folder `data/` in `back-end/app`. Use this command in terminal in directory data/:
 
-wget https://huggingface.co/datasets/openfoodfacts/product-database/resolve/main/food.parquet
+- wget https://huggingface.co/datasets/openfoodfacts/product-database/resolve/main/food.parquet
 
 2. Install [Python 3.14](https://www.python.org/downloads/)
 3. Create virtual environment `python -m venv .venv` than start venv with `source .venv/bin/activate`
