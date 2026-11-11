@@ -5,10 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-account_id = os.getenv("ACCOUNT_ID")
-access_key = os.getenv("ACCESS_KEY_ID")
-secret_key = os.getenv("SECRET_ACCESS_KEY")
-
 # Raw DuckDB connection (not SQLAlchemy)
 conn = duckdb.connect()
 conn.execute("SET memory_limit='12GB'")
@@ -17,20 +13,7 @@ conn.execute("SET temp_directory='./tmp'")
 conn.execute("INSTALL httpfs")
 conn.execute("LOAD httpfs")
 
-# Create Cloudflare R2 secret
-conn.execute("""
-    CREATE SECRET r2_secret (
-        TYPE S3,
-        KEY_ID ?,
-        SECRET ?,
-        REGION 'auto',
-        ENDPOINT ?
-    )
-""", [
-    access_key,
-    secret_key,
-    f"{account_id}.r2.cloudflarestorage.com"
-])
+
 # ︾ Creating the database as an index for performence ︾
 if not os.path.exists("nutriment_index.parquet"):
     print("Generating nutriment_index")
@@ -51,7 +34,7 @@ if not os.path.exists("nutriment_index.parquet"):
                 'prepared_serving': item.prepared_serving,
                 'prepared_unit': item.prepared_unit,
             } AS item,
-        FROM read_parquet('s3://dietplan/food.parquet'),
+        FROM read_parquet('../back-end/app/data/food.parquet'),
         UNNEST(nutriments) AS t(item),
         )
         TO 'nutriment_index.parquet'

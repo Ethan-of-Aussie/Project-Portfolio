@@ -1,19 +1,39 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export default function Footer() {
-    return (
-        <nav className="bg-green-700">
-            <div className="flex items-center justify-between w-full px-6 text-white">
-                <div>
-                    <Link href={"/"}>Logo</Link>
-                </div>
-                <div className="flex gap-10 h-full">
-                    <Link href={"/"} className="self-stretch p-4 hover:bg-gray-200 hover:text-black">Home</Link>
-                    <Link href={"/about"} className="self-stretch p-4 hover:bg-gray-200 hover:text-black">About</Link>
-                    <Link href={"/login"} className="self-stretch p-4 hover:bg-gray-200 hover:text-black">Login</Link>
-                    <Link href={"/user"} className="self-stretch p-4 hover:bg-gray-200 hover:text-black">Profile</Link>
-                </div>
-            </div>
-        </nav>
-    )
+  return (
+    <footer className="w-full bg-green-800 text-white">
+      <div className="flex w-full items-center justify-between px-10 py-10">
+        <div>
+          <Link href="/" className="text-xl font-bold">
+            Logo
+          </Link>
+        </div>
+
+        <div className="flex gap-8">
+          <Link href="/" className="transition-colors hover:text-green-200">
+            Home
+          </Link>
+
+          <Link
+            href="/about"
+            className="transition-colors hover:text-green-200"
+          >
+            About
+          </Link>
+
+          <Link
+            href="/login"
+            className="transition-colors hover:text-green-200"
+          >
+            Login
+          </Link>
+
+          <Link href="/user" className="transition-colors hover:text-green-200">
+            Profile
+          </Link>
+        </div>
+      </div>
+    </footer>
+  );
 }
