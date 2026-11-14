@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-gradient-to-r from-[#EEEEEE] to-[#D5EBD8]">
         <NavBar />
         <div className="pt-16">
           <main>{children}</main>
