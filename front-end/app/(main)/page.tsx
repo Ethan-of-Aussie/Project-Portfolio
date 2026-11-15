@@ -9,9 +9,6 @@ export default function Page() {
       <HeroSection />
       <HowItWorksSection />
       <AboutSection />
-      <div className="mt-auto hidden w-full lg:block">
-        <Footer />
-      </div>
     </div>
   );
 }
