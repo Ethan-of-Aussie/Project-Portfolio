@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
+import demeter from "./demeter.webp";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import LeafDecoration from "../decoration/leafDecoration";
@@ -38,7 +40,13 @@ export default function NavBar() {
         <div className="col-span-full lg:col-start-1 lg:col-span-12 flex items-center justify-between px-4 py-3 text-gray-800">
           <div className="flex w-full items-center justify-between md:w-auto">
             <Link href={"/"} className="md:ml-6">
-              Logo
+              <Image
+                src={demeter}
+                alt="Demeter Logo"
+                width={200}
+                height={70}
+                priority
+              />
             </Link>
             <button
               type="button"
