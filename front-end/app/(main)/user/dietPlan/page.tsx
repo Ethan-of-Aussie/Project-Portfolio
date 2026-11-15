@@ -3,6 +3,7 @@
 import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
 import DietPlanCard from "@/app/components/dietPlanCard";
+import Link from "next/link";
 import Button from "@mui/material/Button";
 import Consumable from "@/app/components/consumable";
 
@@ -219,6 +220,11 @@ export default function dietPlan() {
         <Button variant="contained" color="success" onClick={handleClickOpen}>
           Create Diet Plan
         </Button>
+        <Link href="/user/dietPlan/123">
+          <Button variant="contained" color="success">
+            View Diet Plan
+          </Button>
+        </Link>
       </div>
       {showFoodBrowser && (
         <div className="mb-8 rounded-xl border border-gray-200 bg-white p-5 shadow-sm chip-enter">
