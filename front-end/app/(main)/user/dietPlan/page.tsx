@@ -6,6 +6,7 @@ import DietPlanCard from "@/app/components/dietPlanCard";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import Consumable from "@/app/components/consumable";
+import Divider from '@mui/material/Divider';
 
 import type {
   DietProp,
@@ -238,13 +239,14 @@ export default function dietPlan() {
         <h2 className="mb-4 text-xl font-semibold text-gray-800">Your Plans</h2>
         <div className="flex flex-col gap-4">
           {dietPlans.map((plan, index) => (
-            <DietPlanCard dietPlan={plan} key={index}></DietPlanCard>
+            <div key={index}>
+              <DietPlanCard dietPlan={plan}></DietPlanCard>
+              <Divider/>
+            </div>
           ))}
         </div>
       </section>
       <div className="mt-8">
-        <h1 onClick={get_res}>Get consumables</h1>
-        {isLoading && <h1 className="text-green-600">Is Loading ...</h1>}
         <div className="grid gap-3 grid-cols-3">
           {foodDatas.map((data, index) => (
             <button key={index} className="p-4 bg-blue-300 rounded-full">

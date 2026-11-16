@@ -2,7 +2,8 @@ import { api } from "@/lib/api"
 
 type Consumables = {
     name: string,
-    code: string
+    code: string,
+    nutriments: NutrimentType[]
 }
 type DietProp = {
     name: string,
