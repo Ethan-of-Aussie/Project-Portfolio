@@ -68,10 +68,10 @@ export default function NavBar() {
               Home
             </Link>
             <Link
-              href={"/about"}
+              href={"/user/dietPlan"}
               className="self-stretch p-4 hover:bg-gray-200 hover:text-black"
             >
-              About
+              Diet Plan
             </Link>
             <Link
               href={"/user"}
@@ -137,7 +137,7 @@ export default function NavBar() {
             Home
           </Link>
           <Link
-            href="/about"
+            href="/user/dietPlan"
             onClick={() => setIsMenuOpen(false)}
             className={`block rounded-md px-3 py-3 ${
               pathName === "/about"
@@ -145,7 +145,7 @@ export default function NavBar() {
                 : "text-green-100 hover:bg-green-600"
             }`}
           >
-            About
+            Diet Plan
           </Link>
           <Link
             href="/user"
