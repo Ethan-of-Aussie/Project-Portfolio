@@ -72,7 +72,8 @@ export type {
     ExternalConsumable,
     ExternalConsumables,
     ConsumableRequest,
-    CreateTableRequestType
+    CreateTableRequestType,
+    NutrimentType
 }
 
 export {

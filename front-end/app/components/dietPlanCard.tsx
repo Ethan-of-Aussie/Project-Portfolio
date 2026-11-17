@@ -1,10 +1,38 @@
-import type { DietProp } from "@/lib/user/dietPlan";
+import type { DietProp, Consumables, NutrimentType } from "@/lib/user/dietPlan";
 import { Accordion, AccordionDetails, AccordionSummary, Button } from "@mui/material";
 import { log } from "node:console";
 import { useState } from "react";
 
 type DietCardProp = {
   dietPlan: DietProp;
+};
+const sumUpNutriments = (
+  consumables: Consumables[]
+): NutrimentType[] => {
+  const totals = consumables.reduce<Record<string, NutrimentType>>(
+    (acc, consumable) => {
+      consumable.nutriments?.forEach((nutrient) => {
+        const { name, value } = nutrient;
+
+        // Only use valid values
+        if (value == null || !Number.isFinite(Number(value))) return;
+
+        if (!acc[name]) {
+          acc[name] = {
+            ...nutrient,
+            value: 0,
+          };
+        }
+
+        acc[name].value += Number(value);
+      });
+
+      return acc;
+    },
+    {}
+  );
+
+  return Object.values(totals);
 };
 
 export default function DietPlanCard({ dietPlan }: DietCardProp) {
@@ -39,15 +67,19 @@ export default function DietPlanCard({ dietPlan }: DietCardProp) {
           >
           </AccordionSummary>
             <AccordionDetails>
-              {dietPlan.consumables[0].nutriments.filter((res) => res.value !== null && res.value !== 0).map((nutriment, index) => (
-                <div key={index} className="grid grid-cols-2">
-                  <p>{nutriment.name}</p>
-                  <div className="text-right">
-                    {/* <p>protien</p> */}
-                    <p className="text-right">{nutriment.value === null ? 0 : Number(nutriment.value.toFixed(2))} g</p>
+              {sumUpNutriments(dietPlan.consumables)
+                .filter((res) => res.value !== 0)
+                .map((nutriment) => (
+                  <div key={nutriment.name} className="grid grid-cols-2">
+                    <p>{nutriment.name}</p>
+
+                    <div className="text-right">
+                      <p>
+                        {Number(nutriment.value.toFixed(2))} {nutriment.unit}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </AccordionDetails>
         </Accordion>
         <h6 className="font-bold py-3">Food List</h6>
