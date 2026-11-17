@@ -1,6 +1,5 @@
 import type { DietProp, Consumables, NutrimentType } from "@/lib/user/dietPlan";
 import { Accordion, AccordionDetails, AccordionSummary, Button } from "@mui/material";
-import { log } from "node:console";
 import { useState } from "react";
 
 type DietCardProp = {
@@ -37,6 +36,7 @@ const sumUpNutriments = (
 
 export default function DietPlanCard({ dietPlan }: DietCardProp) {
   const [isNutrimentExpand, setIsNutrimentExpand] = useState(false);
+  const consumables = dietPlan.consumables ?? [];
   return (
     <div className="grid grid-cols-5 gap-3 mb-2">
       <img src="/images/big_mike_banana.jpg" alt="" />
@@ -67,7 +67,7 @@ export default function DietPlanCard({ dietPlan }: DietCardProp) {
           >
           </AccordionSummary>
             <AccordionDetails>
-              {sumUpNutriments(dietPlan.consumables)
+              {sumUpNutriments(consumables)
                 .filter((res) => res.value !== 0)
                 .map((nutriment) => (
                   <div key={nutriment.name} className="grid grid-cols-2">
@@ -83,7 +83,7 @@ export default function DietPlanCard({ dietPlan }: DietCardProp) {
             </AccordionDetails>
         </Accordion>
         <h6 className="font-bold py-3">Food List</h6>
-        {dietPlan.consumables.map((item, index) => (
+        {consumables.map((item, index) => (
           <div key={index}>{item.name}</div>
         ))}
       </div>
