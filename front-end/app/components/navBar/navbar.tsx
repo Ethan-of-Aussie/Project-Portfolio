@@ -45,6 +45,7 @@ export default function NavBar() {
                 alt="Demeter Logo"
                 width={200}
                 height={70}
+                className="w-32 h-auto"
                 priority
               />
             </Link>
@@ -135,7 +136,6 @@ export default function NavBar() {
           >
             Home
           </Link>
-          =]
           <Link
             href="/about"
             onClick={() => setIsMenuOpen(false)}
