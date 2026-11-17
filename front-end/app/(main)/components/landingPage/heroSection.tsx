@@ -1,5 +1,6 @@
-import healthFoodCloud from "../landingPage/images/healthFoodCloud.webp";
+import demeter from "../../../components/navBar/demeter.webp";
 import fruitCloud from "../landingPage/images/fruitCloud.webp";
+import Image from "next/image";
 
 export default function HeroSection() {
   return (
@@ -14,8 +15,16 @@ export default function HeroSection() {
 
       <div className="flex flex-col text-center md:w-1/2 md:text-left">
         <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-green-700">
-          Welcome to DietPlanner
+          Welcome to
         </p>
+        <Image
+          src={demeter}
+          alt="Demeter Logo"
+          width={200}
+          height={70}
+          className="w-32 h-auto"
+          priority
+        />
 
         <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl md:text-6xl">
           Build healthier habits,
