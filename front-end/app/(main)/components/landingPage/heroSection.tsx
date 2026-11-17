@@ -40,7 +40,7 @@ export default function HeroSection() {
           href="/user/dietPlan"
           className="self-center inline-block rounded-lg bg-green-700 px-8 py-3 font-semibold text-white shadow-sm transition-colors hover:bg-green-800"
         >
-          Explore DietPlanner
+          Explore Demeter
         </a>
       </div>
     </section>
