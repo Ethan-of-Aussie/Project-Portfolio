@@ -12,7 +12,7 @@ export default function HowItWorksSection() {
         </h2>
       </div>
 
-      <div className="flex w-full flex-col items-center gap-10 px-6 py-16 md:flex-row md:justify-between md:px-12 lg:px-20">
+      <div className="flex w-full flex-col items-center gap-10 px-6 py-16 md:px-12 lg:px-20">
         <InfoCard
           title="Explore"
           description="Browse through nutritional information about different food directly from our source."
