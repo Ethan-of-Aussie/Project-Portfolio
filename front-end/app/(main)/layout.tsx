@@ -10,9 +10,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gradient-to-r from-[#EEEEEE] to-[#D5EBD8]">
+      <body className="flex min-h-screen flex-col bg-gradient-to-r from-[#EEEEEE] to-[#D5EBD8]">
         <NavBar />
-        <div className="pt-16 pb-24">
+        <div className="flex-1 pt-16 pb-24">
           <main>{children}</main>
         </div>
         <div className="mt-auto hidden w-full lg:block">
