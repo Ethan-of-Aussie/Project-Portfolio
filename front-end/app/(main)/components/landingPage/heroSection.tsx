@@ -14,17 +14,19 @@ export default function HeroSection() {
       </div>
 
       <div className="flex flex-col text-center md:w-1/2 md:text-left">
-        <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-green-700">
-          Welcome to
-        </p>
-        <Image
-          src={demeter}
-          alt="Demeter Logo"
-          width={200}
-          height={70}
-          className="w-32 h-auto"
-          priority
-        />
+        <div className="flex items-baseline gap-2">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-green-700">
+            Welcome to
+          </p>
+          <Image
+            src={demeter}
+            alt="Demeter Logo"
+            width={140}
+            height={70}
+            className="w-32 h-auto"
+            priority
+          />
+        </div>
 
         <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl md:text-6xl">
           Build healthier habits,
